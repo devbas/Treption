@@ -1,0 +1,19 @@
+version: '3'
+services: 
+  api: 
+    build: .
+    container_name: treption
+    ports: 
+      - "5000:5000"
+    volumes: 
+      - ../treption:/opt/code
+  db:  
+    image: mysql:latest
+    ports: 
+      - 3306:3306
+    environment: 
+      MYSQL_ROOT_PASSWORD: "root"
+  postagger: 
+    image: cuzzo/stanford-pos-tagger
+    ports: 
+      - 9000:32768
