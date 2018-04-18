@@ -1,12 +1,16 @@
-from flask import Flask 
+from flask import Flask, request
+from utils import POSTagger
+from pprint import pprint
 
 app = Flask(__name__)
 
+app.logger.info('it is really us')
+
 @app.route("/")
 def hello(): 
-  return "Be Amazed"
+  return "Be Amazed me too"
 
-ALLOWED_EXTENSIONS = set(['txt'])
+ALLOWED_EXTENSIONS = set(['txt', 'rtf'])
 
 @app.route("/upload", methods=['GET'])
 def serveUploadForm(): 
@@ -14,7 +18,7 @@ def serveUploadForm():
     <!doctype html>
     <title>Upload new Text</title>
     <h1>Upload new Text (txt)</h1>
-    <form method=post enctype=multipart/form-data>
+    <form method=post enctype=multipart/form-data action=/api/upload>
       <p><input type=file name=file>
          <input type=submit value=Upload>
     </form>
@@ -26,11 +30,35 @@ def uploadFile():
     if 'file' not in request.files:
       flash('No file part')
 
+    uploadedFile = request.files['file']
+
+    pos = POSTagger('bla')
+    pprint(pos)
+    return pos[0]
+    #app.logger.info(myFile.read())
+
+    #return "Excellent! Thank You"
+
     # Extract data from text
 
     # Pass it through POS Tagger
 
     # Save in database
+
+@app.route("/api/document", methods=['GET'])
+def getDocument(): 
+  # Returns document, sentence, sentence_word, triple, predicate, actions, user
+  return 1
+
+@app.route("/api/triple", methods=['POST'])
+def saveTriple(): 
+  # Saves triple, action, (predicate)
+  return 1
+
+@app.route("/api/user", methods=['POST'])
+def saveUser(): 
+  # Saves user
+  return 1
 
 #@app.route("/api/save-extraction", methods=['POST'])
 #def saveExtraction(): 

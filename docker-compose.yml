@@ -1,7 +1,9 @@
 version: '3'
 services: 
   api: 
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.api
     container_name: treption
     ports: 
       - "5000:5000"
@@ -14,6 +16,6 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: "root"
   postagger: 
-    image: cuzzo/stanford-pos-tagger
+    image: motiz88/corenlp
     ports: 
-      - 9000:32768
+      - 9000:9000
