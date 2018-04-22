@@ -1,0 +1,10 @@
+FROM nginx:alpine
+
+WORKDIR /var/www/treption
+
+RUN mkdir -p /etc/nginx/sites-enabled
+
+RUN ln -s /var/www/treption/treption.nginx.conf /etc/nginx/conf.d/
+
+EXPOSE 8080
+

@@ -1,5 +1,13 @@
 version: '3'
 services: 
+  web: 
+    build: 
+      context: ./app/client/ 
+      dockerfile: Dockerfile.web
+    ports: 
+      - "8080:8080"
+    volumes: 
+      - ./app/client:/var/www/treption
   api: 
     build: 
       context: .
@@ -19,3 +27,4 @@ services:
     image: motiz88/corenlp
     ports: 
       - 9000:9000
+  
