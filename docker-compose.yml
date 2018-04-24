@@ -5,7 +5,7 @@ services:
       context: ./app/client/ 
       dockerfile: Dockerfile.web
     ports: 
-      - "8080:8080"
+      - "3000:3000"
     volumes: 
       - ./app/client:/var/www/treption
   api: 
