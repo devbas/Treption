@@ -10,7 +10,7 @@ services:
       - ./app/client:/var/www/treption
   api: 
     build: 
-      context: .
+      context: ./app/server/
       dockerfile: Dockerfile.api
     container_name: treption
     ports: 
@@ -18,9 +18,13 @@ services:
     volumes: 
       - ../treption:/opt/code
   db:  
-    image: mysql:latest
+    build:
+      context: ./app/db/
+      dockerfile: Dockerfile.mysql
     ports: 
       - 3306:3306
+    volumes: 
+      - ./app/db:/root
     environment: 
       MYSQL_ROOT_PASSWORD: "root"
   postagger: 
