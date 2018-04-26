@@ -8,7 +8,22 @@ const setDocuments = (documents) => {
   console.log('lets set the documents!')
 }
 
-export const uploadDocuments = (file) => {
+export const uploadText = (text) => {
+  return (dispatch, getState) => {
+
+    axios.post(`/api/upload/text`, {
+      text: text
+    })
+    .then((response) => {
+      console.log('response: ', response)
+    })
+    .catch((err) => {
+      console.log('err: ', err)
+    })
+  }
+}
+
+/*export const uploadDocuments = (file) => {
   return (dispatch, getState) => {
     
     let data = new FormData()
@@ -16,16 +31,24 @@ export const uploadDocuments = (file) => {
     data.append('name', 'blabla')
 
     axios.post(`/api/upload`, data)
-      .then((response) => {
+    .then((response) => {
 
-        console.log('Server responded with: ', response)
-      
-      })
-      .catch((err) => {
-        console.log('err: ', err)
-      })
+      console.log('Server responded with: ', response)
+    
+    })
+    .catch((err) => {
+      console.log('err: ', err)
+    })
+
+    /*axios.get(`/api/upload`)
+    .then((response) => {
+      console.log('Server responded with: ', response)
+    })
+    .catch((err) => {
+      console.log('err: ', err)
+    })
   }
-}
+} */
 
 export const fetchDocuments = () => {
   return (dispatch, getState) => {

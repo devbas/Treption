@@ -1,14 +1,18 @@
 import React from 'react';
-import Dropzone from 'react-dropzone'
+//import Dropzone from 'react-dropzone'
 
-const DocumentOverview = ({ documents, onFileDrop }) => (
+const DocumentOverview = ({ 
+  documents,  
+  onDocumentTextChange, 
+  onDocumentTextSubmit, 
+  documentText 
+}) => (
   <div className="document-box">
     {!documents &&
       <div>
         No documents found! Upload first document: 
-        <Dropzone onDrop={onFileDrop}>
-          <p>Try dropping some files here, or click to select files to upload.</p>
-        </Dropzone>
+        <textarea value={documentText} onChange={onDocumentTextChange}/>
+        <input type="submit" value="Upload" onClick={onDocumentTextSubmit}/>
       </div>
     }
     

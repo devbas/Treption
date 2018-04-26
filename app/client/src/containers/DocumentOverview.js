@@ -11,26 +11,42 @@ class DocumentOverview extends Component {
     super(props)
 
     this.state = {
-      files: []
+      documentText: ''
     }
 
-    this.onFileDrop = this.onFileDrop.bind(this)
+    //this.onFileDrop = this.onFileDrop.bind(this)
+    this.onDocumentTextChange = this.onDocumentTextChange.bind(this)
+    this.onDocumentTextSubmit = this.onDocumentTextSubmit.bind(this)
   }
 
-  onFileDrop(files) {
+  /*onFileDrop(files) {
     console.log('file dropped!')
     /*this.setState({
       files: files
-    })*/
+    })
 
     this.props.actions.uploadDocuments(files)
+  }*/
+
+  onDocumentTextChange(event) {
+    this.setState({
+      documentText: event.target.value
+    })
+  }
+
+  onDocumentTextSubmit(event) {
+    if(this.state.documentText) {
+      this.props.actions.uploadText(this.state.documentText)
+    }
   }
 
   render() {
     return(
       <DocumentComponent 
         documents={this.props.documents}
-        onFileDrop={this.onFileDrop}
+        onDocumentTextChange={this.onDocumentTextChange}
+        onDocumentTextSubmit={this.onDocumentTextSubmit}
+        documentText={this.state.documentText}
       />
     )
   }
