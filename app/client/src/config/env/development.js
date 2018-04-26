@@ -1,3 +1,5 @@
-export default {
-  apiEndpoint: 'http://localhost:8080/'
+const config = {
+  "apiEndpoint": "http://localhost:5000/"
 }
+
+export default config
