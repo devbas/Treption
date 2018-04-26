@@ -1,20 +1,6 @@
 from flask import Flask, request
-from utils import POSTagger
+from utils import POSTagger, createDocument
 from pprint import pprint
-import pymysql.cursors
-
-connection = pymysql.connect(host='db',user='root',password='root',db='treption')
-
-try:
-  with connection.cursor() as cursor:
-    sql = "INSERT INTO `predicate` (`value`) VALUES (%s)"
-    cursor.execute(sql, ('part of'))
-
-  connection.commit()
-
-finally:
-  connection.close()
-
 
 app = Flask(__name__)
 
@@ -38,17 +24,32 @@ def serveUploadForm():
     </form>
     '''
 
-@app.route("/api/upload", methods=['POST'])
+@app.route("/api/upload/text", methods=['POST'])
+def uploadedText(): 
+  result = createDocument(request.form['text'])
+  return result
+
+@app.route("/api/upload/document", methods=['POST', 'GET'])
 def uploadFile():
   if request.method == 'POST':  
+    
     #if 'file' not in request.files:
     #  return "No file found"
+    
+    uploadedFile = request.form
+    #content = uploadedFile.read()
+    #file_lines = [line.decode("utf-8") for line in content.file]
+    return uploadedFile
+    #uploadedFile.close()
 
-    #uploadedFile = request.files['file']
 
-    pos = POSTagger('bla')
+    #return "We hear you!"
+
+    
+
+    #pos = POSTagger('bla')
     #print("Type of file: ", type(pos))
-    return pos[0]
+    #return pos[0]
     #app.logger.info(myFile.read())
 
     #return "Excellent! Thank You"

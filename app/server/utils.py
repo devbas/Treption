@@ -1,14 +1,65 @@
 import nltk
-from nltk.tag.stanford import CoreNLPPOSTagger
+from nltk.tag.stanford import CoreNLPPOSTagger  
 from pprint import pprint
-import logging
-#import urllib.request
-
-logger = logging.getLogger('spam_application')
+import pymysql.cursors
+import sys
 
 def POSTagger(content): 
-
-  result = CoreNLPPOSTagger(url='http://postagger:9000').tag("A passenger plane has crashed shortly after take-off from Kyrgyzstan's capital, Bishkek, killing a large number of those on board. The head of Kyrgyzstan's civil aviation authority said that out of about 90 passengers and crew, only about 20 people have survived. The Itek Air Boeing 737 took off bound for Mashhad, in north-eastern Iran, but turned round some 10 minutes later.".split())
+  result = CoreNLPPOSTagger(url='http://postagger:9000').tag(content.split())
   if result:
-    logger.info("done")
     return result
+
+def createDocument(content): 
+  if content:
+    tokens = POSTagger(content)
+
+    sentences = []
+    sentence = [] # initiate with the first sentence
+
+    sentences.append(sentence)
+    for index, (x, y) in enumerate(tokens): 
+      # add word to existing sentence
+      sentences[-1].append((x, y))
+
+      if x == '.' and y == '.' and len(tokens) > index + 1: 
+        # add new sentence to list
+        sentence = []
+        sentences.append(sentence)
+
+    sentenceAmount = len(sentences)
+
+    connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+
+    try: 
+      with connection.cursor() as cursor:
+        sql = "INSERT INTO `document` (`sentence_count`) VALUES (%s)"
+        
+        cursor.execute(sql, (sentenceAmount))
+        documentId = cursor.lastrowid
+
+      connection.commit()
+
+      for index, sentence in enumerate(sentences): 
+        with connection.cursor() as cursor: 
+
+          # add sentence to document
+          sql = "INSERT INTO `sentence` (`document_id`, `word_count`, `document_position`) VALUES (%s, %s, %s)"
+          cursor.execute(sql, (documentId, len(sentence), index))
+          sentenceId = cursor.lastrowid
+
+        connection.commit()
+
+        # add words to sentence
+        for index, (value, pos) in enumerate(sentence): 
+          with connection.cursor() as cursor: 
+            sql = "INSERT INTO `sentence_word` (`sentence_id`, `word_position`, `value`, `pos`) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (sentenceId, index, value, pos))
+        
+        connection.commit()
+
+    finally: 
+      connection.close()
+      return 'done'
+
+  else: 
+    return 0
