@@ -8,6 +8,8 @@ services:
       - "3000:3000"
     volumes: 
       - ./app/client:/var/www/treption
+    depends_on: 
+      - api
   api: 
     build: 
       context: ./app/server/
@@ -15,6 +17,9 @@ services:
     container_name: treption
     ports: 
       - "5000:5000"
+    depends_on: 
+      - db
+      - postagger
     volumes: 
       - ../treption:/opt/code
   db:  
