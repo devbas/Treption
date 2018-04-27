@@ -16,7 +16,7 @@ class App extends Component {
       <Router>
         <div className="wrapper">
           <Route exact path="/" component={DocumentOverview}/>
-          <Route exact path="/document" component={SentenceOverview}/>
+          <Route exact path="/document/:documentId" component={SentenceOverview}/>
           <Route exact path="/extract/:documentId/:sentenceId" component={Extract}/>
         </div>
       </Router>

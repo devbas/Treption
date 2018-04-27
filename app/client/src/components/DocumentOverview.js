@@ -5,7 +5,8 @@ const DocumentOverview = ({
   documents,  
   onDocumentTextChange, 
   onDocumentTextSubmit, 
-  documentText 
+  documentText, 
+  renderDocumentView 
 }) => (
   <div className="document-box">
     {!documents &&
@@ -16,10 +17,13 @@ const DocumentOverview = ({
       </div>
     }
     
-    {documents &&
-      <div>Documents found</div>
+    {(documents.length > 0) &&
+      <div>
+        {documents.map(renderDocumentView)}
+      </div>
     }
   </div>
 )
+//{documents.map(renderDocumentView)}
 
 export default DocumentOverview;

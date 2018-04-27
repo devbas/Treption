@@ -1,10 +1,8 @@
-from flask import Flask, request
-from utils import POSTagger, createDocument
+from flask import Flask, request, jsonify
+from utils import POSTagger, createDocument, getDocuments
 from pprint import pprint
 
 app = Flask(__name__)
-
-app.logger.info('it is really us')
 
 @app.route("/")
 def hello(): 
@@ -40,30 +38,12 @@ def uploadFile():
     #content = uploadedFile.read()
     #file_lines = [line.decode("utf-8") for line in content.file]
     return uploadedFile
-    #uploadedFile.close()
 
-
-    #return "We hear you!"
-
-    
-
-    #pos = POSTagger('bla')
-    #print("Type of file: ", type(pos))
-    #return pos[0]
-    #app.logger.info(myFile.read())
-
-    #return "Excellent! Thank You"
-
-    # Extract data from text
-
-    # Pass it through POS Tagger
-
-    # Save in database
-
-@app.route("/api/document", methods=['GET'])
+@app.route("/api/documents", methods=['GET'])
 def getDocument(): 
+  documents = getDocuments()
+  return jsonify(Documents=documents)
   # Returns document, sentence, sentence_word, triple, predicate, actions, user
-  return 1
 
 @app.route("/api/triple", methods=['POST'])
 def saveTriple(): 

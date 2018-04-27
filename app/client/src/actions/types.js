@@ -1,1 +1,1 @@
-export const FETCH_DOCUMENTS = 'FETCH_DOCUMENTS'
+export const SET_DOCUMENTS = 'SET_DOCUMENTS'

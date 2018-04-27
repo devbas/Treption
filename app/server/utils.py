@@ -3,6 +3,8 @@ from nltk.tag.stanford import CoreNLPPOSTagger
 from pprint import pprint
 import pymysql.cursors
 import sys
+from flask import jsonify,json
+import datetime
 
 def POSTagger(content): 
   result = CoreNLPPOSTagger(url='http://postagger:9000').tag(content.split())
@@ -32,16 +34,16 @@ def createDocument(content):
 
     try: 
       with connection.cursor() as cursor:
-        sql = "INSERT INTO `document` (`sentence_count`) VALUES (%s)"
+        sql = "INSERT INTO `document` (`sentence_count`, `value`) VALUES (%s, %s)"
         
-        cursor.execute(sql, (sentenceAmount))
+        cursor.execute(sql, (sentenceAmount, content))
         documentId = cursor.lastrowid
 
       connection.commit()
 
       for index, sentence in enumerate(sentences): 
-        with connection.cursor() as cursor: 
 
+        with connection.cursor() as cursor: 
           # add sentence to document
           sql = "INSERT INTO `sentence` (`document_id`, `word_count`, `document_position`) VALUES (%s, %s, %s)"
           cursor.execute(sql, (documentId, len(sentence), index))
@@ -63,3 +65,64 @@ def createDocument(content):
 
   else: 
     return 0
+
+
+def getDocuments(): 
+  
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+
+  try:
+
+    aggregatedDocuments = []
+    with connection.cursor() as cursor: 
+      cursor.execute("SELECT * FROM document")
+      documents = cursor.fetchall()
+
+    for document in documents:
+      documentId = document[0]
+      sentenceAmount = document[1]
+
+      aggregatedDocument = {
+        'documentId': documentId, 
+        'value': document[3],
+        'sentences': []
+      }
+      
+      with connection.cursor() as cursor: 
+        sql = "SELECT * FROM sentence WHERE document_id = %s"
+        cursor.execute(sql, (documentId))
+        sentences = cursor.fetchall()
+
+      for sentence in sentences: 
+        sentenceId = sentence[0]
+
+        aggregatedSentence = {
+          'sentenceId': sentenceId, 
+          'wordCount': sentence[2], 
+          'documentPosition': sentence[3], 
+          'words': []
+        }
+
+        with connection.cursor() as cursor: 
+          sql = "SELECT * FROM sentence_word WHERE sentence_id = %s"
+          cursor.execute(sql, (sentenceId))
+          words = cursor.fetchall()
+        
+        for word in words: 
+          aggregatedWord = {
+            'id': word[0], 
+            'position': word[2], 
+            'value': word[3], 
+            'pos': word[4]
+          }
+
+          aggregatedSentence['words'].append(aggregatedWord)
+
+        aggregatedDocument['sentences'].append(aggregatedSentence)
+
+      aggregatedDocuments.append(aggregatedDocument)
+
+  finally: 
+    connection.close()
+    jsonDocuments = json.dumps(aggregatedDocuments)
+    return jsonDocuments

@@ -3,6 +3,7 @@ import DocumentComponent from '../components/DocumentOverview'
 import * as DocumentActions from '../actions/documents'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import DocumentItem from './DocumentItem'
 
 
 class DocumentOverview extends Component {
@@ -14,19 +15,14 @@ class DocumentOverview extends Component {
       documentText: ''
     }
 
-    //this.onFileDrop = this.onFileDrop.bind(this)
     this.onDocumentTextChange = this.onDocumentTextChange.bind(this)
     this.onDocumentTextSubmit = this.onDocumentTextSubmit.bind(this)
+    this.renderDocumentView = this.renderDocumentView.bind(this)
   }
 
-  /*onFileDrop(files) {
-    console.log('file dropped!')
-    /*this.setState({
-      files: files
-    })
-
-    this.props.actions.uploadDocuments(files)
-  }*/
+  componentDidMount() {
+    this.props.actions.fetchDocuments()
+  }
 
   onDocumentTextChange(event) {
     this.setState({
@@ -40,13 +36,23 @@ class DocumentOverview extends Component {
     }
   }
 
+  renderDocumentView(document) {
+    if(document) {
+      return (
+        <DocumentItem document={document}/>
+      )
+    }
+  }
+
   render() {
+    console.log('documents: ', this.props.documents)
     return(
       <DocumentComponent 
         documents={this.props.documents}
         onDocumentTextChange={this.onDocumentTextChange}
         onDocumentTextSubmit={this.onDocumentTextSubmit}
         documentText={this.state.documentText}
+        renderDocumentView={this.renderDocumentView}
       />
     )
   }
@@ -54,13 +60,13 @@ class DocumentOverview extends Component {
 
 function mapStateToProps(state) {
   return {
-    
+    documents: state.fetchedDocuments
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-	actions: bindActionCreators(Object.assign({}, DocumentActions), dispatch)
+	  actions: bindActionCreators(Object.assign({}, DocumentActions), dispatch)
   }
 }
 

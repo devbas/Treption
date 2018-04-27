@@ -6,6 +6,10 @@ import fs from 'fs'
 
 const setDocuments = (documents) => {
   console.log('lets set the documents!')
+  return {
+    type: types.SET_DOCUMENTS, 
+    documents
+  }
 }
 
 export const uploadText = (text) => {
@@ -52,8 +56,8 @@ export const uploadText = (text) => {
 
 export const fetchDocuments = () => {
   return (dispatch, getState) => {
-    return Api.get(`/api/documents`).then(resp => {
-      dispatch(setDocuments({ documents: resp }))
+    axios.get(`/api/documents`).then((resp) => {
+      dispatch(setDocuments({ documents: JSON.parse(resp.data.Documents) }))
     }).catch((ex) => {
       console.log('ex: ', ex)
     })
