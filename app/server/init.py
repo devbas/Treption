@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
-from utils import POSTagger, createDocument, getDocuments
+from utils import POSTagger, createDocument, getDocuments, getDocument
 from pprint import pprint
+import sys
 
 app = Flask(__name__)
 
@@ -40,10 +41,17 @@ def uploadFile():
     return uploadedFile
 
 @app.route("/api/documents", methods=['GET'])
-def getDocument(): 
+def fetchDocuments(): 
   documents = getDocuments()
   return jsonify(Documents=documents)
   # Returns document, sentence, sentence_word, triple, predicate, actions, user
+
+@app.route("/api/document/<documentId>", methods=['GET'])
+def fetchDocument(documentId): 
+  #documentId = request.args['documentId']
+  print('documentId: ' + str(type(documentId)), file=sys.stderr)
+  document = getDocument(documentId)
+  return jsonify(Document=document)
 
 @app.route("/api/triple", methods=['POST'])
 def saveTriple(): 

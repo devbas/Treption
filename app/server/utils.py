@@ -87,38 +87,6 @@ def getDocuments():
         'value': document[3],
         'sentences': []
       }
-      
-      with connection.cursor() as cursor: 
-        sql = "SELECT * FROM sentence WHERE document_id = %s"
-        cursor.execute(sql, (documentId))
-        sentences = cursor.fetchall()
-
-      for sentence in sentences: 
-        sentenceId = sentence[0]
-
-        aggregatedSentence = {
-          'sentenceId': sentenceId, 
-          'wordCount': sentence[2], 
-          'documentPosition': sentence[3], 
-          'words': []
-        }
-
-        with connection.cursor() as cursor: 
-          sql = "SELECT * FROM sentence_word WHERE sentence_id = %s"
-          cursor.execute(sql, (sentenceId))
-          words = cursor.fetchall()
-        
-        for word in words: 
-          aggregatedWord = {
-            'id': word[0], 
-            'position': word[2], 
-            'value': word[3], 
-            'pos': word[4]
-          }
-
-          aggregatedSentence['words'].append(aggregatedWord)
-
-        aggregatedDocument['sentences'].append(aggregatedSentence)
 
       aggregatedDocuments.append(aggregatedDocument)
 
@@ -126,3 +94,59 @@ def getDocuments():
     connection.close()
     jsonDocuments = json.dumps(aggregatedDocuments)
     return jsonDocuments
+
+def getDocument(documentId): 
+  
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+
+  try: 
+
+    with connection.cursor() as cursor: 
+      sql = "SELECT * FROM document WHERE document_id = %s"
+      cursor.execute(sql, (documentId))
+      document = cursor.fetchone()
+    
+    #print('Document params: ', document, file=sys.stderr)
+
+    aggregatedDocument = {
+      'documentId': documentId, 
+      'value': document[3],
+      'sentences': []
+    }
+    
+    with connection.cursor() as cursor: 
+      sql = "SELECT * FROM sentence WHERE document_id = %s"
+      cursor.execute(sql, (documentId))
+      sentences = cursor.fetchall()
+
+    for sentence in sentences: 
+      sentenceId = sentence[0]
+
+      aggregatedSentence = {
+        'sentenceId': sentenceId, 
+        'wordCount': sentence[2], 
+        'documentPosition': sentence[3], 
+        'words': []
+      }
+
+      with connection.cursor() as cursor: 
+        sql = "SELECT * FROM sentence_word WHERE sentence_id = %s"
+        cursor.execute(sql, (sentenceId))
+        words = cursor.fetchall()
+      
+      for word in words: 
+        aggregatedWord = {
+          'id': word[0], 
+          'position': word[2], 
+          'value': word[3], 
+          'pos': word[4]
+        }
+
+        aggregatedSentence['words'].append(aggregatedWord)
+
+      aggregatedDocument['sentences'].append(aggregatedSentence)
+
+  finally: 
+    connection.close()
+    jsonDocument = json.dumps(aggregatedDocument)
+    return jsonDocument
