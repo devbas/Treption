@@ -1,8 +1,16 @@
 import React from 'react';
 
-const Extract = () => (
-  <div className="canvas-box animated slideInLeft">
-    <div>Hello Extract</div>
+const Extract = ({ words }) => (
+  <div className="extract-box">
+
+    <div className="sentence-box">
+      <div className="inner-box">
+
+      </div>
+    </div>
+
+    <input type="text" name="relation"/>
+
   </div>
 )
 

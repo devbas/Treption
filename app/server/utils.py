@@ -3,8 +3,11 @@ from nltk.tag.stanford import CoreNLPPOSTagger
 from pprint import pprint
 import pymysql.cursors
 import sys
-from flask import jsonify,json
+from flask import jsonify
+import json
 import datetime
+import random
+import colorsys
 
 def POSTagger(content): 
   result = CoreNLPPOSTagger(url='http://postagger:9000').tag(content.split())
@@ -29,14 +32,16 @@ def createDocument(content):
         sentences.append(sentence)
 
     sentenceAmount = len(sentences)
+    documentColor = rainbow()
+
+    
 
     connection = pymysql.connect(host='db', user='root', password='root', db='treption')
-
+    
     try: 
       with connection.cursor() as cursor:
-        sql = "INSERT INTO `document` (`sentence_count`, `value`) VALUES (%s, %s)"
-        
-        cursor.execute(sql, (sentenceAmount, content))
+        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`) VALUES (%s, %s, %s)"    
+        cursor.execute(sql, (sentenceAmount, content, documentColor))
         documentId = cursor.lastrowid
 
       connection.commit()
@@ -148,5 +153,53 @@ def getDocument(documentId):
 
   finally: 
     connection.close()
+
     jsonDocument = json.dumps(aggregatedDocument)
     return jsonDocument
+
+def getSentence(documentId, sentenceId): 
+  
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+
+  try: 
+
+    with connection.cursor() as cursor: 
+      sql = "SELECT * FROM sentence WHERE sentence_id = %s"
+      cursor.execute(sql, (sentenceId))
+      sentence = cursor.fetchone()
+    
+    aggregatedSentence = {
+      'sentenceId': sentenceId, 
+      'wordCount': sentence[2], 
+      'documentPosition': sentence[3], 
+      'words': []
+    }
+
+    with connection.cursor() as cursor: 
+      sql = "SELECT * FROM sentence_word WHERE sentence_id = %s"
+      cursor.execute(sql, (sentenceId))
+      words = cursor.fetchall()
+    
+    for word in words: 
+      aggregatedWord = {
+        'id': word[0], 
+        'position': word[2], 
+        'value': word[3], 
+        'pos': word[4]
+      }
+
+      aggregatedSentence['words'].append(aggregatedWord)
+  
+  finally: 
+    connection.close()
+    print('aggregatedSentence: ', file=sys.stderr)
+    jsonDocument = json.dumps(aggregatedSentence)
+    return jsonDocument
+
+def rainbow(): 
+  h,s,l = random.random(), 0.5 + random.random()/2.0, 0.4 + random.random()/5.0
+  rainbow = [int(256*i) for i in colorsys.hls_to_rgb(h,l,s)] # R, G, B
+  jsonRainbow = ','.join(str(e) for e in rainbow)
+  print('jsonRainwob: ' + jsonRainbow, file=sys.stderr)
+  return str(jsonRainbow)
+

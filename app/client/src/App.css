@@ -1,28 +1,54 @@
-.App {
-  text-align: center;
+* {
+  font-family: 'Barlow', sans-serif;
+  outline: 0
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.document-box {
+  width: 100%; 
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.document-item {
+  width: 970px; 
+  margin-left: auto; 
+  margin-right: auto;
 }
 
-.App-title {
-  font-size: 1.5em;
+.document-item .inner-box {
+  margin-top: 60px; 
+  padding: 20px 150px 20px 20px; 
+  float: left; 
+  border-radius: 2px; 
 }
 
-.App-intro {
-  font-size: large;
+.document-item .title {
+  font-size: 32px; 
+  font-weight: 600; 
+  color: #FDE1CC; 
+  text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.document-item .action-box {
+  margin-top: 70px; 
+}
+
+.document-item button.action {
+  height: 50px; 
+  padding: 7px 20px 10px 20px; 
+  background-color: #FDE0CC; 
+  color: #0C1A24;
+  border-radius: 30px; 
+  font-size: 24px; 
+  font-weight: 500;
+  border: 0px solid; 
+  float: left; 
+}
+
+.document-item .more-info {
+  background-image: url('./assets/img/more-info.svg');
+  width: 50px; 
+  height: 50px; 
+  background-size: cover;
+  background-repeat: no-repeat;
+  float: left; 
+  margin-left: 20px; 
 }

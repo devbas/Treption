@@ -4,11 +4,18 @@ import axios from 'axios'
 import config from '../config'
 import fs from 'fs'
 
-const setDocuments = (documents) => {
+const fetchDocuments = (documents) => {
   console.log('lets set the documents!')
   return {
     type: types.SET_DOCUMENTS, 
     documents
+  }
+}
+
+const fetchDocument = ( document ) => {
+  return {
+    type: types.SET_DOCUMENT, 
+    document
   }
 }
 
@@ -27,37 +34,20 @@ export const uploadText = (text) => {
   }
 }
 
-/*export const uploadDocuments = (file) => {
-  return (dispatch, getState) => {
-    
-    let data = new FormData()
-    data.append('file', file)
-    data.append('name', 'blabla')
-
-    axios.post(`/api/upload`, data)
-    .then((response) => {
-
-      console.log('Server responded with: ', response)
-    
-    })
-    .catch((err) => {
-      console.log('err: ', err)
-    })
-
-    /*axios.get(`/api/upload`)
-    .then((response) => {
-      console.log('Server responded with: ', response)
-    })
-    .catch((err) => {
-      console.log('err: ', err)
-    })
-  }
-} */
-
-export const fetchDocuments = () => {
+export const boundFetchDocuments = () => {
   return (dispatch, getState) => {
     axios.get(`/api/documents`).then((resp) => {
-      dispatch(setDocuments({ documents: JSON.parse(resp.data.Documents) }))
+      dispatch(fetchDocuments({ documents: JSON.parse(resp.data.Documents) }))
+    }).catch((ex) => {
+      console.log('ex: ', ex)
+    })
+  }
+}
+
+export const boundFetchDocument = (documentId) => {
+  return (dispatch, getState) => {
+    axios.get(`/api/document/${documentId}`).then((resp) => {
+      dispatch(fetchDocument({ document: JSON.parse(resp.data.Document) }))
     }).catch((ex) => {
       console.log('ex: ', ex)
     })

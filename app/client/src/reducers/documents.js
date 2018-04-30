@@ -6,3 +6,10 @@ export const fetchedDocuments = createReducer([], {
     return action.documents.documents
   }
 })
+
+export const fetchedDocument = createReducer([], {
+  [types.SET_DOCUMENT](state, action) {
+    console.log('state: ', state)
+    return action.document.document
+  }
+})

@@ -20,10 +20,6 @@ class DocumentOverview extends Component {
     this.renderDocumentView = this.renderDocumentView.bind(this)
   }
 
-  componentDidMount() {
-    this.props.actions.fetchDocuments()
-  }
-
   onDocumentTextChange(event) {
     this.setState({
       documentText: event.target.value

@@ -1,1 +1,3 @@
 export const SET_DOCUMENTS = 'SET_DOCUMENTS'
+export const SET_DOCUMENT = 'SET_DOCUMENT'
+export const SET_SENTENCE = 'SET_SENTENCE'
