@@ -36,4 +36,8 @@ services:
     image: motiz88/corenlp
     ports: 
       - 9000:9000
+  fuseki: 
+    image: stain/jena-fuseki
+    ports: 
+      - 3030:3030
   
