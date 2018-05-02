@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from utils import POSTagger, createDocument, getDocuments, getDocument, getSentence
+from utils import POSTagger, createDocument, getDocuments, getDocument, getSentence, createPredicate
 from pprint import pprint
 import sys
 
@@ -57,6 +57,14 @@ def fetchDocument(documentId):
 def fetchSentence(documentId, sentenceId): 
   sentence = getSentence(documentId, sentenceId)
   return jsonify(Sentence=sentence)
+
+@app.route("/api/predicate", methods=['POST'])
+def addPredicate(): 
+  if request.form['predicate']: 
+    predicate = createPredicate(request.form['predicate'])
+    return jsonify(Predicate=predicate)
+  else: 
+    return 0
 
 @app.route("/api/triple", methods=['POST'])
 def saveTriple(): 

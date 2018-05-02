@@ -192,9 +192,25 @@ def getSentence(documentId, sentenceId):
   
   finally: 
     connection.close()
-    print('aggregatedSentence: ', file=sys.stderr)
     jsonDocument = json.dumps(aggregatedSentence)
     return jsonDocument
+
+def createPredicate(predicate): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+    
+  try: 
+    with connection.cursor() as cursor:
+      sql = "INSERT INTO `predicate` (`value`) VALUES (%s)"    
+      cursor.execute(sql, (predicate))
+      predicateId = cursor.lastrowid
+
+    connection.commit()
+  
+  finally: 
+    connection.close()
+    print('predicate: ' + predicate + '   ' + str(predicateId), file=sys.stderr)
+    jsonPredicate = json.dumps({ 'value': predicate, 'predicateId': predicateId })
+    return jsonPredicate
 
 def rainbow(): 
   h,s,l = random.random(), 0.5 + random.random()/2.0, 0.4 + random.random()/5.0
