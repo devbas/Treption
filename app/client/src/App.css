@@ -59,10 +59,12 @@
   float: left; 
   margin-right: 8px;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 
 .extract-word-item-box.inactive {
   background-color: rgba(255, 255, 255, 0.4);
+  cursor: default;
 }
 
 .extract-word-item-box .character {
@@ -102,4 +104,60 @@
   padding: 20px; 
   float: left; 
   width: 100%; 
+  margin: 25px 0;
+}
+
+.predicate-box {
+  width: 770px; 
+  margin: auto; 
+}
+
+.predicate-box .inner-box {
+  background-color: #FE4365; 
+  float: left; 
+  padding: 20px 12px 5px 20px;
+  border-radius: 2px;
+  width: 100%; 
+}
+
+.extract-predicate-item-box {
+  float: left; 
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 2px; 
+  margin-right: 8px;
+  margin-bottom: 15px;
+}
+
+.extract-predicate-item-box .checkbox {
+  width: 15px; 
+  height: 15px; 
+  border-radius: 15px; 
+  float: left; 
+  background-color:#fff; 
+  transition: background-color 0.2s ease-in-out;
+  margin: 5px; 
+  border: 1px solid rgba(12, 26, 36, 1);
+}
+
+.extract-predicate-item-box .checkbox .inner-knob {
+  width: 13px; 
+  height: 13px; 
+  margin: 1px auto 0 auto; 
+  border-radius: 6px;
+  background-color: rgba(12, 26, 36, 0.7);
+  display: none;
+}
+
+.extract-predicate-item-box:hover {
+  cursor: pointer; 
+}
+
+.extract-predicate-item-box:hover .checkbox .inner-knob {
+  display: block;
+}
+
+.extract-predicate-item-box .label {
+  float: left; 
+  color: #0C1A24;
+  margin: 2px 5px 2px 0px; 
 }

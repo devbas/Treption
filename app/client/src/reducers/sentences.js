@@ -1,6 +1,7 @@
 import createReducer from '../lib/createReducer'
 import * as types from '../actions/types'
 import _ from 'lodash'
+import { supportedPosTokens } from '../utils'
 
 export const fetchedSentence = createReducer([], {
   [types.SET_SENTENCE](state, action) {
@@ -18,44 +19,7 @@ export const fetchedSentence = createReducer([], {
         const aggregatedWord = {}
 
         // Possible tags, as derived from the Penn Treebank site: https://catalog.ldc.upenn.edu/docs/LDC99T42/tagguid1.pdf
-        const possibleTags = [
-          'CC', // Coordinating conjunction
-          'CD', // Cardinal number 
-          'DT', // Determiner
-          'EX', // Existential *there*
-          'FW', // Foreign word
-          'IN', // Preposition or subordinating conjunction
-          'JJ', // Adjective
-          'JJR', // Adjective, comparative 
-          'JJS', // Adjective, superlative
-          'LS', // List item marker
-          'MD', // Modal
-          'NN', // Noun, singular or mass
-          'NNS', // Noun, plural
-          'NNP', // Proper noun, singular
-          'NNPS', // Proper noun, plural
-          'PDT', // Predeterminer
-          'POS', // Possesive ending
-          'PRP', // Personal pronoun
-          'PRP$', // Possesive pronoun
-          'RB', // Adverb
-          'RBR', // Adverb, comparative
-          'RBS', // Adverb, superlative
-          'RP', // Particle
-          'SYM', // Symbol
-          'TO', // *to*
-          'UH', // Interjection
-          'VB', // Verb, base form
-          'VBD', // Verb, past tense
-          'VBG', // Verb, gerund or present participle 
-          'VBN', // Verb, past participle, 
-          'VBP', // Verb, non-3rd person singular present
-          'VBZ', // Verb, 3rd preson singular present
-          'WDT', // Wh-determiner
-          'WP', // Wh-pronoun
-          'WP$', // Possessive wh-pronoun
-          'WRB' // Wh-adverb
-        ]
+        const possibleTags = supportedPosTokens()
         
         if(words[i+1] && words[i+1].pos === 'POS') { // We combine Possesive endings (e.g. 's or ') with the previous noun to increase readability
           aggregatedWord.combined = true 

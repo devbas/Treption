@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import ExtractComponent from '../components/Extract'; 
 import * as SentenceActions from '../actions/sentences'
 import * as PredicateActions from '../actions/predicates'
+import * as ExtractActions from '../actions/extract'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import ExtractWordItem from './ExtractWordItem'
+import ExtractPredicateItem from './ExtractPredicateItem'
 
 class Extract extends Component {
 
@@ -14,6 +16,7 @@ class Extract extends Component {
 
     this.state = {
       predicateInput: ''
+      //stage: 'subject' // Can either be subject, predicate or object
     }
 
     this.renderWord = this.renderWord.bind(this)
@@ -48,7 +51,10 @@ class Extract extends Component {
 
   renderPredicate(predicate) {
     return (
-      <p>{predicate[1]}</p>
+      <ExtractPredicateItem 
+        value={predicate[1]}
+        id={predicate[0]}
+      />
     )
   }
 
@@ -56,6 +62,7 @@ class Extract extends Component {
     return(
       <ExtractWordItem
         scope={word}
+        stage={this.props.stage}
       />
     )
   }
@@ -78,13 +85,15 @@ class Extract extends Component {
 function mapStateToProps(state) {
   return {
     sentence: state.fetchedSentence, 
-    predicates: state.predicates
+    predicates: state.predicates, 
+    stage: state.extractingStage, 
+    triples: state.extractedTriples
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-	  actions: bindActionCreators(Object.assign({}, SentenceActions, PredicateActions), dispatch)
+	  actions: bindActionCreators(Object.assign({}, SentenceActions, PredicateActions, ExtractActions), dispatch)
   }
 }
 

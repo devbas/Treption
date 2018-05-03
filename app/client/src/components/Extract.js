@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import TripleLanding from '../containers/TripleLanding'
 
 const Extract = ({ 
   sentence, 
@@ -7,7 +8,7 @@ const Extract = ({
   onPredicateAdd, 
   onPredicateInputChange,
   predicateInput, 
-  renderPredicate
+  renderPredicate, 
 }) => (
   <div className="extract">
     <div className="extract-box">
@@ -22,20 +23,18 @@ const Extract = ({
         </div>
       </div>
 
-      <div className="landing-box">
-        <div className="inner-box">
-          Landing
-        </div>
-      </div>
-
+      <TripleLanding/>
+      
       <div className="predicate-box">
-        {predicates &&
-          <div>
-            {predicates.map(renderPredicate)}
-          </div>
-        }
-        <input type="text" name="predicate" value={predicateInput} onChange={onPredicateInputChange}/>
-        <input type="submit" name="submit" value="Add predicate" onClick={onPredicateAdd}/>
+        <div className="inner-box">
+          {predicates &&
+            <div>
+              {predicates.map(renderPredicate)}
+            </div>
+          }
+          <input type="text" name="predicate" value={predicateInput} onChange={onPredicateInputChange}/>
+          <input type="submit" name="submit" value="Add predicate" onClick={onPredicateAdd}/>
+        </div>
       </div>
 
     </div>
