@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-from utils import POSTagger, createDocument, getDocuments, getDocument, getSentence, createPredicate
+from utils import POSTagger, createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates
+from rdf import createTriple
 from pprint import pprint
 import sys
 
@@ -66,15 +67,25 @@ def addPredicate():
   else: 
     return 0
 
+@app.route("/api/predicates", methods=['GET'])
+def fetchPredicates(): 
+  predicates = getPredicates()
+  return jsonify(Predicates=predicates)
+
 @app.route("/api/triple", methods=['POST'])
 def saveTriple(): 
   # Saves triple, action, (predicate)
-  return 1
+  subject = request.form['subject']
+  predicate = request.form['predicate']
+  objectValue = request.form['object']
+
+  triple = createTriple(subject, predicate, objectValue)
+  return 'done' 
 
 @app.route("/api/user", methods=['POST'])
 def saveUser(): 
   # Saves user
-  return 1
+  return 1 
 
 #@app.route("/api/save-extraction", methods=['POST'])
 #def saveExtraction(): 

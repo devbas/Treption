@@ -212,6 +212,20 @@ def createPredicate(predicate):
     jsonPredicate = json.dumps({ 'value': predicate, 'predicateId': predicateId })
     return jsonPredicate
 
+def getPredicates(): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+
+  try:
+
+    with connection.cursor() as cursor: 
+      cursor.execute("SELECT * FROM predicate")
+      predicates = cursor.fetchall()
+  
+  finally: 
+    connection.close()
+    jsonPredicates = json.dumps(predicates)
+    return jsonPredicates
+
 def rainbow(): 
   h,s,l = random.random(), 0.5 + random.random()/2.0, 0.4 + random.random()/5.0
   rainbow = [int(256*i) for i in colorsys.hls_to_rgb(h,l,s)] # R, G, B
