@@ -17,6 +17,7 @@ class Extract extends Component {
     }
 
     this.renderWord = this.renderWord.bind(this)
+    this.renderPredicate = this.renderPredicate.bind(this)
     this.onPredicateAdd = this.onPredicateAdd.bind(this)
     this.onPredicateInputChange = this.onPredicateInputChange.bind(this)
   }
@@ -30,6 +31,7 @@ class Extract extends Component {
     const sentenceId = this.props.match.params.sentenceId
 
     this.props.actions.boundFetchSentence(documentId, sentenceId)
+    this.props.actions.boundFetchPredicates()
   }
 
   _handleKeyDown(event) {
@@ -42,6 +44,12 @@ class Extract extends Component {
 
   onPredicateInputChange(event) {
     this.setState({ predicateInput: event.target.value });
+  }
+
+  renderPredicate(predicate) {
+    return (
+      <p>{predicate[1]}</p>
+    )
   }
 
   renderWord(word) {
@@ -60,6 +68,8 @@ class Extract extends Component {
         onPredicateAdd={this.onPredicateAdd}
         onPredicateInputChange={this.onPredicateInputChange}
         predicateInput={this.state.predicateInput}
+        predicates={this.props.predicates}
+        renderPredicate={this.renderPredicate}
       />
     )
   }
@@ -67,7 +77,8 @@ class Extract extends Component {
 
 function mapStateToProps(state) {
   return {
-    sentence: state.fetchedSentence
+    sentence: state.fetchedSentence, 
+    predicates: state.predicates
   }
 }
 

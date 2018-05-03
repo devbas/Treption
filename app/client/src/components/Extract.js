@@ -6,7 +6,8 @@ const Extract = ({
   predicates, 
   onPredicateAdd, 
   onPredicateInputChange,
-  predicateInput 
+  predicateInput, 
+  renderPredicate
 }) => (
   <div className="extract">
     <div className="extract-box">
@@ -28,6 +29,11 @@ const Extract = ({
       </div>
 
       <div className="predicate-box">
+        {predicates &&
+          <div>
+            {predicates.map(renderPredicate)}
+          </div>
+        }
         <input type="text" name="predicate" value={predicateInput} onChange={onPredicateInputChange}/>
         <input type="submit" name="submit" value="Add predicate" onClick={onPredicateAdd}/>
       </div>
