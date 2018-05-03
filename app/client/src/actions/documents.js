@@ -1,8 +1,5 @@
 import * as types from './types'
-import Api from '../lib/api' 
 import axios from 'axios'
-import config from '../config'
-import fs from 'fs'
 
 const fetchDocuments = (documents) => {
   console.log('lets set the documents!')

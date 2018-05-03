@@ -4,7 +4,6 @@ import * as DocumentActions from '../actions/documents'
 import SentenceItem from './SentenceItem'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import _ from 'lodash';
 
 class SentenceOverview extends Component {
 
