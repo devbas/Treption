@@ -1,5 +1,4 @@
-import nltk
-from nltk.tag.stanford import CoreNLPPOSTagger  
+from pycorenlp import *
 from pprint import pprint
 import pymysql.cursors
 import sys
@@ -9,10 +8,19 @@ import datetime
 import random
 import colorsys
 
-def POSTagger(content): 
-  result = CoreNLPPOSTagger(url='http://postagger:9000').tag(content.split())
-  if result:
-    return result
+def POSTagger(text):
+  nlp = StanfordCoreNLP('http://postagger:9000') 
+
+  output = nlp.annotate(text, properties={"annotators":"pos", "outputFormat": "json","openie.triple.strict":"true","openie.max_entailments_per_clause":"1"})
+  posResult = [output["sentences"][0]["tokens"] for item in output]
+
+  posTokens = []
+  for j in posResult: 
+    for value in j: 
+        posToken=value['word'],value['pos']
+        posTokens.append(posToken)
+  
+  return posTokens
 
 def createDocument(content): 
   if content:

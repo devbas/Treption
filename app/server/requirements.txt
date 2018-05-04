@@ -1,4 +1,4 @@
-nltk
+pycorenlp
 flask
 requests
 pprint
