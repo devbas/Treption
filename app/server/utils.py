@@ -98,6 +98,7 @@ def getDocuments():
       aggregatedDocument = {
         'documentId': documentId, 
         'value': document[3],
+        'color': document[4],
         'sentences': []
       }
 
@@ -124,6 +125,7 @@ def getDocument(documentId):
     aggregatedDocument = {
       'documentId': documentId, 
       'value': document[3],
+      'color': document[4],
       'sentences': []
     }
     
