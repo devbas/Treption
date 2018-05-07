@@ -36,6 +36,7 @@ class SentenceItem extends Component {
         sentenceValue={this.state.sentenceValue}
         sentenceId={this.props.sentence.sentenceId}
         documentId={this.props.documentId}
+        color={this.props.color}
       />
     )
   }

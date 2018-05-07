@@ -74,12 +74,12 @@
   padding: 3px 6px;
 }
 
-.sentence-box {
+.extract .sentence-box {
   width: 770px; 
   margin: auto;
 }
 
-.sentence-box .inner-box {
+.extract .sentence-box .inner-box {
   background-color: #FE4365; 
   float: left; 
   padding: 20px 12px 5px 20px;
@@ -160,4 +160,19 @@
   float: left; 
   color: #0C1A24;
   margin: 2px 5px 2px 0px; 
+}
+
+.sentence-item {
+  float: left; 
+  border-radius: 2px; 
+  margin-left: 10px;
+  margin-right: 10px; 
+  width: calc(33% - 20px); 
+  margin-top: 20px; 
+}
+
+.sentence-box {
+  width: 950px; 
+  margin-left: auto; 
+  margin-right: auto;
 }
