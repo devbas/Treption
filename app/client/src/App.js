@@ -35,6 +35,7 @@ class App extends Component {
             <Route exact path="/" component={DocumentOverview}/>
             <Route exact path="/document/:documentId" component={SentenceOverview}/>
             <Route exact path="/extract/:documentId/:sentenceId" component={Extract}/>
+            <Route exact path="/login" component={Login}/>
           </div>
         </Router>
       );

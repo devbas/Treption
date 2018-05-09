@@ -12,12 +12,15 @@ class DocumentOverview extends Component {
     super(props)
 
     this.state = {
-      documentText: ''
+      accept: 'text/plain',
+      documentText: '', 
+      dropzoneActive: true 
     }
 
     this.onDocumentTextChange = this.onDocumentTextChange.bind(this)
     this.onDocumentTextSubmit = this.onDocumentTextSubmit.bind(this)
     this.renderDocumentView = this.renderDocumentView.bind(this)
+    this.onDrop = this.onDrop.bind(this)
   }
 
   onDocumentTextChange(event) {
@@ -30,6 +33,13 @@ class DocumentOverview extends Component {
     if(this.state.documentText) {
       this.props.actions.uploadText(this.state.documentText)
     }
+  }
+
+  onDrop(files) {
+    this.setState({
+      files,
+      dropzoneActive: false
+    });
   }
 
   renderDocumentView(document) {
@@ -48,6 +58,10 @@ class DocumentOverview extends Component {
         onDocumentTextSubmit={this.onDocumentTextSubmit}
         documentText={this.state.documentText}
         renderDocumentView={this.renderDocumentView}
+        onDrop={this.onDrop}
+        dropzoneActive={this.state.dropzoneActive}
+        accept={this.state.accept}
+        files={this.state.files}
       />
     )
   }

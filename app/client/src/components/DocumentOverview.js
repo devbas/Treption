@@ -1,5 +1,5 @@
 import React from 'react';
-//import Dropzone from 'react-dropzone'
+import Dropzone from 'react-dropzone'
 import Header from '../containers/Header'
 
 const DocumentOverview = ({ 
@@ -7,16 +7,38 @@ const DocumentOverview = ({
   onDocumentTextChange, 
   onDocumentTextSubmit, 
   documentText, 
-  renderDocumentView
+  renderDocumentView, 
+  onDrop, 
+  dropzoneActive, 
+  files, 
+  accept
 }) => (
   <div>
     <Header/>
     <div className="document-box">
       {documents.length === 0 &&
-        <div>
-          No documents found! Upload first document: 
-          <textarea value={documentText} onChange={onDocumentTextChange}/>
-          <input type="submit" value="Upload" onClick={onDocumentTextSubmit}/>
+        <div className="superhero">
+          <div className="inner-box">
+            <div className="title">Upload your first document<br/>to get started:</div>
+            <Dropzone 
+              className="dropzone"
+              onDrop={onDrop}
+              accept={accept}
+            >
+              {dropzoneActive && 
+                <div className="landing-box">
+                  <div className="landing-label">Drop files...</div>
+                </div> 
+              }
+              
+              {files && 
+                <div className="loading-box">
+                  <div className="loader-label">Processing..</div>
+                  <div className="loader"></div>
+                </div>
+              }
+            </Dropzone>
+          </div>
         </div>
       }
       
