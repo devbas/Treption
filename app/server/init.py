@@ -1,10 +1,15 @@
 from flask import Flask, request, jsonify
-from utils import POSTagger, createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates
+from utils import POSTagger, createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates, findOrCreateUser
 from rdf import createTriple
 from pprint import pprint
 import sys
+from flask_jwt_extended import (
+  JWTManager
+)
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+jwt = JWTManager(app)
 
 @app.route("/")
 def hello(): 
@@ -83,9 +88,26 @@ def saveTriple():
   return 'done' 
 
 @app.route("/api/user", methods=['POST'])
-def saveUser(): 
+def fetchUser(): 
   # Saves user
-  return 1 
+  email = request.form['email']
+  password = request.form['password']
+
+  if not email:
+    return jsonify({"msg": "Missing email parameter"}), 400
+  if not password:
+    return jsonify({"msg": "Missing password parameter"}), 400
+
+  accessToken = findOrCreateUser(email, password)
+
+  if not accessToken: 
+    return jsonify({"msg": "Bad username or password"}), 401
+  else: 
+    return jsonify(accessToken=accessToken), 200
+
+@app.route("/api/user", methods=['GET'])
+def testBla(): 
+  return 'hello'
 
 #@app.route("/api/save-extraction", methods=['POST'])
 #def saveExtraction(): 

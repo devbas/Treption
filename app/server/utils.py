@@ -7,6 +7,11 @@ import json
 import datetime
 import random
 import colorsys
+from flask_jwt_extended import (
+  JWTManager, jwt_required, create_access_token,
+  get_jwt_identity
+)
+import bcrypt
 
 def POSTagger(text):
   nlp = StanfordCoreNLP('http://postagger:9000') 
@@ -243,3 +248,35 @@ def rainbow():
   print('jsonRainwob: ' + jsonRainbow, file=sys.stderr)
   return str(jsonRainbow)
 
+def findOrCreateUser(email, password): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+  hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+
+  try: 
+
+    with connection.cursor() as cursor: 
+      cursor.execute("SELECT * FROM user WHERE email = %s", (email))
+      account = cursor.fetchone()
+
+    if not account:
+      with connection.cursor() as cursor: 
+        sql = "INSERT INTO `user` (`email`, `password`) VALUES (%s, %s)"
+        cursor.execute(sql, (email, hashed))
+        userId = cursor.lastrowid
+
+      connection.commit()
+    
+      access_token = create_access_token(identity=email)
+      return access_token
+    
+    else: 
+
+      accountPassword = account[3]
+      if bcrypt.checkpw(password.encode('utf8'), accountPassword.encode('utf8')):
+        access_token = create_access_token(identity=email)
+        return access_token
+      else: 
+        return 0
+
+  finally: 
+    connection.close()

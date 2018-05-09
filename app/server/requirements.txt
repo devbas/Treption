@@ -3,3 +3,5 @@ flask
 requests
 pprint
 PyMySQL
+flask-jwt-extended
+bcrypt
