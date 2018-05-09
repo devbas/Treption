@@ -48,13 +48,12 @@ def createDocument(content):
     documentColor = rainbow()
 
     
-
     connection = pymysql.connect(host='db', user='root', password='root', db='treption')
     
     try: 
       with connection.cursor() as cursor:
-        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`) VALUES (%s, %s, %s)"    
-        cursor.execute(sql, (sentenceAmount, content, documentColor))
+        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`, `owner_id`) VALUES (%s, %s, %s, %s)"    
+        cursor.execute(sql, (sentenceAmount, content, documentColor, 1))
         documentId = cursor.lastrowid
 
       connection.commit()
@@ -76,10 +75,15 @@ def createDocument(content):
             cursor.execute(sql, (sentenceId, index, value, pos))
         
         connection.commit()
+      
+      response = {
+        'documentId': documentId
+      }
+
+      return json.dumps(response)
 
     finally: 
       connection.close()
-      return 'done'
 
   else: 
     return 0
