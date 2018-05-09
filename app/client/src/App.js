@@ -8,9 +8,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as DocumentActions from './actions/documents'
 
-import DocumentOverview from './containers/DocumentOverview';
-import SentenceOverview from './containers/SentenceOverview';
-import Extract from './containers/Extract'; 
+import DocumentOverview from './containers/DocumentOverview'
+import SentenceOverview from './containers/SentenceOverview'
+import Login from './containers/Login'
+import Extract from './containers/Extract'
 
 class App extends Component {
 
@@ -19,7 +20,15 @@ class App extends Component {
   }
 
   render() {
-    if(this.props.documents) {
+    /*if(!this.props.userAuthToken) {
+      return (
+        <Router>
+          <div className="wrapper">
+            <Route exact path="/" component={Login}/>
+          </div>
+        </Router>
+      )
+    } else if(this.props.userAuthToken && this.props.documents) {*/
       return (
         <Router>
           <div className="wrapper">
@@ -29,17 +38,18 @@ class App extends Component {
           </div>
         </Router>
       );
-    } else {
+    /*} else {
       return (
         <p>Loading</p>
       )
-    }
+    }*/
   }
 }
 
 function mapStateToProps(state) {
   return {
-    documents: state.fetchedDocuments
+    documents: state.fetchedDocuments, 
+    userAuthToken: state.fetchedAuthToken
   }
 }
 
