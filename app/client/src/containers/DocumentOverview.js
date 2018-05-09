@@ -41,7 +41,6 @@ class DocumentOverview extends Component {
   }
 
   render() {
-    console.log('documents: ', this.props.documents)
     return(
       <DocumentComponent 
         documents={this.props.documents}

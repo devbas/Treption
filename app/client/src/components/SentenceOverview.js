@@ -1,8 +1,9 @@
 import React from 'react';
+import Header from '../containers/Header'
 
 const SentenceOverview = ({ document, renderSentence }) => (
   <div className="sentence-box">
-    <div>Hello Sentence Overview</div>
+    <Header/>
     {document.sentences &&
       <div className="items">
         {document.sentences.map(renderSentence)}

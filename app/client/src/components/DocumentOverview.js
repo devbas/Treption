@@ -1,16 +1,18 @@
 import React from 'react';
 //import Dropzone from 'react-dropzone'
+import Header from '../containers/Header'
 
 const DocumentOverview = ({ 
   documents,  
   onDocumentTextChange, 
   onDocumentTextSubmit, 
   documentText, 
-  renderDocumentView 
+  renderDocumentView
 }) => (
   <div>
+    <Header/>
     <div className="document-box">
-      {!documents &&
+      {documents.length === 0 &&
         <div>
           No documents found! Upload first document: 
           <textarea value={documentText} onChange={onDocumentTextChange}/>
