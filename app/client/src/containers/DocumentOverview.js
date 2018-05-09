@@ -4,6 +4,7 @@ import * as DocumentActions from '../actions/documents'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import DocumentItem from './DocumentItem'
+import axios from 'axios'
 
 
 class DocumentOverview extends Component {
@@ -40,6 +41,23 @@ class DocumentOverview extends Component {
       files,
       dropzoneActive: false
     });
+
+    //let uploadedFile = new Promise((resolve, reject) => {
+      const formData = new FormData()
+      formData.append('file', files[0])
+
+      axios.post(`/api/upload/document`, formData, { 
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then((resp) => {
+        const documentId = JSON.parse(resp.data.DocumentId)
+        this.props.history.push(`/document/${documentId.documentId}`)
+      }).catch((err) => {
+        console.log('oops, something went wrong', err)
+      })
+    //})
+    //this.props.actions.boundUploadDocument(files)
   }
 
   renderDocumentView(document) {

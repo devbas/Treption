@@ -34,17 +34,16 @@ def uploadedText():
   result = createDocument(request.form['text'])
   return result
 
-@app.route("/api/upload/document", methods=['POST', 'GET'])
+@app.route("/api/upload/document", methods=['POST'])
 def uploadFile():
-  if request.method == 'POST':  
-    
-    #if 'file' not in request.files:
-    #  return "No file found"
-    
-    uploadedFile = request.form
-    #content = uploadedFile.read()
-    #file_lines = [line.decode("utf-8") for line in content.file]
-    return uploadedFile
+    if 'file' not in request.files:
+      return "No file found"
+
+    uploadedFile = request.files['file']
+
+    content = uploadedFile.read()
+    documentId = createDocument(str(content))
+    return jsonify(DocumentId=documentId)
 
 @app.route("/api/documents", methods=['GET'])
 def fetchDocuments(): 
@@ -55,7 +54,6 @@ def fetchDocuments():
 @app.route("/api/document/<documentId>", methods=['GET'])
 def fetchDocument(documentId): 
   #documentId = request.args['documentId']
-  print('documentId: ' + str(type(documentId)), file=sys.stderr)
   document = getDocument(documentId)
   return jsonify(Document=document)
 
@@ -90,6 +88,10 @@ def saveTriple():
 @app.route("/api/user", methods=['POST'])
 def fetchUser(): 
   # Saves user
+
+  print('email: ' + str(request.form.get('password')), file=sys.stderr)
+  return 'done'
+
   email = request.form['email']
   password = request.form['password']
 

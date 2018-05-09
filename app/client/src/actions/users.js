@@ -10,9 +10,9 @@ const setUser = (email) => {
 
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
-    axios.post(`/api/user/`, {
-      email: email, 
-      password: password
+    axios.post(`/api/user`, {
+      'email': email, 
+      'password': password
     })
     .then((response) => {
       dispatch(setUser({ email: email }))
