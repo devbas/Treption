@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import DocumentItem from './DocumentItem'
 import axios from 'axios'
-
+import { blendColors } from '../utils'
 
 class DocumentOverview extends Component {
 
@@ -66,9 +66,19 @@ class DocumentOverview extends Component {
   }
 
   render() {
+
+    const baseBackgroundColor = [0,0,0,0.6]
+    const documentColorArray = this.props.featuredDocument.color ? this.props.featuredDocument.color.split(',') : [0,0,0]
+    documentColorArray.push(0.5)
+
+    const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
+    const backgroundColorRgba = `rgba(${backgroundColor.join()}`
+
     return(
       <DocumentComponent 
         documents={this.props.documents}
+        featuredDocument={this.props.featuredDocument}
+        featuredDocumentBackground={backgroundColorRgba}
         onDocumentTextChange={this.onDocumentTextChange}
         onDocumentTextSubmit={this.onDocumentTextSubmit}
         documentText={this.state.documentText}
@@ -84,7 +94,8 @@ class DocumentOverview extends Component {
 
 function mapStateToProps(state) {
   return {
-    documents: state.fetchedDocuments
+    featuredDocument: state.fetchedDocuments.length > 0 ? state.fetchedDocuments[0] : [],
+    documents: state.fetchedDocuments.length > 1 ? state.fetchedDocuments.slice(1) : []
   }
 }
 

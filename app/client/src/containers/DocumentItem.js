@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import DocumentItemComponent from '../components/DocumentItem'
-import { rainbow, getRandomIntInclusive, blendColors } from '../utils'
+import { blendColors } from '../utils'
 
 class DocumentItem extends Component {
 
@@ -13,17 +13,14 @@ class DocumentItem extends Component {
   }
 
   componentDidMount() {
-
-    //const backgroundColor = rainbow(getRandomIntInclusive(1,5), getRandomIntInclusive(1,3))
     
-    const baseBackgroundColor = [0,0,0,0.6]
+    const baseBackgroundColor = [0,0,0,0.8]
     const documentColorArray = this.props.document.color ? this.props.document.color.split(',') : [0,0,0]
-    documentColorArray.push(0.5)
+    documentColorArray.push(0.4)
 
     const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
     const backgroundColorRgba = `rgba(${backgroundColor.join()}`
-    console.log('backgroundColor: ', backgroundColor)
-    console.log('doument color: ', documentColorArray.map(Number))
+
     this.setState({
       backgroundColor: backgroundColorRgba
     })

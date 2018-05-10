@@ -356,3 +356,34 @@ body {
   margin-left: auto; 
   margin-right: auto;
 }
+
+.superhero button.primary-action {
+  height: 50px; 
+  padding: 7px 20px 10px 20px; 
+  background-color: #FDE0CC; 
+  color: #0C1A24;
+  border-radius: 30px; 
+  font-size: 24px; 
+  font-weight: 500;
+  border: 0px solid; 
+  float: left; 
+  cursor: pointer;
+}
+
+.superhero .action-box {
+  display: flex;
+  margin-top: 50px;
+}
+
+.superhero button.secondary-action {
+  height: 50px; 
+  padding: 7px 20px 10px 20px; 
+  border: 3px solid #FDE0CC; 
+  color: #0C1A24;
+  border-radius: 30px; 
+  font-size: 24px; 
+  font-weight: 500;
+  float: left; 
+  background-color: transparent;
+  cursor: pointer;
+}

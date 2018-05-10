@@ -4,6 +4,8 @@ import Header from '../containers/Header'
 
 const DocumentOverview = ({ 
   documents,  
+  featuredDocument,
+  featuredDocumentBackground,
   onDocumentTextChange, 
   onDocumentTextSubmit, 
   documentText, 
@@ -16,10 +18,15 @@ const DocumentOverview = ({
   <div>
     <Header/>
     <div className="document-box">
-      <div className="superhero">
+      <div className="superhero" style={{backgroundColor: featuredDocumentBackground}}>
         <div className="inner-box">
-          <div className="title">Upload your first document<br/>to get started:</div>
-          
+          <div className="title">{featuredDocument.value}</div>
+          <div className="progress-box">
+          </div>
+          <div className="action-box">
+            <button className="primary-action">Start</button>
+            <button className="secondary-action">More info</button>
+          </div>
         </div>
       </div>
       
