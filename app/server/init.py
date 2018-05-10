@@ -4,6 +4,7 @@ from rdf import createTriple
 from pprint import pprint
 import sys
 from flask_jwt_extended import (
+  jwt_required, 
   JWTManager
 )
 
@@ -35,9 +36,13 @@ def uploadedText():
   return result
 
 @app.route("/api/upload/document", methods=['POST'])
+@jwt_required
 def uploadFile():
     if 'file' not in request.files:
       return "No file found"
+
+    current_user = get_jwt_identity()
+    print('Current user: ' + current_user, file=sys.stderr)
 
     uploadedFile = request.files['file']
 
@@ -88,10 +93,6 @@ def saveTriple():
 @app.route("/api/user", methods=['POST'])
 def fetchUser(): 
   # Saves user
-
-  print('email: ' + str(request.form.get('password')), file=sys.stderr)
-  return 'done'
-
   email = request.form['email']
   password = request.form['password']
 
@@ -105,7 +106,7 @@ def fetchUser():
   if not accessToken: 
     return jsonify({"msg": "Bad username or password"}), 401
   else: 
-    return jsonify(accessToken=accessToken), 200
+    return jsonify(accessToken=accessToken,email=email), 200
 
 @app.route("/api/user", methods=['GET'])
 def testBla(): 

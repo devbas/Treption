@@ -42,22 +42,19 @@ class DocumentOverview extends Component {
       dropzoneActive: false
     });
 
-    //let uploadedFile = new Promise((resolve, reject) => {
-      const formData = new FormData()
-      formData.append('file', files[0])
+    const formData = new FormData()
+    formData.append('file', files[0])
 
-      axios.post(`/api/upload/document`, formData, { 
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then((resp) => {
-        const documentId = JSON.parse(resp.data.DocumentId)
-        this.props.history.push(`/document/${documentId.documentId}`)
-      }).catch((err) => {
-        console.log('oops, something went wrong', err)
-      })
-    //})
-    //this.props.actions.boundUploadDocument(files)
+    axios.post(`/api/upload/document`, formData, { 
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((resp) => {
+      const documentId = JSON.parse(resp.data.DocumentId)
+      this.props.history.push(`/document/${documentId.documentId}`)
+    }).catch((err) => {
+      console.log('oops, something went wrong', err)
+    })
   }
 
   renderDocumentView(document) {
