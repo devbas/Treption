@@ -108,7 +108,8 @@ def getDocuments():
         'documentId': documentId, 
         'value': document[3],
         'color': document[4],
-        'sentences': []
+        'sentences': [], 
+        'sentenceCount': document[1]
       }
 
       aggregatedDocuments.append(aggregatedDocument)
