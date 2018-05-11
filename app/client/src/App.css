@@ -12,7 +12,7 @@ body {
 }
 
 .document-item {
-  width: 970px; 
+  width: 900px; 
   margin-left: auto; 
   margin-right: auto;
 }
@@ -25,23 +25,23 @@ body {
 }
 
 .document-item .title {
-  font-size: 32px; 
+  font-size: 28px; 
   font-weight: 600; 
   color: #FDE1CC; 
   text-decoration: none;
 }
 
 .document-item .action-box {
-  margin-top: 70px; 
+  margin-top: 50px; 
 }
 
 .document-item button.action {
-  height: 50px; 
-  padding: 7px 20px 10px 20px; 
+  height: 40px; 
+  padding: 4px 15px 7px 15px; 
   background-color: #FDE0CC; 
   color: #0C1A24;
   border-radius: 30px; 
-  font-size: 24px; 
+  font-size: 20px; 
   font-weight: 500;
   border: 0px solid; 
   float: left; 
@@ -49,12 +49,12 @@ body {
 
 .document-item .more-info {
   background-image: url('./assets/img/more-info.svg');
-  width: 50px; 
-  height: 50px; 
+  width: 40px; 
+  height: 40px; 
   background-size: cover;
   background-repeat: no-repeat;
   float: left; 
-  margin-left: 20px; 
+  margin-left: 17px; 
 }
 
 .extract-word-item-box {
@@ -386,4 +386,21 @@ body {
   float: left; 
   background-color: transparent;
   cursor: pointer;
+}
+
+.superhero .progress-box {
+  margin-top: 30px;
+}
+
+.superhero .progress-box .label {
+  font-weight: 500; 
+  color: #FDE0CC; 
+  font-size: 18px; 
+}
+
+.superhero .progress-box .bar {
+  width: 300px; 
+  height: 5px;
+  margin-top: 8px;
+  background-color: rgba(253, 225, 204, 0.3)
 }

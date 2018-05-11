@@ -1,6 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone'
 import Header from '../containers/Header'
+import { Link } from 'react-router-dom'
 
 const DocumentOverview = ({ 
   documents,  
@@ -22,10 +23,12 @@ const DocumentOverview = ({
         <div className="inner-box">
           <div className="title">{featuredDocument.value}</div>
           <div className="progress-box">
+            <div className="label">0 / {featuredDocument.sentenceCount} sentences</div>
+            <div className="bar"></div>
           </div>
           <div className="action-box">
-            <button className="primary-action">Start</button>
-            <button className="secondary-action">More info</button>
+            <Link to={`/extract/${featuredDocument.documentId}/1`}><button className="primary-action">Start</button></Link>
+            <Link to={`/document/${featuredDocument.documentId}`}><button className="secondary-action">More info</button></Link>
           </div>
         </div>
       </div>
