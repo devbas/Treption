@@ -19,9 +19,14 @@ body {
 
 .document-item .inner-box {
   margin-top: 40px; 
-  padding: 20px 150px 20px 20px; 
   float: left; 
   border-radius: 2px; 
+  width: 100%; 
+}
+
+.document-item .inner-box .content {
+  padding: 20px 150px 20px 20px; 
+  float: left; 
 }
 
 .document-item .title {
@@ -45,6 +50,7 @@ body {
   font-weight: 500;
   border: 0px solid; 
   float: left; 
+  cursor: pointer;
 }
 
 .document-item .more-info {
@@ -58,7 +64,7 @@ body {
 }
 
 .extract-word-item-box {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 1);
   border-radius: 2px; 
   float: left; 
   margin-right: 8px;
@@ -73,28 +79,66 @@ body {
 
 .extract-word-item-box .character {
   font-weight: 600; 
-  font-size: 20px; 
+  font-size: 24px; 
   color: #0C1A24; 
-  padding: 3px 6px;
+  padding: 3px 7px 3px 5px; 
+  font-style: italic;
 }
 
 .extract .sentence-box {
-  width: 770px; 
+  width: 100%; 
   margin: auto;
+  background-color: rgba(254, 67, 101, 0.4); 
+  float: left; 
+  padding: 30px 0 110px 0;
 }
 
 .extract .sentence-box .inner-box {
-  background-color: #FE4365; 
-  float: left; 
   padding: 20px 12px 5px 20px;
   border-radius: 2px;
-  width: 100%; 
+  width: 700px; 
+  margin: auto;
+}
+
+.extract .sentence-box .inner-box .content {
+  margin: auto; 
+  width: fit-content;
 }
 
 .extract {
   background-color: rgba(13, 26, 37, 0.1);
   width: 100vw; 
   height: 100vh; 
+}
+
+.extract .editor-box {
+  float: left; 
+  width: 100%; 
+  margin-top: -70px;
+}
+
+.extract .editor-box .inner-box {
+  width: 700px; 
+  margin: auto; 
+  background-color: rgba(255, 255, 255, 1); 
+  border-radius: 2px; 
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
+}
+
+.extract .editor-box .inner-box .content {
+  padding: 50px 20px;
+  margin-top: 30px; 
+}
+
+.editor-box .triple-box {
+  width: 100%; 
+  border-top: 0.5px solid rgba(12, 26, 36, 0.4);
+  border-bottom: 0.5px solid rgba(12, 26, 36, 0.4)
+}
+
+.editor-box .triple-box .subject, .editor-box .triple-box .predicate, .editor-box .triple-box .object {
+  float: left; 
+  width: 200px; 
 }
 
 .landing-box {
@@ -386,6 +430,7 @@ body {
   float: left; 
   background-color: transparent;
   cursor: pointer;
+  margin-left: 15px;
 }
 
 .superhero .progress-box {

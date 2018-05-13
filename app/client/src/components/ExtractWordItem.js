@@ -6,9 +6,11 @@ const ExtractWordItem = ({ word, inactive, keystroke, onWordClick }) => (
       {word}
     </div>
     <div className="shortkey">
-        {keystroke}
+        
     </div>
   </div>
 )
+
+//{keystroke}
 
 export default ExtractWordItem

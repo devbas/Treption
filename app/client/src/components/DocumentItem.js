@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom'
 const DocumentItem = ({ title, id, backgroundColor }) => (
   <div className="document-item">
     <div className="inner-box" style={{backgroundColor: backgroundColor}}>
-      <Link to={'/document/' + id} className="title">The head of Kyrgyzstan's civil aviation authority said that out of 90 passengers… </Link>
-      <div className="action-box">
-        <button className="action">Continue</button>
-        <div className="more-info"></div>
+      <div className="content">
+        <Link to={'/document/' + id} className="title">{title}</Link>
+        <div className="action-box">
+          <Link to={`/extract/${id}/1`}><button className="action">Continue</button></Link>
+          <Link to={`/document/${id}`}><div className="more-info"></div></Link>
+        </div>
       </div>
     </div>
   </div>
