@@ -40,8 +40,8 @@ def CoreNLPController(text):
 def idGenerator(size=10, chars=string.ascii_uppercase + string.digits):
   return ''.join(random.choice(chars) for _ in range(size))
 
-def saveDependencies(content, graphId): 
-  sentences = CoreNLPController(content)
+def saveDependencies(sentences, graphId): 
+  #sentences = CoreNLPController(content)
 
   # First we store the dependencies in Jena Fuseki
   triples = []
@@ -68,11 +68,48 @@ def saveDependencies(content, graphId):
 
   response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
 
+def saveAutoExtractions(sentences, graphId): 
+
+  # Build insert query 
+  query = 'PREFIX trp: <http://www.treption.com/' + graphId '#> INSERT DATA { '
+
+  for sentence in sentences: 
+    if sentence['openie']:
+      triples = sentence['openie']
+
+      for triple in triples: 
+        query = query + 'trp:' + triple['subject'] + ' trp:' + triple['relation'] + ' trp:' + triple['object'] + ' . '
+  
+  query = query + '}'
+
+  response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
+
+  # Save to MySQL for Human Computation 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+
+  sql = 'INSERT INTO `triple` (`subject`, `predicate`, `object`, `sentence_id`) VALUES '
+  queryArgs = []
+
+  '''for sentence in sentences: 
+    if sentence['openie']:
+      triples = sentence['openie']
+
+      for triple in triples: 
+        sql = sql + '(%s, %s, %s, %s)'
+        queryArgs.append(triple['subject'])
+        queryArgs.append(triple['relation'])
+        queryArgs.append(triple['object'])
+        queryArgs.append(triple['sentenceId'])'''
+
+
 def createDocument(content): 
   if content:
     graphId = idGenerator()
 
-    saveDependencies(content, graphId)
+    sentences = CoreNLPController(content)
+
+    saveDependencies(sentences, graphId)
+    saveAutoExtractions(sentences, graphId)
 
     tokens = POSTagger(content)
 
