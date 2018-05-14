@@ -7,11 +7,14 @@ import json
 import datetime
 import random
 import colorsys
+import random
+import string
 from flask_jwt_extended import (
   JWTManager, jwt_required, create_access_token,
   get_jwt_identity
 )
 import bcrypt
+import requests 
 
 def POSTagger(text):
   nlp = StanfordCoreNLP('http://postagger:9000') 
@@ -27,8 +30,50 @@ def POSTagger(text):
   
   return posTokens
 
+def CoreNLPController(text): 
+  nlp = StanfordCoreNLP('http://postagger:9000') 
+
+  output = nlp.annotate(text, properties={"annotators":"tokenize,pos,openie,relation,parse", "outputFormat": "json","openie.triple.strict":"true","openie.max_entailments_per_clause":"1"})
+
+  return output['sentences']
+
+def idGenerator(size=10, chars=string.ascii_uppercase + string.digits):
+  return ''.join(random.choice(chars) for _ in range(size))
+
+def saveDependencies(content, graphId): 
+  sentences = CoreNLPController(content)
+
+  # First we store the dependencies in Jena Fuseki
+  triples = []
+
+  for sentence in sentences: 
+    dependencies = sentence['collapsed-ccprocessed-dependencies']
+
+    # Building the triple according to the Stanford Dependencies Manual: https://nlp.stanford.edu/software/dependencies_manual.pdf
+    for dep in dependencies: 
+      if dep['governor'] > 0: 
+        triple = []
+        triple.insert(0, dep['governorGloss'])
+        triple.insert(1, dep['dep'])
+        triple.insert(2, dep['dependentGloss'])
+        triples.append(triple)
+    
+  # Build Insert query
+  query = 'PREFIX trp: <http://www.treption.com/' + graphId + '#> INSERT DATA { '
+  for triple in triples:
+    if triple[1] != 'punct':
+      query = query + 'trp:' + triple[0] + ' trp:' + triple[1] + ' trp:' + triple[2] + ' . '
+
+  query = query + '}'
+
+  response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
+
 def createDocument(content): 
   if content:
+    graphId = idGenerator()
+
+    saveDependencies(content, graphId)
+
     tokens = POSTagger(content)
 
     sentences = []

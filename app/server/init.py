@@ -45,13 +45,14 @@ def uploadFile():
     if 'file' not in request.files:
       return "No file found"
 
-    current_user = get_jwt_identity()
-    print('Current user: ' + current_user, file=sys.stderr)
+    #current_user = get_jwt_identity()
+    print('Current user: ', file=sys.stderr)
 
     uploadedFile = request.files['file']
 
     content = uploadedFile.read()
-    documentId = createDocument(str(content))
+    content = content.decode("utf-8")
+    documentId = createDocument(content)
     return jsonify(DocumentId=documentId)
 
 @app.route("/api/documents", methods=['GET'])
