@@ -1,4 +1,0 @@
-FROM mysql:latest
-CMD /usr/bin/mysqld_safe --skip-grant-tables && \
-  mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS treption" && \
-  mysql -uroot -proot treption < root/datamodel.sql

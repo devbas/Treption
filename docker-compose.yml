@@ -23,15 +23,15 @@ services:
     volumes: 
       - ../treption:/opt/code
   db:  
-    build:
-      context: ./app/db/
-      dockerfile: Dockerfile.mysql
+    command: --disable-partition-engine-check  # Check more info about this command at: https://github.com/docker-library/mysql/issues/361
     ports: 
       - 3306:3306
     volumes: 
-      - ./app/db:/root
+      - ./app/db:/docker-entrypoint-initdb.d
+    image: mysql:5.7
     environment: 
-      MYSQL_ROOT_PASSWORD: "root"
+      - MYSQL_DATABASES=treption
+      - MYSQL_ROOT_PASSWORD=root
   postagger: 
     image: motiz88/corenlp
     ports: 
@@ -40,4 +40,6 @@ services:
     image: stain/jena-fuseki
     ports: 
       - 3030:3030
+    environment: 
+      ADMIN_PASSWORD: "pw123"
   
