@@ -22,7 +22,7 @@ class SentenceOverview extends Component {
   componentDidMount() {
     this.props.actions.boundFetchDocument(this.state.documentId)
 
-    if(this.props.activeDocument.length > 0) {
+    if(this.props.activeDocument) {
       const baseBackgroundColor = [0,0,0,0.6]
       const documentColorArray = this.props.activeDocument.color ? this.props.activeDocument.color.split(',') : [0,0,0]
       documentColorArray.push(0.5)

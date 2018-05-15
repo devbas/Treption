@@ -12,6 +12,7 @@ export const fetchedDocument = createReducer([], {
   [types.SET_DOCUMENT](state, action) {
 
     const newState = action.document.document
+    console.log('fetched document in pro: ', newState)
 
     _.forEach(newState.sentences, (sentence) => {
       let sentenceValue = ''
@@ -27,6 +28,13 @@ export const fetchedDocument = createReducer([], {
 
       sentence.sentenceValue = sentenceValue
     })
+    return newState
+  }
+})
+
+export const lastEditedDocumentId = createReducer(0, {
+  [types.SET_LAST_EDITED_DOCUMENT_ID](state, action) {
+    const newState = action.lastEditedDocumentId.lastEditedDocumentId
     return newState
   }
 })

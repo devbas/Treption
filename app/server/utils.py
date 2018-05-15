@@ -377,7 +377,7 @@ def createUserAction(key, value, userId):
 
   try: 
     with connection.cursor() as cursor: 
-      cursor.execute("INSERT INTO `action` (`timestamp`, `user_id`, `key`, `value`) VALUES (NOW(), %s, %s, %s)", (userId, key, value) )
+      cursor.execute("INSERT INTO `action` (`timestamp`, `user_id`, `action_key`, `action_value`) VALUES (NOW(), %s, %s, %s)", (userId, key, value) )
 
     connection.commit()
   
@@ -385,7 +385,16 @@ def createUserAction(key, value, userId):
     connection.close()
     return 'done'
 
-  #try: 
-    #with connection.cursor() as cursor: 
-  #finally: '''
+def getLastEditedDocument(userId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  try: 
+    with connection.cursor() as cursor: 
+      cursor.execute("SELECT action_key, action_value FROM action WHERE user_id = %s AND action_key = %s ORDER BY timestamp DESC LIMIT 0,1", (userId, 'documentExtractClick'))
+      lastEditedDocument = cursor.fetchone()
+    
+    return lastEditedDocument
+  
+  finally: 
+    connection.close()
 

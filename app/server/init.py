@@ -8,7 +8,8 @@ from utils import (
   getPredicates, 
   findOrCreateUser, 
   getTriples, 
-  createUserAction
+  createUserAction, 
+  getLastEditedDocument
 )
 from rdf import createTriple
 from pprint import pprint
@@ -72,9 +73,14 @@ def uploadFile():
     return jsonify(DocumentId=documentId)
 
 @app.route("/api/documents", methods=['GET'])
+@jwt_required
 def fetchDocuments(): 
+
+  userId = get_jwt_identity()
+
   documents = getDocuments()
-  return jsonify(Documents=documents)
+  lastEditedDocument = getLastEditedDocument(userId)
+  return jsonify(Documents=documents,LastEditedDocumentId=lastEditedDocument)
   # Returns document, sentence, sentence_word, triple, predicate, actions, user
 
 @app.route("/api/document/<documentId>", methods=['GET'])
@@ -140,8 +146,6 @@ def saveUserAction():
   actionKey = request.form['actionKey']
   value = request.form['value']
   userId = get_jwt_identity()
-
-  print('Current user: ' + str(userId), file=sys.stderr)
 
   if not actionKey or not value: 
     return jsonify({ 'msg': 'Missing parameters' }), 400

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 const DocumentOverview = ({ 
   documents,  
   featuredDocument,
+  featuredDocumentTitle,
   featuredDocumentBackground,
   onDocumentTextChange, 
   onDocumentTextSubmit, 
@@ -22,7 +23,7 @@ const DocumentOverview = ({
     <div className="document-box">
       <div className="superhero" style={{backgroundColor: featuredDocumentBackground}}>
         <div className="inner-box">
-          <div className="title">{featuredDocument.value}</div>
+          <div className="title">{featuredDocumentTitle}..</div>
           <div className="progress-box">
             <div className="label">0 / {featuredDocument.sentenceCount} sentences</div>
             <div className="bar"></div>

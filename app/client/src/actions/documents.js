@@ -16,6 +16,13 @@ export const fetchDocument = ( document ) => {
   }
 }
 
+export const fetchLastEditedDocument = (lastEditedDocumentId) => {
+  return {
+    type: types.SET_LAST_EDITED_DOCUMENT_ID, 
+    lastEditedDocumentId
+  }
+}
+
 export const uploadText = (text) => {
   return (dispatch, getState) => {
 
@@ -35,6 +42,7 @@ export const boundFetchDocuments = () => {
   return (dispatch, getState) => {
     axios.get(`/api/documents`).then((resp) => {
       dispatch(fetchDocuments({ documents: JSON.parse(resp.data.Documents) }))
+      dispatch(fetchLastEditedDocument({ lastEditedDocumentId: JSON.parse(resp.data.LastEditedDocumentId.action_value)}))
     }).catch((ex) => {
       console.log('ex: ', ex)
     })

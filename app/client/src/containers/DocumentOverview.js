@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import DocumentItem from './DocumentItem'
 import axios from 'axios'
 import { blendColors } from '../utils'
+import _ from 'lodash'
 
 class DocumentOverview extends Component {
 
@@ -65,6 +66,7 @@ class DocumentOverview extends Component {
   }
 
   renderDocumentView(document) {
+    console.log('document:', document)
     if(document) {
       return (
         <DocumentItem document={document}/>
@@ -75,16 +77,29 @@ class DocumentOverview extends Component {
   render() {
 
     const baseBackgroundColor = [0,0,0,0.6]
-    const documentColorArray = this.props.featuredDocument.color ? this.props.featuredDocument.color.split(',') : [0,0,0]
+    const documentColorArray = this.props.featuredDocument && this.props.featuredDocument.color ? this.props.featuredDocument.color.split(',') : [0,0,0]
     documentColorArray.push(0.5)
 
     const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
     const backgroundColorRgba = `rgba(${backgroundColor.join()}`
 
+    let featuredDocumentTitleTrimmed = ''
+    if(this.props.featuredDocument && this.props.featuredDocument.value) {
+      
+      const featuredDocumentTitle = this.props.featuredDocument.value 
+      const maxLength = 100
+
+      featuredDocumentTitleTrimmed = featuredDocumentTitle.substr(0, maxLength);
+      featuredDocumentTitleTrimmed = featuredDocumentTitleTrimmed.substr(0, Math.min(featuredDocumentTitleTrimmed.length, featuredDocumentTitleTrimmed.lastIndexOf(" ")))
+      console.log('yes lets do dis')
+    } 
+    
+    console.log('render document overview')
     return(
       <DocumentComponent 
         documents={this.props.documents}
         featuredDocument={this.props.featuredDocument}
+        featuredDocumentTitle={featuredDocumentTitleTrimmed}
         featuredDocumentBackground={backgroundColorRgba}
         onDocumentTextChange={this.onDocumentTextChange}
         onDocumentTextSubmit={this.onDocumentTextSubmit}
@@ -101,9 +116,10 @@ class DocumentOverview extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log('map state props: ', state.lastEditedDocumentId)
   return {
-    featuredDocument: state.fetchedDocuments.length > 0 ? state.fetchedDocuments[0] : [],
-    documents: state.fetchedDocuments.length > 1 ? state.fetchedDocuments.slice(1) : []
+    featuredDocument: state.lastEditedDocumentId > 0 ? _.find(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 0 ? state.fetchedDocuments[0] : [],
+    documents: state.lastEditedDocumentId > 0 ? _.remove(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 1 ? state.fetchedDocuments.slice(1) : []
   }
 }
 
