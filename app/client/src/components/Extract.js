@@ -10,6 +10,8 @@ const Extract = ({
   onPredicateInputChange,
   predicateInput, 
   renderPredicate, 
+  triples, 
+  renderTriple
 }) => (
   <div className="extract">
     <div className="extract-box">
@@ -31,6 +33,7 @@ const Extract = ({
     <div className="editor-box">
       <div className="inner-box">
         <div className="content">
+          {triples.map(renderTriple)}
           <div className="triple-box">
             <div className="subject">Window</div>
             <div className="predicate">lights-up during</div>

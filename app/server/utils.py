@@ -305,6 +305,24 @@ def getPredicates():
     jsonPredicates = json.dumps(predicates)
     return jsonPredicates
 
+def getTriples(sentenceId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  try: 
+    with connection.cursor() as cursor:
+      sql = "SELECT * FROM triple WHERE sentence_id = %s"
+      cursor.execute(sql, sentenceId)
+      triples = cursor.fetchall()
+    
+    connection.commit()
+  
+  finally: 
+    connection.close() 
+    jsonTriples = json.dumps(triples) 
+    return jsonTriples
+
+
+
 def rainbow(): 
   h,s,l = random.random(), 0.5 + random.random()/2.0, 0.4 + random.random()/5.0
   rainbow = [int(256*i) for i in colorsys.hls_to_rgb(h,l,s)] # R, G, B

@@ -54,29 +54,13 @@ export const fetchedSentence = createReducer([], {
     }
 
     return sentence
+  }
+})
 
-    /*
-      [
-        {
-          combined: boolean, 
-          status: active/inactive, 
-          words: [
-            {
-              id: int, 
-              position: int, 
-              value: string, 
-              pos: string, 
-              primary: boolean, 
-              keystroke: string
-            }
-          ]
-        },
-        {
+export const fetchedTriples = createReducer([], {
+  [types.SET_TRIPLES](state, action) {
+    const newState = action.triples.triples
 
-        }
-      ]
-
-    */
-
+    return newState
   }
 })

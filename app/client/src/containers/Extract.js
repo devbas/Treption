@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
+import TripleItemComponent from './TripleItem'
 
 class Extract extends Component {
 
@@ -21,6 +22,7 @@ class Extract extends Component {
 
     this.renderWord = this.renderWord.bind(this)
     this.renderPredicate = this.renderPredicate.bind(this)
+    this.renderTriple = this.renderTriple.bind(this)
     this.onPredicateAdd = this.onPredicateAdd.bind(this)
     this.onPredicateInputChange = this.onPredicateInputChange.bind(this)
   }
@@ -34,7 +36,7 @@ class Extract extends Component {
     const sentenceId = this.props.match.params.sentenceId
 
     this.props.actions.boundFetchSentence(documentId, sentenceId)
-    this.props.actions.boundFetchPredicates()
+    //this.props.actions.boundFetchPredicates()
   }
 
   _handleKeyDown(event) {
@@ -67,6 +69,16 @@ class Extract extends Component {
     )
   }
 
+  renderTriple(triple) {
+    return (
+      <TripleItemComponent
+        subject={triple.subject}
+        predicate={triple.predicate}
+        object={triple.object}
+      />
+    )
+  }
+
   render() {
     return(
       <ExtractComponent
@@ -77,6 +89,8 @@ class Extract extends Component {
         predicateInput={this.state.predicateInput}
         predicates={this.props.predicates}
         renderPredicate={this.renderPredicate}
+        triples={this.props.triples}
+        renderTriple={this.renderTriple}
       />
     )
   }
@@ -87,7 +101,7 @@ function mapStateToProps(state) {
     sentence: state.fetchedSentence, 
     predicates: state.predicates, 
     stage: state.extractingStage, 
-    triples: state.extractedTriples
+    triples: state.fetchedTriples
   }
 }
 

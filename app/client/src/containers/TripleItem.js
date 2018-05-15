@@ -18,7 +18,7 @@ class TripleItem extends Component {
 
   componentDidMount() {
 
-    const supportedTokens = supportedPosTokens()
+    /*const supportedTokens = supportedPosTokens()
     console.log('recall')
     if(this.props.triple.predicate) {
       console.log('predicate found')
@@ -67,13 +67,16 @@ class TripleItem extends Component {
           object: object.words[0].value
         })
       }
-    }
+    }*/
 
   }
 
   render() {
     return (
-      <TripleItemComponent subject={this.state.subject} predicate={this.state.predicate} object={this.state.object}/>
+      <TripleItemComponent 
+        subject={this.props.subject} 
+        predicate={this.props.predicate} 
+        object={this.props.object}/>
     )
   }
 }

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from utils import createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates, findOrCreateUser
+from utils import createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates, findOrCreateUser, getTriples
 from rdf import createTriple
 from pprint import pprint
 import sys
@@ -70,7 +70,8 @@ def fetchDocument(documentId):
 @app.route("/api/sentence/<documentId>/<sentenceId>", methods=['GET'])
 def fetchSentence(documentId, sentenceId): 
   sentence = getSentence(documentId, sentenceId)
-  return jsonify(Sentence=sentence)
+  triples = getTriples(sentenceId)
+  return jsonify(Sentence=sentence,Triples=triples)
 
 @app.route("/api/predicate", methods=['POST'])
 def addPredicate(): 
