@@ -2,10 +2,10 @@ import React from 'react';
 import Header from '../containers/Header'
 import { Link } from 'react-router-dom'
 
-const SentenceOverview = ({ document, renderSentence }) => (
+const SentenceOverview = ({ document, renderSentence, backgroundColor }) => (
   <div>
     <Header/>
-    <div className="sentence-context-box">
+    <div className="sentence-context-box" style={{backgroundColor: backgroundColor}}>
       <div className="inner-box">
         <div className="left">
           <Link to={`/`}>Back to all documents</Link>

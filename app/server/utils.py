@@ -128,12 +128,12 @@ def createDocument(content):
         saveDependencies(sentence, graphId)
         saveAutoExtractions(sentence, graphId, sentenceId)
       
-      for index, pos in enumerate(sentence['tokens']): 
-        with connection.cursor() as cursor: 
-          sql = "INSERT INTO `sentence_word` (`sentence_id`, `word_position`, `value`, `pos`) VALUES (%s, %s, %s, %s)"
-          cursor.execute(sql, (sentenceId, index, pos['originalText'], pos['pos']))
-        
-        connection.commit()
+        for wordIndex, pos in enumerate(sentence['tokens']): 
+          with connection.cursor() as cursor: 
+            sql = "INSERT INTO `sentence_word` (`sentence_id`, `word_position`, `value`, `pos`) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (sentenceId, wordIndex, pos['originalText'], pos['pos']))
+          
+          connection.commit()
       
       response = {
         'documentId': documentId

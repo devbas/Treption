@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from utils import POSTagger, createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates, findOrCreateUser
+from utils import createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates, findOrCreateUser
 from rdf import createTriple
 from pprint import pprint
 import sys
