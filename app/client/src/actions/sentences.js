@@ -1,5 +1,6 @@
 import * as types from './types'
 import axios from 'axios'
+import { fetchDocument } from './documents'
 
 const fetchSentence = (sentence) => {
   return {
@@ -20,6 +21,7 @@ export const boundFetchSentence = (documentId, sentenceId) => {
     axios.get(`/api/sentence/${documentId}/${sentenceId}`).then((resp) => {
       dispatch(fetchSentence({ sentence: JSON.parse(resp.data.Sentence) }))
       dispatch(fetchTriples({ triples: JSON.parse(resp.data.Triples) }))
+      dispatch(fetchDocument({ document: JSON.parse(resp.data.Document) }))
     })
   }
 }

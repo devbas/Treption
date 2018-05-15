@@ -9,7 +9,7 @@ const fetchDocuments = (documents) => {
   }
 }
 
-const fetchDocument = ( document ) => {
+export const fetchDocument = ( document ) => {
   return {
     type: types.SET_DOCUMENT, 
     document

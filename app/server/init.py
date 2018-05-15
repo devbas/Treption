@@ -1,5 +1,15 @@
 from flask import Flask, request, jsonify
-from utils import createDocument, getDocuments, getDocument, getSentence, createPredicate, getPredicates, findOrCreateUser, getTriples
+from utils import (
+  createDocument, 
+  getDocuments, 
+  getDocument, 
+  getSentence, 
+  createPredicate, 
+  getPredicates, 
+  findOrCreateUser, 
+  getTriples, 
+  createUserAction
+)
 from rdf import createTriple
 from pprint import pprint
 import sys
@@ -71,7 +81,8 @@ def fetchDocument(documentId):
 def fetchSentence(documentId, sentenceId): 
   sentence = getSentence(documentId, sentenceId)
   triples = getTriples(sentenceId)
-  return jsonify(Sentence=sentence,Triples=triples)
+  document = getDocument(documentId)
+  return jsonify(Sentence=sentence,Triples=triples,Document=document)
 
 @app.route("/api/predicate", methods=['POST'])
 def addPredicate(): 
@@ -114,9 +125,16 @@ def fetchUser():
   else: 
     return jsonify(accessToken=accessToken,email=email), 200
 
-#@app.route("/api/save-extraction", methods=['POST'])
-#def saveExtraction(): 
-  # Save extraction with document ID and user ID  
+@app.route("/api/user-action", methods=['POST'])
+@jwt_required
+def saveUserAction(): 
+  key = request.form['key']
+  value = request.form['value']
+
+  if not key or not value: 
+    return jsonify({ 'msg': 'Missing parameters' }), 400
+  
+  createUserAction(key, value)
 
 if __name__ == '__main__': 
   app.run(debug=True)

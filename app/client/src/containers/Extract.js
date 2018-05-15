@@ -5,6 +5,7 @@ import * as PredicateActions from '../actions/predicates'
 import * as ExtractActions from '../actions/extract'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { blendColors } from '../utils'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
@@ -80,6 +81,14 @@ class Extract extends Component {
   }
 
   render() {
+
+    const baseBackgroundColor = [0,0,0,0.6]
+    const documentColorArray = this.props.document.color ? this.props.document.color.split(',') : [0,0,0]
+    documentColorArray.push(0.5)
+
+    const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
+    const backgroundColorRgba = `rgba(${backgroundColor.join()}`
+
     return(
       <ExtractComponent
         sentence={this.props.sentence}
@@ -91,6 +100,7 @@ class Extract extends Component {
         renderPredicate={this.renderPredicate}
         triples={this.props.triples}
         renderTriple={this.renderTriple}
+        color={backgroundColorRgba}
       />
     )
   }
@@ -99,6 +109,7 @@ class Extract extends Component {
 function mapStateToProps(state) {
   return {
     sentence: state.fetchedSentence, 
+    document: state.fetchedDocument,
     predicates: state.predicates, 
     stage: state.extractingStage, 
     triples: state.fetchedTriples

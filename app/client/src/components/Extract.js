@@ -11,12 +11,13 @@ const Extract = ({
   predicateInput, 
   renderPredicate, 
   triples, 
-  renderTriple
+  renderTriple, 
+  color
 }) => (
   <div className="extract">
     <div className="extract-box">
 
-      <div className="sentence-box">
+      <div className="sentence-box" style={{backgroundColor: color}}>
         <div className="inner-box">
           <div className="content">
             {sentence.aggregatedWords &&
