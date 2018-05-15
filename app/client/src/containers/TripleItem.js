@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { supportedPosTokens } from '../utils'
 import _ from 'lodash'
+import * as ExtractActions from '../actions/extract'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import TripleItemComponent from '../components/TripleItem'
 
@@ -14,6 +17,8 @@ class TripleItem extends Component {
       predicate: '', 
       object: ''
     }
+
+    this.onChoiceClick = this.onChoiceClick.bind(this)
   }
 
   componentDidMount() {
@@ -71,14 +76,30 @@ class TripleItem extends Component {
 
   }
 
+  onChoiceClick(choice) {
+    this.props.actions.boundTripleVote(this.props.triple.triple_id, choice)
+  } 
+
   render() {
+    console.log('triple: ', this.props)
     return (
       <TripleItemComponent 
-        subject={this.props.subject} 
-        predicate={this.props.predicate} 
-        object={this.props.object}/>
+        subject={this.props.triple.subject} 
+        predicate={this.props.triple.predicate} 
+        object={this.props.triple.object}
+        onChoiceClick={this.onChoiceClick}/>
     )
   }
 }
 
-export default TripleItem
+function mapStateToProps(state) {
+  return {}
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Object.assign({}, ExtractActions), dispatch)
+  }
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(TripleItem); 

@@ -1,8 +1,8 @@
 import React from 'react';
 
-const TripleItem = ({ subject, predicate, object }) => (
+const TripleItem = ({ subject, predicate, object, onChoiceClick }) => (
   <div className="triple-item-box">
-    <p>{subject} {predicate} {object}</p>
+    <p>{subject} {predicate} {object}</p> <button onClick={() => onChoiceClick('agree')}>agree</button> <button onClick={() => onChoiceClick('disagree')}>disagree</button>
   </div>
 )
 

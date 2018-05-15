@@ -398,3 +398,22 @@ def getLastEditedDocument(userId):
   finally: 
     connection.close()
 
+def createTripleVote(userId, tripleId, choice): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+  
+  try: 
+    if choice == 'agree': 
+      voteBoolean = True 
+    else: 
+      voteBoolean = False
+    
+    with connection.cursor() as cursor: 
+      sql = "INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`) VALUES (%s, %s, NOW(), %s)"
+      cursor.execute(sql, (voteBoolean, userId, tripleId) )
+
+    connection.commit() 
+
+  finally: 
+    connection.close() 
+    return 'done' 
+

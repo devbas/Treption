@@ -1,4 +1,6 @@
 import * as types from './types'
+import axios from 'axios'
+import { getCookie } from '../utils'
 
 const extractingStage = (stage) => {
   return {
@@ -50,4 +52,19 @@ export const setTripleObject = (object) => {
   return (dispatch, getState) => {
     dispatch(tripleObject(object))
   } 
+}
+
+export const boundTripleVote = (tripleId, choice) => {
+  return (dispatch, getState) => {
+    let bodyFormData = new FormData()
+    bodyFormData.set('tripleId', tripleId) 
+    bodyFormData.set('choice', choice) 
+
+    axios({
+      method: 'post', 
+      url: `/api/triple/vote`, 
+      data: bodyFormData, 
+      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': getCookie('accessToken') }}
+    })
+  }
 }

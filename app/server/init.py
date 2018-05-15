@@ -9,7 +9,8 @@ from utils import (
   findOrCreateUser, 
   getTriples, 
   createUserAction, 
-  getLastEditedDocument
+  getLastEditedDocument, 
+  createTripleVote
 )
 from rdf import createTriple
 from pprint import pprint
@@ -151,6 +152,19 @@ def saveUserAction():
     return jsonify({ 'msg': 'Missing parameters' }), 400
   
   createUserAction(actionKey, value, userId)
+  return jsonify({ 'msg': 'OK' }), 200
+
+@app.route("/api/triple/vote", methods=['POST'])
+@jwt_required
+def saveTripleVote(): 
+  userId = get_jwt_identity()
+  tripleId = request.form['tripleId']
+  choice = request.form['choice']
+
+  if not tripleId or not choice: 
+    return jsonify({ 'msg': 'Missing parameters' }), 400
+
+  createTripleVote(userId, tripleId, choice)
   return jsonify({ 'msg': 'OK' }), 200
 
 if __name__ == '__main__': 

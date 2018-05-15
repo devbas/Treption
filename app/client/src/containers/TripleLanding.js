@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import * as ExtractActions from '../actions/extract'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -16,6 +16,7 @@ class TripleLanding extends Component {
   }
 
   renderTriple(triple) {
+    console.log('rendertriple triple: ', triple)
     return (
       <TripleItem triple={triple}/>
     )
@@ -44,3 +45,4 @@ function mapDispatchToProps(dispatch) {
 }
   
 export default connect(mapStateToProps, mapDispatchToProps)(TripleLanding); 
+*/

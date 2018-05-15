@@ -9,7 +9,7 @@ import { blendColors } from '../utils'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
-import TripleItemComponent from './TripleItem'
+import TripleItem from './TripleItem'
 
 class Extract extends Component {
 
@@ -72,10 +72,8 @@ class Extract extends Component {
 
   renderTriple(triple) {
     return (
-      <TripleItemComponent
-        subject={triple.subject}
-        predicate={triple.predicate}
-        object={triple.object}
+      <TripleItem
+        triple={triple}
       />
     )
   }
