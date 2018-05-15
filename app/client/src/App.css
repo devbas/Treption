@@ -64,7 +64,7 @@ body {
 }
 
 .extract-word-item-box {
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 239, 229, 1);
   border-radius: 2px; 
   float: left; 
   margin-right: 8px;
@@ -120,7 +120,7 @@ body {
 .extract .editor-box .inner-box {
   width: 700px; 
   margin: auto; 
-  background-color: rgba(255, 255, 255, 1); 
+  background-color: rgba(255, 250, 246, 1); 
   border-radius: 2px; 
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
 }

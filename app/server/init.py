@@ -15,7 +15,8 @@ from pprint import pprint
 import sys
 from flask_jwt_extended import (
   jwt_required, 
-  JWTManager
+  JWTManager, 
+  get_jwt_identity
 )
 
 app = Flask(__name__)
@@ -24,6 +25,11 @@ app.config['JWT_TOKEN_LOCATION'] = 'cookies'
 app.config['JWT_ACCESS_COOKIE_NAME'] = 'accessToken'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False 
 jwt = JWTManager(app)
+
+@jwt.user_identity_loader
+def user_identity_lookup(user):
+  #print('user: ' + user, file=sys.stderr)
+  return user.id
 
 @app.route("/")
 def hello(): 
@@ -120,21 +126,28 @@ def fetchUser():
 
   accessToken = findOrCreateUser(email, password)
 
+  print('accessToken: ' + str(accessToken), file=sys.stderr)
+
   if not accessToken: 
     return jsonify({"msg": "Bad username or password"}), 401
   else: 
     return jsonify(accessToken=accessToken,email=email), 200
+    #return jsonify(accessTokenemail=email), 200
 
 @app.route("/api/user-action", methods=['POST'])
 @jwt_required
 def saveUserAction(): 
-  key = request.form['key']
+  actionKey = request.form['actionKey']
   value = request.form['value']
+  userId = get_jwt_identity()
 
-  if not key or not value: 
+  print('Current user: ' + str(userId), file=sys.stderr)
+
+  if not actionKey or not value: 
     return jsonify({ 'msg': 'Missing parameters' }), 400
   
-  createUserAction(key, value)
+  createUserAction(actionKey, value, userId)
+  return jsonify({ 'msg': 'OK' }), 200
 
 if __name__ == '__main__': 
   app.run(debug=True)

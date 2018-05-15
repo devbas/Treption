@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import DocumentItemComponent from '../components/DocumentItem'
 import { blendColors } from '../utils'
+import * as UserActions from '../actions/users'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 class DocumentItem extends Component {
 
@@ -10,6 +13,8 @@ class DocumentItem extends Component {
     this.state = { 
       backgroundColor: ''
     }
+
+    this.onExtractClick = this.onExtractClick.bind(this)
   }
 
   componentDidMount() {
@@ -26,14 +31,29 @@ class DocumentItem extends Component {
     })
   }
 
+  onExtractClick() {
+    this.props.actions.boundSetUserAction('documentExtractClick', this.props.document.documentId)
+  }
+
   render() {
     return (
       <DocumentItemComponent 
         title={this.props.document.value.substring(0,40)} 
         id={this.props.document.documentId}
-        backgroundColor={this.state.backgroundColor}/>
+        backgroundColor={this.state.backgroundColor}
+        onExtractClick={this.onExtractClick}/>
     )
   }
 }
 
-export default DocumentItem
+function mapStateToProps(state) {
+  return {}
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+	  actions: bindActionCreators(Object.assign({}, UserActions), dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentItem); 

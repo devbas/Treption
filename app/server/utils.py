@@ -330,6 +330,11 @@ def rainbow():
   print('jsonRainwob: ' + jsonRainbow, file=sys.stderr)
   return str(jsonRainbow)
 
+class UserObject:
+  def __init__(self, email, id):
+    self.email = email
+    self.id = id
+
 def findOrCreateUser(email, password): 
   connection = pymysql.connect(host='db', user='root', password='root', db='treption')
   hashed = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
@@ -347,18 +352,40 @@ def findOrCreateUser(email, password):
         userId = cursor.lastrowid
 
       connection.commit()
+
+      user = UserObject(email=email, id=userId)
     
-      access_token = create_access_token(identity=email)
+      access_token = create_access_token(identity=user)
       return access_token
     
     else: 
 
       accountPassword = account[3]
       if bcrypt.checkpw(password.encode('utf8'), accountPassword.encode('utf8')):
-        access_token = create_access_token(identity=email)
+        user = UserObject(email=email, id=account[0])
+    
+        access_token = create_access_token(identity=user)
         return access_token
       else: 
         return 0
 
   finally: 
     connection.close()
+
+def createUserAction(key, value, userId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+
+  try: 
+    with connection.cursor() as cursor: 
+      cursor.execute("INSERT INTO `action` (`timestamp`, `user_id`, `key`, `value`) VALUES (NOW(), %s, %s, %s)", (userId, key, value) )
+
+    connection.commit()
+  
+  finally: 
+    connection.close()
+    return 'done'
+
+  #try: 
+    #with connection.cursor() as cursor: 
+  #finally: '''
+

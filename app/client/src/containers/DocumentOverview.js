@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import DocumentComponent from '../components/DocumentOverview'
 import * as DocumentActions from '../actions/documents'
+import * as UserActions from '../actions/users'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import DocumentItem from './DocumentItem'
@@ -20,6 +21,7 @@ class DocumentOverview extends Component {
 
     this.onDocumentTextChange = this.onDocumentTextChange.bind(this)
     this.onDocumentTextSubmit = this.onDocumentTextSubmit.bind(this)
+    this.onHeroExtractClick = this.onHeroExtractClick.bind(this)
     this.renderDocumentView = this.renderDocumentView.bind(this)
     this.onDrop = this.onDrop.bind(this)
   }
@@ -34,6 +36,10 @@ class DocumentOverview extends Component {
     if(this.state.documentText) {
       this.props.actions.uploadText(this.state.documentText)
     }
+  }
+
+  onHeroExtractClick() {
+    this.props.actions.boundSetUserAction('documentExtractClick', this.props.featuredDocument.documentId)
   }
 
   onDrop(files) {
@@ -51,7 +57,8 @@ class DocumentOverview extends Component {
       }
     }).then((resp) => {
       const documentId = JSON.parse(resp.data.DocumentId)
-      this.props.history.push(`/document/${documentId.documentId}`)
+      console.log('done!')
+      // #this.props.history.push(`/document/${documentId.documentId}`)
     }).catch((err) => {
       console.log('oops, something went wrong', err)
     })
@@ -87,6 +94,7 @@ class DocumentOverview extends Component {
         dropzoneActive={this.state.dropzoneActive}
         accept={this.state.accept}
         files={this.state.files}
+        onHeroExtractClick={this.onHeroExtractClick}
       />
     )
   }
@@ -101,7 +109,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-	  actions: bindActionCreators(Object.assign({}, DocumentActions), dispatch)
+	  actions: bindActionCreators(Object.assign({}, DocumentActions, UserActions), dispatch)
   }
 }
 

@@ -1,5 +1,6 @@
 import * as types from './types'
 import axios from 'axios'
+import { getCookie } from '../utils'
 
 const setUser = ({ email, accessToken}) => {
   return {
@@ -23,6 +24,22 @@ export const boundSetUser = (email, password) => {
       config: { headers: {'Content-Type': 'multipart/form-data' }}
     }).then((response) => {
       dispatch(setUser({ email: email, accessToken: response.data.accessToken }))
+    })
+  }
+}
+
+export const boundSetUserAction = (actionKey, value) => {
+  return (dispatch, getState) => {
+
+    let bodyFormData = new FormData()
+    bodyFormData.set('actionKey', actionKey) 
+    bodyFormData.set('value', value) 
+
+    axios({
+      method: 'post', 
+      url: `/api/user-action`, 
+      data: bodyFormData, 
+      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': getCookie('accessToken') }}
     })
   }
 }
