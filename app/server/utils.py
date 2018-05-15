@@ -16,20 +16,6 @@ from flask_jwt_extended import (
 import bcrypt
 import requests 
 
-def POSTagger(text):
-  nlp = StanfordCoreNLP('http://postagger:9000') 
-
-  output = nlp.annotate(text, properties={"annotators":"pos", "outputFormat": "json","openie.triple.strict":"true","openie.max_entailments_per_clause":"1"})
-  posResult = [output["sentences"][0]["tokens"] for item in output]
-
-  posTokens = []
-  for j in posResult: 
-    for value in j: 
-        posToken=value['word'],value['pos']
-        posTokens.append(posToken)
-  
-  return posTokens
-
 def CoreNLPController(text): 
   nlp = StanfordCoreNLP('http://postagger:9000') 
 
@@ -40,23 +26,22 @@ def CoreNLPController(text):
 def idGenerator(size=10, chars=string.ascii_uppercase + string.digits):
   return ''.join(random.choice(chars) for _ in range(size))
 
-def saveDependencies(sentences, graphId): 
+def saveDependencies(sentence, graphId): 
   #sentences = CoreNLPController(content)
 
   # First we store the dependencies in Jena Fuseki
   triples = []
 
-  for sentence in sentences: 
-    dependencies = sentence['collapsed-ccprocessed-dependencies']
+  dependencies = sentence['collapsed-ccprocessed-dependencies']
 
-    # Building the triple according to the Stanford Dependencies Manual: https://nlp.stanford.edu/software/dependencies_manual.pdf
-    for dep in dependencies: 
-      if dep['governor'] > 0: 
-        triple = []
-        triple.insert(0, dep['governorGloss'])
-        triple.insert(1, dep['dep'])
-        triple.insert(2, dep['dependentGloss'])
-        triples.append(triple)
+  # Building the triple according to the Stanford Dependencies Manual: https://nlp.stanford.edu/software/dependencies_manual.pdf
+  for dep in dependencies: 
+    if dep['governor'] > 0: 
+      triple = []
+      triple.insert(0, dep['governorGloss'])
+      triple.insert(1, dep['dep'])
+      triple.insert(2, dep['dependentGloss'])
+      triples.append(triple)
     
   # Build Insert query
   query = 'PREFIX trp: <http://www.treption.com/' + graphId + '#> INSERT DATA { '
@@ -68,19 +53,20 @@ def saveDependencies(sentences, graphId):
 
   response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
 
-def saveAutoExtractions(sentences, graphId): 
+def saveAutoExtractions(sentence, graphId, sentenceId): 
 
   # Build insert query 
-  query = 'PREFIX trp: <http://www.treption.com/' + graphId '#> INSERT DATA { '
+  query = 'PREFIX trp: <http://www.treption.com/' + graphId + '#> INSERT DATA { '
 
-  for sentence in sentences: 
-    if sentence['openie']:
-      triples = sentence['openie']
+  if sentence['openie']:
+    triples = sentence['openie']
 
-      for triple in triples: 
-        query = query + 'trp:' + triple['subject'] + ' trp:' + triple['relation'] + ' trp:' + triple['object'] + ' . '
+    for triple in triples: 
+      query = query + 'trp:' + triple['subject'] + ' trp:' + triple['relation'] + ' trp:' + triple['object'] + ' . '
   
   query = query + '}'
+
+  print('query' + query, file=sys.stderr)
 
   response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
 
@@ -90,71 +76,62 @@ def saveAutoExtractions(sentences, graphId):
   sql = 'INSERT INTO `triple` (`subject`, `predicate`, `object`, `sentence_id`) VALUES '
   queryArgs = []
 
-  '''for sentence in sentences: 
-    if sentence['openie']:
-      triples = sentence['openie']
+  if sentence['openie']:
+    triples = sentence['openie']
 
-      for triple in triples: 
-        sql = sql + '(%s, %s, %s, %s)'
-        queryArgs.append(triple['subject'])
-        queryArgs.append(triple['relation'])
-        queryArgs.append(triple['object'])
-        queryArgs.append(triple['sentenceId'])'''
+    for index, triple in enumerate(triples): 
+      sql = sql + '(%s, %s, %s, %s)'
+
+      if index + 1 < len(triples): 
+        sql = sql + ','
+      else: 
+        sql = sql + ';'
+      
+      queryArgs.append(triple['subject'])
+      queryArgs.append(triple['relation'])
+      queryArgs.append(triple['object'])
+      queryArgs.append(sentenceId)
+
+    print('SQL: ', sql, file=sys.stderr)
+    with connection.cursor() as cursor: 
+      cursor.execute(sql, queryArgs)
+    
+    connection.commit()
 
 
 def createDocument(content): 
   if content:
     graphId = idGenerator()
-
+    documentColor = rainbow()
     sentences = CoreNLPController(content)
 
-    saveDependencies(sentences, graphId)
-    saveAutoExtractions(sentences, graphId)
-
-    tokens = POSTagger(content)
-
-    sentences = []
-    sentence = [] # initiate with the first sentence
-
-    sentences.append(sentence)
-    for index, (x, y) in enumerate(tokens): 
-      # add word to existing sentence
-      sentences[-1].append((x, y))
-
-      if x == '.' and y == '.' and len(tokens) > index + 1: 
-        # add new sentence to list
-        sentence = []
-        sentences.append(sentence)
-
-    sentenceAmount = len(sentences)
-    documentColor = rainbow()
-
-    
+    # Create document
     connection = pymysql.connect(host='db', user='root', password='root', db='treption')
-    
-    try: 
-      with connection.cursor() as cursor:
-        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`, `owner_id`) VALUES (%s, %s, %s, %s)"    
-        cursor.execute(sql, (sentenceAmount, content, documentColor, 1))
-        documentId = cursor.lastrowid
 
+    try: 
+      with connection.cursor() as cursor: 
+        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`, `owner_id`) VALUES (%s, %s, %s, %s)" 
+        cursor.execute(sql, (len(sentences), content, documentColor, 1))
+        documentId = cursor.lastrowid
+      
       connection.commit()
 
       for index, sentence in enumerate(sentences): 
 
         with connection.cursor() as cursor: 
-          # add sentence to document
           sql = "INSERT INTO `sentence` (`document_id`, `word_count`, `document_position`) VALUES (%s, %s, %s)"
           cursor.execute(sql, (documentId, len(sentence), index))
           sentenceId = cursor.lastrowid
 
         connection.commit()
 
-        # add words to sentence
-        for index, (value, pos) in enumerate(sentence): 
-          with connection.cursor() as cursor: 
-            sql = "INSERT INTO `sentence_word` (`sentence_id`, `word_position`, `value`, `pos`) VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, (sentenceId, index, value, pos))
+        saveDependencies(sentence, graphId)
+        saveAutoExtractions(sentence, graphId, sentenceId)
+      
+      for index, pos in enumerate(sentence['tokens']): 
+        with connection.cursor() as cursor: 
+          sql = "INSERT INTO `sentence_word` (`sentence_id`, `word_position`, `value`, `pos`) VALUES (%s, %s, %s, %s)"
+          cursor.execute(sql, (sentenceId, index, pos['originalText'], pos['pos']))
         
         connection.commit()
       
@@ -163,7 +140,7 @@ def createDocument(content):
       }
 
       return json.dumps(response)
-
+    
     finally: 
       connection.close()
 
