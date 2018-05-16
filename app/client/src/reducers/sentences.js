@@ -50,7 +50,9 @@ export const fetchedSentence = createReducer([], {
       documentPosition: action.sentence.sentence.documentPosition, 
       wordCount: action.sentence.sentence.wordCount, 
       sentenceId: parseInt(action.sentence.sentence.sentenceId), 
-      aggregatedWords: aggregatedWords
+      aggregatedWords: aggregatedWords, 
+      nextSentence: action.sentence.sentence.nextSentence, 
+      prevSentence: action.sentence.sentence.prevSentence
     }
 
     return sentence

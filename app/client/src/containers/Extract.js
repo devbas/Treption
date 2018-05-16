@@ -42,6 +42,18 @@ class Extract extends Component {
     //this.props.actions.boundFetchPredicates()
   }
 
+  componentDidUpdate (prevProps) {
+
+    const oldSentenceId = prevProps.match.params.sentenceId
+    const sentenceId = this.props.match.params.sentenceId
+
+    if(oldSentenceId !== sentenceId) {
+      const documentId = this.props.match.params.documentId
+      this.props.actions.boundFetchSentence(documentId, sentenceId)
+      this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
+    }
+  }
+
   _handleKeyDown(event) {
     // console.log('key pressed!', event.key)
   }

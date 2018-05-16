@@ -12,9 +12,7 @@ const Extract = ({
   triples, 
   renderTriple, 
   color, 
-  documentId,
-  nextSentenceId, 
-  prevSentenceId
+  documentId
 }) => (
   <div className="extract" style={{backgroundColor: color}}>
     <div className="extract-box">
@@ -33,11 +31,11 @@ const Extract = ({
 
       <div className="sentence-control-box">
         <div className="inner-box">
-          {prevSentenceId &&
-            <Link to={`/extract/${documentId}/${prevSentenceId}`}><div className="prev">Previous</div></Link>
+          {sentence.prevSentence &&
+            <Link to={`/extract/${documentId}/${sentence.prevSentence}`}><div className="prev">Previous</div></Link>
           }
-          {nextSentenceId &&
-            <Link to={`/extract/${documentId}/${nextSentenceId}`}><div className="next">Next</div></Link>
+          {sentence.nextSentence &&
+            <Link to={`/extract/${documentId}/${sentence.nextSentence}`}><div className="next">Next</div></Link>
           }
         </div>
       </div>
