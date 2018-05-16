@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom'
 const SentenceOverview = ({ document, renderSentence, backgroundColor }) => (
   <div>
     <Header/>
-    <div className="sentence-context-box" style={{backgroundColor: backgroundColor}}>
+    <div className="sentence-context-box">
       <div className="inner-box">
         <div className="left">
           <Link to={`/`}>Back to all documents</Link>
         </div>
       </div>
     </div>
-    <div className="superhero">
+    <div className="superhero" style={{backgroundColor: backgroundColor}}>
       <div className="inner-box">
         <div className="title">Here we show the hand-off</div>
       </div>
@@ -21,7 +21,7 @@ const SentenceOverview = ({ document, renderSentence, backgroundColor }) => (
       {document.sentences &&
         <div>
           <div className="items">
-            {document.sentences.map(renderSentence)}
+            {document.sentences.map((sentence) => renderSentence(sentence, backgroundColor))}
           </div>
         </div>
       }

@@ -91,7 +91,6 @@ class DocumentOverview extends Component {
 
       featuredDocumentTitleTrimmed = featuredDocumentTitle.substr(0, maxLength);
       featuredDocumentTitleTrimmed = featuredDocumentTitleTrimmed.substr(0, Math.min(featuredDocumentTitleTrimmed.length, featuredDocumentTitleTrimmed.lastIndexOf(" ")))
-      console.log('yes lets do dis')
     } 
     
     console.log('render document overview', this.props)

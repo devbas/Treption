@@ -23,37 +23,40 @@ class SentenceOverview extends Component {
     this.props.actions.boundFetchDocument(this.state.documentId)
 
     if(this.props.activeDocument) {
-      const baseBackgroundColor = [0,0,0,0.6]
-      const documentColorArray = this.props.activeDocument.color ? this.props.activeDocument.color.split(',') : [0,0,0]
-      documentColorArray.push(0.5)
+      
 
-      const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
-      const backgroundColorRgba = `rgba(${backgroundColor.join()}`
-
-      this.setState({
+      /*this.setState({
         backgroundColor: backgroundColorRgba
-      })
+      })*/
     }
 
   }
 
-  renderSentence(sentence) {
+  renderSentence(sentence, backgroundColor) {
     return (
       <SentenceItem 
         key={sentence.sentenceId}
         sentence={sentence} 
         documentId={this.props.activeDocument.documentId}
-        color={this.state.backgroundColor}
+        color={backgroundColor}
       />
     )
   }
 
   render() {
+
+    const baseBackgroundColor = [0,0,0,0.6]
+    const documentColorArray = this.props.activeDocument.color ? this.props.activeDocument.color.split(',') : [0,0,0]
+    documentColorArray.push(0.5)
+
+    const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
+    const backgroundColorRgba = `rgba(${backgroundColor.join()}`
+
     return(
       <SentenceOverviewComponent 
         document={this.props.activeDocument}
         renderSentence={this.renderSentence}
-        backgroundColor={this.state.backgroundColor}
+        backgroundColor={backgroundColorRgba}
       />
     )
   }

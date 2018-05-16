@@ -289,10 +289,10 @@ def getSentence(documentId, sentenceId):
     
     for word in words: 
       aggregatedWord = {
-        'id': word[0], 
-        'position': word[2], 
-        'value': word[3], 
-        'pos': word[4]
+        'id': word['word_id'], 
+        'position': word['word_position'], 
+        'value': word['value'], 
+        'pos': word['pos']
       }
 
       aggregatedSentence['words'].append(aggregatedWord)
