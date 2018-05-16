@@ -5,7 +5,12 @@ export const loggedInUser = createReducer([], {
   [types.SET_USER](state, action) {
     console.log('state: ', state, action)
     document.cookie = `accessToken=${action.accessToken}`
-    window.location.reload();
+
+    if(window.location.pathname !== '/login') {
+      window.location.reload();
+    } else {
+      window.location.replace('/')
+    }
     return state
   }
 })

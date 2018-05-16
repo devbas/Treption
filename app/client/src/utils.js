@@ -1,3 +1,4 @@
+import axios from 'axios'
 
 // Based on: https://jsfiddle.net/mw7optL5/
 export const blendColors = (base, added) => {
@@ -117,3 +118,15 @@ export const getCookie = (cname) => {
   }
   return "";
 }
+
+axios.interceptors.response.use((response) => {
+  return response
+}, (error) => {
+  if(401 === error.response.status) {
+    if(window.location.pathname !== '/login') {
+      window.location.replace(`/login?loginredirect=true`);
+    }
+  } else {
+    return Promise.reject(error)
+  }
+})

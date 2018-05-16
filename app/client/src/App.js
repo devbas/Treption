@@ -21,7 +21,8 @@ class App extends Component {
   }
 
   render() {
-    if(!getCookie('accessToken')) {
+    const url = new URL(window.location.href);
+    if(!getCookie('accessToken') || url.searchParams.get("loginredirect")) {
       return (
         <Router>
           <div className="wrapper">
