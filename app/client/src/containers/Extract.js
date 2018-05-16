@@ -101,6 +101,7 @@ class Extract extends Component {
         triples={this.props.triples}
         renderTriple={this.renderTriple}
         color={backgroundColorRgba}
+        documentId={this.props.document.documentId}
       />
     )
   }

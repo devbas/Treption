@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Extract = ({ 
   sentence, 
@@ -10,12 +11,15 @@ const Extract = ({
   renderPredicate, 
   triples, 
   renderTriple, 
-  color
+  color, 
+  documentId,
+  nextSentenceId, 
+  prevSentenceId
 }) => (
-  <div className="extract">
+  <div className="extract" style={{backgroundColor: color}}>
     <div className="extract-box">
 
-      <div className="sentence-box" style={{backgroundColor: color}}>
+      <div className="sentence-box">
         <div className="inner-box">
           <div className="content">
             {sentence.aggregatedWords &&
@@ -27,22 +31,30 @@ const Extract = ({
         </div>
       </div>
 
-    </div>
+      <div className="sentence-control-box">
+        <div className="inner-box">
+          {prevSentenceId &&
+            <Link to={`/extract/${documentId}/${prevSentenceId}`}><div className="prev">Previous</div></Link>
+          }
+          {nextSentenceId &&
+            <Link to={`/extract/${documentId}/${nextSentenceId}`}><div className="next">Next</div></Link>
+          }
+        </div>
+      </div>
 
-    <div className="editor-box">
-      <div className="inner-box">
-        <div className="content">
-          {triples.map(renderTriple)}
-          <div className="triple-box">
-            <div className="subject">Window</div>
-            <div className="predicate">lights-up during</div>
-            <div className="object">fire</div>
+      <div className="editor-box">
+        <div className="inner-box" style={{backgroundColor: color}}>
+          <div className="content">
+            {triples.map(renderTriple)}
           </div>
         </div>
       </div>
+
     </div>
   </div>
 )
+/**/
+
 
 //<TripleLanding/>
 

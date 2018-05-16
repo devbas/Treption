@@ -11,7 +11,8 @@ class ExtractWordItem extends Component {
     super(props)
 
     this.state = {
-      inactive: this.props.scope.inactive
+      inactive: this.props.scope.inactive, 
+      wordState: 'send' // either send or receive
     }
 
     this.onWordClick = this.onWordClick.bind(this)
@@ -30,7 +31,12 @@ class ExtractWordItem extends Component {
 
         if(!nounWord) {
           this.setState({
-            inactive: true 
+            // inactive: true, 
+            wordState: 'receive'
+          })
+        } else {
+          this.setState({
+            wordState: 'send'
           })
         }
       }
@@ -59,6 +65,7 @@ class ExtractWordItem extends Component {
         inactive={this.state.inactive}
         keystroke={this.props.scope.keystroke}
         onWordClick={this.onWordClick}
+        wordState={this.state.wordState}
       />
     ) 
   }

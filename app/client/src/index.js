@@ -12,7 +12,7 @@ let store = configureStore({});
 new Promise((resolve, reject) => {
   persistStore(store, {}, () => {
     resolve();
-  });
+  }).purge();
 }).then(() => {
   ReactDOM.render(
     <Provider store={store}>

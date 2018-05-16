@@ -28,15 +28,10 @@ export const boundSetUser = (email, password) => {
   }
 }
 
-/**
- * 
- * 
- * @param {any} actionKey 
- * @param {any} value 
- * @returns 
- */
 export const boundSetUserAction = (actionKey, value) => {
   return (dispatch, getState) => {
+
+    console.log('cookie: ', getCookie('accessToken'))
 
     let bodyFormData = new FormData()
     bodyFormData.set('actionKey', actionKey) 
@@ -46,7 +41,7 @@ export const boundSetUserAction = (actionKey, value) => {
       method: 'post', 
       url: `/api/user-action`, 
       data: bodyFormData, 
-      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': getCookie('accessToken') }}
+      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `accessToken=${getCookie('accessToken')}` }}
     })
   }
 }

@@ -110,8 +110,8 @@ def createDocument(content):
 
     try: 
       with connection.cursor() as cursor: 
-        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`, `owner_id`) VALUES (%s, %s, %s, %s)" 
-        cursor.execute(sql, (len(sentences), content, documentColor, 1))
+        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`, `owner_id`, `graph_id`) VALUES (%s, %s, %s, %s, %s)" 
+        cursor.execute(sql, (len(sentences), content, documentColor, 1, graphId))
         documentId = cursor.lastrowid
       
       connection.commit()
@@ -148,27 +148,40 @@ def createDocument(content):
     return 0
 
 
-def getDocuments(): 
+def getDocuments(userId): 
   
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
 
   try:
 
     aggregatedDocuments = []
     with connection.cursor() as cursor: 
-      cursor.execute("SELECT * FROM document")
+      cursor.execute('''SELECT *, 
+                          (SELECT COUNT(*)
+                            FROM vote V 
+                            JOIN triple T 
+                            ON V.triple_id = T.triple_id 
+                            JOIN sentence S 
+                            ON T.sentence_id = S.sentence_id 
+                            JOIN document D1 
+                            ON S.document_id = D1.document_id 
+                            WHERE D1.document_id = D.document_id 
+                            AND V.user_id = %s 
+                          ) AS total_votes
+                        FROM document D''', (userId))
       documents = cursor.fetchall()
 
     for document in documents:
-      documentId = document[0]
-      sentenceAmount = document[1]
+      documentId = document['document_id']
+      sentenceAmount = document['sentence_count']
 
       aggregatedDocument = {
         'documentId': documentId, 
-        'value': document[3],
-        'color': document[4],
+        'value': document['value'],
+        'color': document['color'],
         'sentences': [], 
-        'sentenceCount': document[1]
+        'sentenceCount': document['sentence_count'], 
+        'totalVotes': document['total_votes']
       }
 
       aggregatedDocuments.append(aggregatedDocument)
@@ -412,6 +425,35 @@ def createTripleVote(userId, tripleId, choice):
       cursor.execute(sql, (voteBoolean, userId, tripleId) )
 
     connection.commit() 
+
+    # Calculate with majority voting whether to push triple to Jena or not
+    with connection.cursor() as cursor: 
+      sql = '''SELECT DISTINCT(T.triple_id), T.subject, T.predicate, T.object, D.graph_id,
+                  (SELECT COUNT(*) 
+                  FROM vote V
+                    WHERE V.agree = true) AS agree, 
+                  (SELECT COUNT(*)
+                    FROM vote V 
+                    WHERE V.agree = false) as disagree
+                FROM vote V 
+                JOIN triple T 
+                ON T.triple_id = V.triple_id
+                JOIN sentence S
+                ON T.sentence_id = S.sentence_id 
+                JOIN document D 
+                ON S.document_id = D.document_id
+                WHERE T.triple_id = %s'''
+      cursor.execute(sql, (tripleId))
+      triple = cursor.fetchone()
+
+    if triple['agree'] > triple['disagree']: 
+      query = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> INSERT DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
+    else: 
+      query = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> DELETE DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
+
+    response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
+    print('Fuseki response: ' + str(response) + ' ' + query, file=sys.stderr)
+
 
   finally: 
     connection.close() 

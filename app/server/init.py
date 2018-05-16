@@ -79,7 +79,7 @@ def fetchDocuments():
 
   userId = get_jwt_identity()
 
-  documents = getDocuments()
+  documents = getDocuments(userId)
   lastEditedDocument = getLastEditedDocument(userId)
   return jsonify(Documents=documents,LastEditedDocumentId=lastEditedDocument)
   # Returns document, sentence, sentence_word, triple, predicate, actions, user

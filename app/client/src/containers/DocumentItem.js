@@ -41,7 +41,8 @@ class DocumentItem extends Component {
         title={this.props.document.value.substring(0,40)} 
         id={this.props.document.documentId}
         backgroundColor={this.state.backgroundColor}
-        onExtractClick={this.onExtractClick}/>
+        onExtractClick={this.onExtractClick}
+        document={this.props.document}/>
     )
   }
 }

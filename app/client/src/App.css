@@ -64,31 +64,39 @@ body {
 }
 
 .extract-word-item-box {
-  background-color: rgba(255, 239, 229, 1);
-  border-radius: 2px; 
   float: left; 
-  margin-right: 8px;
+  margin-right: 6px;
   margin-bottom: 15px;
   cursor: pointer;
 }
+
+.extract-word-item-box span {
+  background-color: rgba(255, 239, 229, 1);
+  float: left;
+  border-radius: 2px; 
+}
+
 
 .extract-word-item-box.inactive {
   background-color: rgba(255, 255, 255, 0.4);
   cursor: default;
 }
 
+.extract-word-item-box.inactive span {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 .extract-word-item-box .character {
   font-weight: 600; 
   font-size: 24px; 
   color: #0C1A24; 
-  padding: 3px 7px 3px 5px; 
+  padding: 3px 9px 3px 5px; 
   font-style: italic;
 }
 
 .extract .sentence-box {
   width: 100%; 
   margin: auto;
-  background-color: rgba(254, 67, 101, 0.4); 
   float: left; 
   padding: 30px 0 110px 0;
 }
@@ -111,10 +119,29 @@ body {
   height: 100vh; 
 }
 
+.extract .sentence-control-box {
+  float: left; 
+  width: 100%; 
+}
+
+.extract .sentence-control-box .inner-box {
+  width: 700px; 
+  margin: auto; 
+}
+
+.extract .sentence-control-box .prev {
+  float: left; 
+  font-weight: 700; 
+}
+
+.extract .sentence-control-box .next {
+  float: right;
+  font-weight: 700; 
+}
+
 .extract .editor-box {
   float: left; 
   width: 100%; 
-  margin-top: -70px;
 }
 
 .extract .editor-box .inner-box {
@@ -449,3 +476,55 @@ body {
   margin-top: 8px;
   background-color: rgba(253, 225, 204, 0.3)
 }
+
+/*.extract-word-item-box.send, .extract-word-item-box.receive {
+  position: relative;
+}*/
+/*
+.extract-word-item-box.send::before {
+  content: "";
+  position: absolute;
+  width: 6px; 
+  height: 12px; 
+  border-top-right-radius: 10px; 
+  border-bottom-right-radius: 10px; 
+  background-color: #7194ab; 
+  top: calc(50% - 6px)
+}
+
+.extract-word-item-box.send::after {
+  content: "";
+  position: absolute;
+  width: 6px; 
+  height: 12px; 
+  border-top-left-radius: 10px; 
+  border-bottom-left-radius: 10px; 
+  background-color: #7194ab; 
+  top: calc(50% - 6px); 
+  right: 0;
+}
+
+.extract-word-item-box.receive::after {
+  content: "";
+  position: absolute;
+  width: 6px; 
+  height: 12px; 
+  border-top-right-radius: 10px; 
+  border-bottom-right-radius: 10px; 
+  background-color: #ffefe5; 
+  top: calc(50% - 6px); 
+  right: -6px;
+}
+
+.extract-word-item-box.receive::before {
+  content: "";
+  position: absolute;
+  width: 6px; 
+  height: 12px; 
+  border-top-left-radius: 10px; 
+  border-bottom-left-radius: 10px; 
+  background-color: #ffefe5; 
+  top: calc(50% - 6px); 
+  left: -6px;
+}
+*/

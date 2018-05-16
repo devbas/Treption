@@ -30,7 +30,7 @@ const DocumentOverview = ({
               <div className="bar"></div>
             </div>
             <div className="action-box">
-              <Link to={`/extract/${featuredDocument.documentId}/1`} onClick={onHeroExtractClick}><button className="primary-action">Start</button></Link>
+              <Link to={`/extract/${featuredDocument.documentId}/1`} onClick={onHeroExtractClick}><button className="primary-action">{featuredDocument.totalVotes > 0 ? 'Continue' : 'Start'}</button></Link>
               <Link to={`/document/${featuredDocument.documentId}`}><button className="secondary-action">More info</button></Link>
             </div>
           </div>
