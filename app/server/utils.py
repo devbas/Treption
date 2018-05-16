@@ -251,19 +251,34 @@ def getDocument(documentId):
 
 def getSentence(documentId, sentenceId): 
   
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
 
   try: 
 
     with connection.cursor() as cursor: 
-      sql = "SELECT * FROM sentence WHERE sentence_id = %s"
-      cursor.execute(sql, (sentenceId))
+      sql = '''SELECT *, 
+                (SELECT MAX(sentence_id)
+                FROM sentence
+                WHERE sentence_id < %s
+                AND document_id = %s
+                ) as previous_sentence, 
+                (SELECT MIN(sentence_id) 
+                FROM sentence 
+                WHERE sentence_id > %s
+                AND document_id = %s
+                ) as next_sentence
+              FROM sentence 
+              WHERE sentence_id = %s
+              AND document_id = %s'''
+      cursor.execute(sql, (sentenceId, documentId, sentenceId, documentId, sentenceId, documentId))
       sentence = cursor.fetchone()
     
     aggregatedSentence = {
       'sentenceId': sentenceId, 
-      'wordCount': sentence[2], 
-      'documentPosition': sentence[3], 
+      'wordCount': sentence['word_count'], 
+      'documentPosition': sentence['document_position'], 
+      'prevSentence': sentence['previous_sentence'],
+      'nextSentence': sentence['next_sentence'],
       'words': []
     }
 
