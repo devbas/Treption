@@ -94,7 +94,7 @@ class DocumentOverview extends Component {
       console.log('yes lets do dis')
     } 
     
-    console.log('render document overview')
+    console.log('render document overview', this.props)
     return(
       <DocumentComponent 
         documents={this.props.documents}
@@ -116,7 +116,7 @@ class DocumentOverview extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('map state props: ', state.lastEditedDocumentId)
+  console.log('map state props: ', state.lastEditedDocumentId, state.fetchedDocuments)
   return {
     featuredDocument: state.lastEditedDocumentId > 0 ? _.find(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 0 ? state.fetchedDocuments[0] : [],
     documents: state.lastEditedDocumentId > 0 ? _.remove(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 1 ? state.fetchedDocuments.slice(1) : []

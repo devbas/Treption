@@ -3,6 +3,7 @@ import ExtractComponent from '../components/Extract';
 import * as SentenceActions from '../actions/sentences'
 import * as PredicateActions from '../actions/predicates'
 import * as ExtractActions from '../actions/extract'
+import * as UserActions from '../actions/users'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { blendColors } from '../utils'
@@ -37,11 +38,12 @@ class Extract extends Component {
     const sentenceId = this.props.match.params.sentenceId
 
     this.props.actions.boundFetchSentence(documentId, sentenceId)
+    this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
   }
 
   _handleKeyDown(event) {
-    console.log('key pressed!', event.key)
+    // console.log('key pressed!', event.key)
   }
 
   onPredicateAdd() {
@@ -116,7 +118,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-	  actions: bindActionCreators(Object.assign({}, SentenceActions, PredicateActions, ExtractActions), dispatch)
+	  actions: bindActionCreators(Object.assign({}, UserActions, SentenceActions, PredicateActions, ExtractActions), dispatch)
   }
 }
 

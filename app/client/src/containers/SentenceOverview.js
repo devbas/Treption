@@ -61,7 +61,6 @@ class SentenceOverview extends Component {
 
 function mapStateToProps(state) {
   return {
-    documents: state.fetchedDocuments, 
     activeDocument: state.fetchedDocument
   }
 }

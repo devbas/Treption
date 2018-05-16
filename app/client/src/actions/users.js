@@ -28,6 +28,13 @@ export const boundSetUser = (email, password) => {
   }
 }
 
+/**
+ * 
+ * 
+ * @param {any} actionKey 
+ * @param {any} value 
+ * @returns 
+ */
 export const boundSetUserAction = (actionKey, value) => {
   return (dispatch, getState) => {
 

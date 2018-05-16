@@ -22,17 +22,23 @@ const DocumentOverview = ({
     <Header/>
     <div className="document-box">
       <div className="superhero" style={{backgroundColor: featuredDocumentBackground}}>
-        <div className="inner-box">
-          <div className="title">{featuredDocumentTitle}..</div>
-          <div className="progress-box">
-            <div className="label">0 / {featuredDocument.sentenceCount} sentences</div>
-            <div className="bar"></div>
+        {featuredDocument &&
+          <div className="inner-box">
+            <div className="title">{featuredDocumentTitle}..</div>
+            <div className="progress-box">
+              <div className="label">0 / {featuredDocument ? featuredDocument.sentenceCount : 0} sentences</div>
+              <div className="bar"></div>
+            </div>
+            <div className="action-box">
+              <Link to={`/extract/${featuredDocument.documentId}/1`} onClick={onHeroExtractClick}><button className="primary-action">Start</button></Link>
+              <Link to={`/document/${featuredDocument.documentId}`}><button className="secondary-action">More info</button></Link>
+            </div>
           </div>
-          <div className="action-box">
-            <Link to={`/extract/${featuredDocument.documentId}/1`} onClick={onHeroExtractClick}><button className="primary-action">Start</button></Link>
-            <Link to={`/document/${featuredDocument.documentId}`}><button className="secondary-action">More info</button></Link>
-          </div>
-        </div>
+        }
+
+        {!featuredDocument &&
+          <div className="inner-box"></div>
+        }
       </div>
       
       <div className="dropzone-box">

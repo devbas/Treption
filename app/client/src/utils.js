@@ -13,6 +13,13 @@ export const blendColors = (base, added) => {
   return mix
 }
 
+/**
+ * 
+ * 
+ * @param {any} numOfSteps 
+ * @param {any} step 
+ * @returns 
+ */
 export const rainbow = (numOfSteps, step) => {
   // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
   // Adam Cole, 2011-Sept-14
@@ -34,6 +41,14 @@ export const rainbow = (numOfSteps, step) => {
   return (c);
 }
 
+
+/**
+ * 
+ * 
+ * @param {any} min 
+ * @param {any} max 
+ * @returns 
+ */
 export const getRandomIntInclusive = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -81,16 +96,22 @@ export const supportedPosTokens = () => {
   ]
 }
 
+/**
+ * 
+ * 
+ * @param {any} cname 
+ * @returns 
+ */
 export const getCookie = (cname) => {
   const name = cname + "=";
   const ca = document.cookie.split(';');
   for(var i = 0; i < ca.length; i++) {
     let c = ca[i];
-    while (c.charAt(0) == ' ') {
+    while (c.charAt(0) === ' ') {
       c = c.substring(1);
     }
     
-    if (c.indexOf(name) == 0) {
+    if (c.indexOf(name) === 0) {
       return c.substring(name.length, c.length);
     }
   }

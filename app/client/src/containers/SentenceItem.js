@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
 import SentenceItemComponent from '../components/SentenceItem'
-import async from 'async'
 
 class SentenceItem extends Component {
-
-  constructor(props) {
-    super(props)
-  }
 
   render() {
     return (

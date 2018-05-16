@@ -1,6 +1,4 @@
 import React from 'react'
-import TripleLanding from '../containers/TripleLanding'
-import Header from '../containers/Header'
 
 const Extract = ({ 
   sentence, 

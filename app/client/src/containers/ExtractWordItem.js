@@ -29,7 +29,9 @@ class ExtractWordItem extends Component {
         })
 
         if(!nounWord) {
-          this.state.inactive = true 
+          this.setState({
+            inactive: true 
+          })
         }
       }
 

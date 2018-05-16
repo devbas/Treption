@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { supportedPosTokens } from '../utils'
-import _ from 'lodash'
 import * as ExtractActions from '../actions/extract'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
