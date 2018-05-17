@@ -10,7 +10,7 @@ import colorsys
 import random
 import string
 from flask_jwt_extended import (
-  JWTManager, jwt_required, create_access_token,
+  JWTManager, jwt_required, create_access_token, create_refresh_token,
   get_jwt_identity
 )
 import bcrypt
@@ -166,9 +166,33 @@ def getDocuments(userId):
                             JOIN document D1 
                             ON S.document_id = D1.document_id 
                             WHERE D1.document_id = D.document_id 
-                            AND V.user_id = %s 
-                          ) AS total_votes
-                        FROM document D''', (userId))
+                            AND V.user_id = %s
+                          ) AS total_votes, 
+                          (SELECT COUNT(DISTINCT A.action_value)
+                            FROM action A 
+                            JOIN sentence S 
+                            ON A.action_value = S.sentence_id 
+                            JOIN document D2
+                            ON S.document_id = D2.document_id 
+                            WHERE A.action_key = 'sentenceExtracted'
+                            AND A.user_id = %s
+                            AND D2.document_id = D.document_id 
+                          ) as number_of_sentences_extracted, 
+                          (SELECT MIN(S.sentence_id)
+                            FROM sentence S 
+                            JOIN document D3
+                            ON S.document_id = D3.document_id 
+                            WHERE D3.document_id = D.document_id 
+                            AND S.sentence_id > (
+                              SELECT MAX(action_value)
+                              FROM action A 
+                              JOIN sentence S1 
+                              ON A.action_value = S1.sentence_id
+                              WHERE A.action_key = 'sentenceExtracted'
+                              AND A.user_id = %s
+                            )
+                          ) AS next_sentence_id
+                        FROM document D''', (userId, userId, userId))
       documents = cursor.fetchall()
 
     for document in documents:
@@ -181,7 +205,9 @@ def getDocuments(userId):
         'color': document['color'],
         'sentences': [], 
         'sentenceCount': document['sentence_count'], 
-        'totalVotes': document['total_votes']
+        'totalVotes': document['total_votes'], 
+        'numberOfSentencesExtracted': document['number_of_sentences_extracted'], 
+        'nextSentenceId': document['next_sentence_id']
       }
 
       aggregatedDocuments.append(aggregatedDocument)

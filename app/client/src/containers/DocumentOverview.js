@@ -58,8 +58,7 @@ class DocumentOverview extends Component {
       }
     }).then((resp) => {
       const documentId = JSON.parse(resp.data.DocumentId)
-      console.log('done!')
-      // #this.props.history.push(`/document/${documentId.documentId}`)
+      this.props.history.push(`/document/${documentId.documentId}`)
     }).catch((err) => {
       console.log('oops, something went wrong', err)
     })

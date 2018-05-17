@@ -26,11 +26,13 @@ const DocumentOverview = ({
           <div className="inner-box">
             <div className="title">{featuredDocumentTitle}..</div>
             <div className="progress-box">
-              <div className="label">0 / {featuredDocument ? featuredDocument.sentenceCount : 0} sentences</div>
-              <div className="bar"></div>
+              <div className="label">{featuredDocument.numberOfSentencesExtracted} / {featuredDocument ? featuredDocument.sentenceCount : 0} sentences</div>
+              <div className="bar">
+                <div className="progress" style={{width: `${featuredDocument.numberOfSentencesExtracted / featuredDocument.sentenceCount * 100}%`}}></div>
+              </div>
             </div>
             <div className="action-box">
-              <Link to={`/extract/${featuredDocument.documentId}/1`} onClick={onHeroExtractClick}><button className="primary-action">{featuredDocument.totalVotes > 0 ? 'Continue' : 'Start'}</button></Link>
+              <Link to={`/extract/${featuredDocument.documentId}/${featuredDocument.nextSentenceId}`} onClick={onHeroExtractClick}><button className="primary-action">{featuredDocument.totalVotes > 0 ? 'Continue' : 'Start'}</button></Link>
               <Link to={`/document/${featuredDocument.documentId}`}><button className="secondary-action">More info</button></Link>
             </div>
           </div>

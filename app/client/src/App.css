@@ -129,6 +129,24 @@ body {
   margin: auto; 
 }
 
+.extract .sentence-control-box .done {
+  width: 50px; 
+  height: 50px; 
+  border-radius: 40px; 
+  background-color: rgba(12, 26, 36, 0.8);
+  transition: background-color ease-in-out 0.13s;
+  float: right; 
+  background-image: url('./assets/img/accept-button.svg');
+  background-size: 50%; 
+  background-position: center; 
+  background-repeat: no-repeat;
+}
+
+.extract .sentence-control-box .done:hover {
+  background-color: rgba(12, 26, 36, 1);
+  transition: background-color ease-in-out 0.13s
+}
+
 .extract .sentence-control-box .prev {
   float: left; 
   font-weight: 700; 
@@ -154,7 +172,7 @@ body {
 
 .extract .editor-box .inner-box .content {
   padding: 50px 20px;
-  margin-top: 30px; 
+  margin-top: 15px; 
 }
 
 .editor-box .triple-box {
@@ -423,7 +441,7 @@ body {
 }
 
 .dropzone-box .dropzone {
-  width: 970px; 
+  width: 900px; 
   margin-left: auto; 
   margin-right: auto;
 }
@@ -474,7 +492,14 @@ body {
   width: 300px; 
   height: 5px;
   margin-top: 8px;
-  background-color: rgba(253, 225, 204, 0.3)
+  background-color: rgba(253, 225, 204, 0.3);
+  position: relative
+}
+
+.superhero .progress-box .progress {
+  height: 5px; 
+  background-color: rgba(253, 225, 204, 1);
+  width: 0;
 }
 
 /*.extract-word-item-box.send, .extract-word-item-box.receive {

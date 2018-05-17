@@ -38,7 +38,7 @@ class Extract extends Component {
     const sentenceId = this.props.match.params.sentenceId
 
     this.props.actions.boundFetchSentence(documentId, sentenceId)
-    this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
+    //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
   }
 
@@ -50,7 +50,7 @@ class Extract extends Component {
     if(oldSentenceId !== sentenceId) {
       const documentId = this.props.match.params.documentId
       this.props.actions.boundFetchSentence(documentId, sentenceId)
-      this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
+      this.props.actions.boundSetUserAction('sentenceExtracted', oldSentenceId)
     }
   }
 

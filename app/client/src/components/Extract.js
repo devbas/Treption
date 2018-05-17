@@ -31,11 +31,8 @@ const Extract = ({
 
       <div className="sentence-control-box">
         <div className="inner-box">
-          {sentence.prevSentence &&
-            <Link to={`/extract/${documentId}/${sentence.prevSentence}`}><div className="prev">Previous</div></Link>
-          }
           {sentence.nextSentence &&
-            <Link to={`/extract/${documentId}/${sentence.nextSentence}`}><div className="next">Next</div></Link>
+            <Link to={`/extract/${documentId}/${sentence.nextSentence}`}><div className="done"></div></Link>
           }
         </div>
       </div>
