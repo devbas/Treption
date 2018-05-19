@@ -409,8 +409,12 @@ def findOrCreateUser(email, password):
 
       user = UserObject(email=email, id=userId)
     
-      access_token = create_access_token(identity=user)
-      return access_token
+      access_token = create_access_token(identity={'email':email, 'id':userId})
+      refresh_token = create_refresh_token(identity={'email':email, 'id':userId})
+      return { 
+        'access_token': access_token, 
+        'refresh_token': refresh_token
+      }
     
     else: 
 
@@ -418,8 +422,16 @@ def findOrCreateUser(email, password):
       if bcrypt.checkpw(password.encode('utf8'), accountPassword.encode('utf8')):
         user = UserObject(email=email, id=account[0])
     
-        access_token = create_access_token(identity=user)
-        return access_token
+        #access_token = create_access_token(identity=user)
+        #refresh_token = create_refresh_token(identity=user)
+
+        access_token = create_access_token(identity={'email':email, 'id':account[0]})
+        refresh_token = create_refresh_token(identity={'email':email, 'id':account[0]})
+        return { 
+          'access_token': access_token, 
+          'refresh_token': refresh_token
+        }
+
       else: 
         return 0
 

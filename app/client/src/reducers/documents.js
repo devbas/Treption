@@ -12,7 +12,6 @@ export const fetchedDocument = createReducer([], {
   [types.SET_DOCUMENT](state, action) {
 
     const newState = action.document.document
-    console.log('fetched document in pro: ', newState)
 
     _.forEach(newState.sentences, (sentence) => {
       let sentenceValue = ''

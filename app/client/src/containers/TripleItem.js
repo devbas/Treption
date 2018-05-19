@@ -79,7 +79,6 @@ class TripleItem extends Component {
   } 
 
   render() {
-    console.log('triple: ', this.props)
     return (
       <TripleItemComponent 
         subject={this.props.triple.subject} 

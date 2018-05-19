@@ -2,7 +2,6 @@ import * as types from './types'
 import axios from 'axios'
 
 const fetchDocuments = (documents) => {
-  console.log('lets set the documents!')
   return {
     type: types.SET_DOCUMENTS, 
     documents
@@ -29,22 +28,17 @@ export const uploadText = (text) => {
     axios.post(`/api/upload/text`, {
       text: text
     })
-    .then((response) => {
-      console.log('response: ', response)
-    })
-    .catch((err) => {
-      console.log('err: ', err)
-    })
   }
 }
 
 export const boundFetchDocuments = () => {
   return (dispatch, getState) => {
     axios.get(`/api/documents`).then((resp) => {
+      console.log('boundFetchDocuments success ', resp)
       dispatch(fetchDocuments({ documents: JSON.parse(resp.data.Documents) }))
       dispatch(fetchLastEditedDocument({ lastEditedDocumentId: JSON.parse(resp.data.LastEditedDocumentId.action_value)}))
     }).catch((ex) => {
-      console.log('ex: ', ex)
+      console.log('boundFetchDocuments error ', ex)
     })
   }
 }

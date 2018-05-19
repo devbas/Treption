@@ -17,21 +17,25 @@ from pprint import pprint
 import sys
 from flask_jwt_extended import (
   jwt_required, 
+  jwt_refresh_token_required,
   JWTManager, 
-  get_jwt_identity
+  get_jwt_identity, 
+  create_access_token
 )
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 app.config['JWT_TOKEN_LOCATION'] = 'cookies'
 app.config['JWT_ACCESS_COOKIE_NAME'] = 'accessToken'
+app.config['JWT_REFRESH_COOKIE_NAME'] = 'refreshToken'
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False 
 jwt = JWTManager(app)
 
-@jwt.user_identity_loader
-def user_identity_lookup(user):
+#@jwt.user_identity_loader
+#def user_identity_lookup(user):
   #print('user: ' + user, file=sys.stderr)
-  return user.id
+#  return user.id
 
 @app.route("/")
 def hello(): 
@@ -77,7 +81,9 @@ def uploadFile():
 @jwt_required
 def fetchDocuments(): 
 
-  userId = get_jwt_identity()
+  user = get_jwt_identity()
+  userId = user['id']
+  print('current user: ' + str(userId) , file=sys.stderr)
 
   documents = getDocuments(userId)
   lastEditedDocument = getLastEditedDocument(userId)
@@ -131,22 +137,22 @@ def fetchUser():
   if not password:
     return jsonify({"msg": "Missing password parameter"}), 400
 
-  accessToken = findOrCreateUser(email, password)
+  tokens = findOrCreateUser(email, password)
 
-  print('accessToken: ' + str(accessToken), file=sys.stderr)
+  print('accessToken: ' + str(tokens), file=sys.stderr)
 
-  if not accessToken: 
+  if not tokens: 
     return jsonify({"msg": "Bad username or password"}), 401
   else: 
-    return jsonify(accessToken=accessToken,email=email), 200
-    #return jsonify(accessTokenemail=email), 200
+    return jsonify(accessToken=tokens['access_token'],refreshToken=tokens['refresh_token'],email=email), 200
 
 @app.route("/api/user-action", methods=['POST'])
 @jwt_required
 def saveUserAction(): 
   actionKey = request.form['actionKey']
   value = request.form['value']
-  userId = get_jwt_identity()
+  user = get_jwt_identity()
+  userId = user['id']
 
   if not actionKey or not value: 
     return jsonify({ 'msg': 'Missing parameters' }), 400
@@ -157,7 +163,8 @@ def saveUserAction():
 @app.route("/api/triple/vote", methods=['POST'])
 @jwt_required
 def saveTripleVote(): 
-  userId = get_jwt_identity()
+  user = get_jwt_identity()
+  userId = user['id']
   tripleId = request.form['tripleId']
   choice = request.form['choice']
 
@@ -169,3 +176,13 @@ def saveTripleVote():
 
 if __name__ == '__main__': 
   app.run(debug=True)
+
+@app.route("/api/refresh", methods=['POST'])
+@jwt_refresh_token_required
+def refresh(): 
+  current_user = get_jwt_identity() 
+  print(' Current refresh: ' + str(current_user), file=sys.stderr)
+  ret = {
+    'access_token': create_access_token(identity=current_user)
+  }
+  return jsonify(ret), 200

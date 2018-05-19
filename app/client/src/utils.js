@@ -119,14 +119,51 @@ export const getCookie = (cname) => {
   return "";
 }
 
-axios.interceptors.response.use((response) => {
-  return response
+axios.interceptors.request.use(request => {
+  console.log('Starting Request', request)
+  return request
+})
+
+const refreshInstance = axios.create()
+
+refreshInstance.interceptors.response.use((response) => {
+  console.log('refreshInstance success: ', response)
+  document.cookie = `accessToken=${response.data.access_token}`
+  //error.config.headers.Cookie = `accessToken=${response.data.access_token};`
+  //return axios.request(error.config)
 }, (error) => {
-  if(401 === error.response.status) {
-    if(window.location.pathname !== '/login') {
-      window.location.replace(`/login?loginredirect=true`);
-    }
+  console.log('refreshInstance error: ', error)
+  if(window.location.pathname !== '/login') {
+    window.location.replace(`/login?loginredirect=true`);
+  }
+})
+
+refreshInstance.get('/api/refresh')
+
+axios.interceptors.response.use((response) => {
+  //if(response.config.url !== "/api/refresh") {
+    console.log('axios.interceptors.response success ', response)
+    return response
+  //}
+}, (error) => {
+  if(401 === error.response.status && !error.response.request.responseURL.includes('/api/refresh')) {
+    const refreshToken = getCookie('refreshToken')
+    axios({
+      method: 'post', 
+      url: `/api/refresh`, 
+      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `refreshToken=${getCookie('refreshToken')}` }}
+    })/*.then((response) => {
+      console.log('axiosRefreshPost success: ', response)
+      document.cookie = `accessToken=${response.data.access_token}`
+      error.config.headers.Cookie = `accessToken=${response.data.access_token};`
+      return axios.request(error.config)
+    }).catch((error) => {
+      if(window.location.pathname !== '/login') {
+        window.location.replace(`/login?loginredirect=true`);
+      }
+    })*/
   } else {
+    console.log('axios.interceptors.response error: ', error)
     return Promise.reject(error)
   }
 })

@@ -59,13 +59,10 @@ class DocumentOverview extends Component {
     }).then((resp) => {
       const documentId = JSON.parse(resp.data.DocumentId)
       this.props.history.push(`/document/${documentId.documentId}`)
-    }).catch((err) => {
-      console.log('oops, something went wrong', err)
     })
   }
 
   renderDocumentView(document) {
-    console.log('document:', document)
     if(document) {
       return (
         <DocumentItem document={document}/>
@@ -92,7 +89,6 @@ class DocumentOverview extends Component {
       featuredDocumentTitleTrimmed = featuredDocumentTitleTrimmed.substr(0, Math.min(featuredDocumentTitleTrimmed.length, featuredDocumentTitleTrimmed.lastIndexOf(" ")))
     } 
     
-    console.log('render document overview', this.props)
     return(
       <DocumentComponent 
         documents={this.props.documents}
@@ -114,7 +110,6 @@ class DocumentOverview extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('map state props: ', state.lastEditedDocumentId, state.fetchedDocuments)
   return {
     featuredDocument: state.lastEditedDocumentId > 0 ? _.find(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 0 ? state.fetchedDocuments[0] : [],
     documents: state.lastEditedDocumentId > 0 ? _.remove(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 1 ? state.fetchedDocuments.slice(1) : []

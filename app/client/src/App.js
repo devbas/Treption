@@ -7,7 +7,6 @@ import {
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as DocumentActions from './actions/documents'
-import { getCookie } from './utils'
 
 import DocumentOverview from './containers/DocumentOverview'
 import SentenceOverview from './containers/SentenceOverview'
@@ -22,7 +21,7 @@ class App extends Component {
 
   render() {
     const url = new URL(window.location.href);
-    if(!getCookie('accessToken') || url.searchParams.get("loginredirect")) {
+    if(url.searchParams.get("loginredirect")) {
       return (
         <Router>
           <div className="wrapper">
@@ -30,7 +29,7 @@ class App extends Component {
           </div>
         </Router>
       )
-    } else if(getCookie('accessToken') && this.props.documents) {
+    } else if(this.props.documents) {
       return (
         <Router>
           <div className="wrapper">

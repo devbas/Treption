@@ -55,7 +55,6 @@ class Extract extends Component {
   }
 
   _handleKeyDown(event) {
-    // console.log('key pressed!', event.key)
   }
 
   onPredicateAdd() {
