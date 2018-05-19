@@ -184,7 +184,7 @@ def getDocuments(userId):
                             ON S.document_id = D3.document_id 
                             WHERE D3.document_id = D.document_id 
                             AND S.sentence_id > (
-                              SELECT MAX(action_value)
+                              SELECT COALESCE(MAX(action_value), 0)
                               FROM action A 
                               JOIN sentence S1 
                               ON A.action_value = S1.sentence_id
