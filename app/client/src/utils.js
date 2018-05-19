@@ -124,46 +124,32 @@ axios.interceptors.request.use(request => {
   return request
 })
 
-const refreshInstance = axios.create()
-
-refreshInstance.interceptors.response.use((response) => {
-  console.log('refreshInstance success: ', response)
-  document.cookie = `accessToken=${response.data.access_token}`
-  //error.config.headers.Cookie = `accessToken=${response.data.access_token};`
-  //return axios.request(error.config)
-}, (error) => {
-  console.log('refreshInstance error: ', error)
-  if(window.location.pathname !== '/login') {
-    window.location.replace(`/login?loginredirect=true`);
-  }
-})
-
-refreshInstance.get('/api/refresh')
-
 axios.interceptors.response.use((response) => {
-  //if(response.config.url !== "/api/refresh") {
-    console.log('axios.interceptors.response success ', response)
-    return response
-  //}
+  return response
 }, (error) => {
-  if(401 === error.response.status && !error.response.request.responseURL.includes('/api/refresh')) {
+
+  const originalRequest = error.config
+
+  if(error.response.status === 401 && !originalRequest._retry && !error.response.request.responseURL.includes('/api/refresh')) {
+    originalRequest._retry = true
     const refreshToken = getCookie('refreshToken')
-    axios({
+
+    return axios({
       method: 'post', 
       url: `/api/refresh`, 
-      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `refreshToken=${getCookie('refreshToken')}` }}
-    })/*.then((response) => {
-      console.log('axiosRefreshPost success: ', response)
-      document.cookie = `accessToken=${response.data.access_token}`
-      error.config.headers.Cookie = `accessToken=${response.data.access_token};`
-      return axios.request(error.config)
+      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `refreshToken=${refreshToken}` }}
+    }).then((data) => {
+      document.cookie = `accessToken=${data.data.access_token}`
+      originalRequest.headers.Cookie = `accessToken=${data.data.access_token};`
+      return axios(originalRequest)
     }).catch((error) => {
-      if(window.location.pathname !== '/login') {
-        window.location.replace(`/login?loginredirect=true`);
-      }
-    })*/
+      return Promise.reject(error)
+    }) 
+  } else if(error.response.status === 401 && error.response.request.responseURL.includes('/api/refresh')) {
+    if(window.location.pathname !== '/login') {
+      window.location.replace(`/login?loginredirect=true`);
+    }
   } else {
-    console.log('axios.interceptors.response error: ', error)
     return Promise.reject(error)
   }
 })
