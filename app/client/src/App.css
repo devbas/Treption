@@ -7,6 +7,14 @@ body {
   background-color: rgba(253, 224, 204, 0.05)
 }
 
+.left {
+  float: left; 
+}
+
+.right {
+  float: right;
+}
+
 .document-box {
   width: 100%; 
 }

@@ -52,3 +52,12 @@ export const boundFetchDocument = (documentId) => {
     })
   }
 }
+
+export const boundExportTriples = (documentId) => {
+  return (dispatch, getState) => {
+    axios.get(`/api/export/${documentId}`).then((resp) => {
+      console.log('response: ', resp)
+      //dispatch(exportTriples())
+    })
+  }
+}

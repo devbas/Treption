@@ -17,19 +17,15 @@ class SentenceOverview extends Component {
     }
 
     this.renderSentence = this.renderSentence.bind(this)
+    this.onExportClick = this.onExportClick.bind(this)
   }
 
   componentDidMount() {
     this.props.actions.boundFetchDocument(this.state.documentId)
+  }
 
-    if(this.props.activeDocument) {
-      
-
-      /*this.setState({
-        backgroundColor: backgroundColorRgba
-      })*/
-    }
-
+  onExportClick() {
+    this.props.actions.boundExportTriples(this.state.documentId)
   }
 
   renderSentence(sentence, backgroundColor) {

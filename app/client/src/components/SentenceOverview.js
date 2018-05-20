@@ -2,13 +2,16 @@ import React from 'react';
 import Header from '../containers/Header'
 import { Link } from 'react-router-dom'
 
-const SentenceOverview = ({ document, renderSentence, backgroundColor }) => (
+const SentenceOverview = ({ document, renderSentence, backgroundColor, onExportClick }) => (
   <div>
     <Header/>
     <div className="sentence-context-box">
       <div className="inner-box">
         <div className="left">
           <Link to={`/`}>Back to all documents</Link>
+        </div>
+        <div className="right">
+          <button onClick={onExportClick}>Export to RDF</button>
         </div>
       </div>
     </div>

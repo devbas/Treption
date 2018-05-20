@@ -141,6 +141,7 @@ axios.interceptors.response.use((response) => {
     }).then((data) => {
       document.cookie = `accessToken=${data.data.access_token}`
       originalRequest.headers.Cookie = `accessToken=${data.data.access_token};`
+      axios.defaults.headers.common['Cookie'] = `accessToken=${data.data.access_token};`
       return axios(originalRequest)
     }).catch((error) => {
       return Promise.reject(error)

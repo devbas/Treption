@@ -512,3 +512,9 @@ def createTripleVote(userId, tripleId, choice):
     connection.close() 
     return 'done' 
 
+#def exportTriples(documentId):
+
+  # First we need the graphId from MySQL
+
+  
+

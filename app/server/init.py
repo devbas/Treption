@@ -10,7 +10,8 @@ from utils import (
   getTriples, 
   createUserAction, 
   getLastEditedDocument, 
-  createTripleVote
+  createTripleVote, 
+  getTriples
 )
 from rdf import createTriple
 from pprint import pprint
@@ -186,3 +187,8 @@ def refresh():
     'access_token': create_access_token(identity=current_user)
   }
   return jsonify(ret), 200
+
+@app.route("/api/export/<documentId>", methods=['GET'])
+def exportDocument(): 
+  triples = getTriples(documentId)
+  return 1
