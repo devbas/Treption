@@ -92,16 +92,25 @@ def fetchDocuments():
   # Returns document, sentence, sentence_word, triple, predicate, actions, user
 
 @app.route("/api/document/<documentId>", methods=['GET'])
+@jwt_required
 def fetchDocument(documentId): 
-  #documentId = request.args['documentId']
-  document = getDocument(documentId)
+
+  user = get_jwt_identity()
+  userId = user['id']
+
+  document = getDocument(documentId, userId)
   return jsonify(Document=document)
 
 @app.route("/api/sentence/<documentId>/<sentenceId>", methods=['GET'])
+@jwt_required
 def fetchSentence(documentId, sentenceId): 
+
+  user = get_jwt_identity()
+  userId = user['id']
+
   sentence = getSentence(documentId, sentenceId)
   triples = getTriples(sentenceId)
-  document = getDocument(documentId)
+  document = getDocument(documentId, userId)
   return jsonify(Sentence=sentence,Triples=triples,Document=document)
 
 @app.route("/api/predicate", methods=['POST'])
@@ -130,6 +139,7 @@ def saveTriple():
 @app.route("/api/user", methods=['POST'])
 def fetchUser(): 
   # Saves user
+  print('user info: ' + str(request.form['password']), file=sys.stderr)
   email = request.form['email']
   password = request.form['password']
 
@@ -140,7 +150,7 @@ def fetchUser():
 
   tokens = findOrCreateUser(email, password)
 
-  print('accessToken: ' + str(tokens), file=sys.stderr)
+  
 
   if not tokens: 
     return jsonify({"msg": "Bad username or password"}), 401

@@ -2,7 +2,13 @@ import React from 'react';
 import Header from '../containers/Header'
 import { Link } from 'react-router-dom'
 
-const SentenceOverview = ({ document, renderSentence, backgroundColor, onExportClick }) => (
+const SentenceOverview = ({ 
+  document, 
+  renderSentence, 
+  backgroundColor, 
+  onExportClick,
+  documentTitle 
+}) => (
   <div>
     <Header/>
     <div className="sentence-context-box">
@@ -17,7 +23,16 @@ const SentenceOverview = ({ document, renderSentence, backgroundColor, onExportC
     </div>
     <div className="superhero" style={{backgroundColor: backgroundColor}}>
       <div className="inner-box">
-        <div className="title">Here we show the hand-off</div>
+        <div className="title">{documentTitle}..</div>
+        <div className="progress-box">
+          <div className="label">{document.numberOfSentencesExtracted} / {document ? document.sentenceCount : 0} sentences</div>
+          <div className="bar">
+            <div className="progress" style={{width: `${document.numberOfSentencesExtracted / document.sentenceCount * 100}%`}}></div>
+          </div>
+        </div>
+        <div className="action-box">
+          <Link to={`/extract/${document.documentId}/${document.nextSentenceId}`}><button className="primary-action">{document.totalVotes > 0 ? 'Continue' : 'Start'}</button></Link>
+        </div>
       </div>
     </div>
     <div className="sentence-box">

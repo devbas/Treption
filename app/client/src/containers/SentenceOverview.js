@@ -5,6 +5,7 @@ import SentenceItem from './SentenceItem'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { blendColors } from '../utils'
+import _ from 'lodash'
 
 class SentenceOverview extends Component {
 
@@ -48,11 +49,27 @@ class SentenceOverview extends Component {
     const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
     const backgroundColorRgba = `rgba(${backgroundColor.join()}`
 
+    let documentTitleTrimmed = ''
+    if(this.props.activeDocument && this.props.activeDocument.sentences) {
+      
+      const nextSentence = _.filter(this.props.activeDocument.sentences, { sentenceId: this.props.activeDocument.nextSentenceId })
+      const maxLength = 100
+
+      if(nextSentence.length > 0) {
+        documentTitleTrimmed = nextSentence[0].sentenceValue.substr(0, maxLength)
+      } else {
+        documentTitleTrimmed = this.props.activeDocument.sentences[0].sentenceValue.substr(0, maxLength);
+      }
+
+      documentTitleTrimmed = documentTitleTrimmed.substr(0, Math.min(documentTitleTrimmed.length, documentTitleTrimmed.lastIndexOf(" ")))
+    } 
+
     return(
       <SentenceOverviewComponent 
         document={this.props.activeDocument}
         renderSentence={this.renderSentence}
         backgroundColor={backgroundColorRgba}
+        documentTitle={documentTitleTrimmed}
       />
     )
   }

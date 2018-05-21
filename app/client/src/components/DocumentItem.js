@@ -13,7 +13,7 @@ const DocumentItem = ({
       <div className="content">
         <Link to={'/document/' + id} className="title">{title}</Link>
         <div className="action-box">
-          <Link to={`/extract/${id}/1`} onClick={onExtractClick}><button className="action">{document.totalVotes > 0 ? 'Continue' : 'Start'}</button></Link>
+          <Link to={`/extract/${id}/${document.nextSentenceId}`} onClick={onExtractClick}><button className="action">{document.totalVotes > 0 ? 'Continue' : 'Start'}</button></Link>
           <Link to={`/document/${id}`}><div className="more-info"></div></Link>
         </div>
       </div>

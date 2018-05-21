@@ -110,9 +110,11 @@ class DocumentOverview extends Component {
 }
 
 function mapStateToProps(state) {
+  const featuredDocument = state.lastEditedDocumentId > 0 ? _.find(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 0 ? state.fetchedDocuments[0] : []
   return {
-    featuredDocument: state.lastEditedDocumentId > 0 ? _.find(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 0 ? state.fetchedDocuments[0] : [],
-    documents: state.lastEditedDocumentId > 0 ? _.remove(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 1 ? state.fetchedDocuments.slice(1) : []
+    featuredDocument: featuredDocument,
+    //documents: state.lastEditedDocumentId > 0 ? _.remove(state.fetchedDocuments, { documentId: state.lastEditedDocumentId }) : state.fetchedDocuments.length > 1 ? state.fetchedDocuments.slice(1) : []
+    documents: _.filter(state.fetchedDocuments, (doc) => { return doc.documentId !== featuredDocument.documentId }) 
   }
 }
 

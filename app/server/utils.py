@@ -190,6 +190,7 @@ def getDocuments(userId):
                               ON A.action_value = S1.sentence_id
                               WHERE A.action_key = 'sentenceExtracted'
                               AND A.user_id = %s
+                              AND S1.document_id = D3.document_id
                             )
                           ) AS next_sentence_id
                         FROM document D''', (userId, userId, userId))
@@ -217,23 +218,66 @@ def getDocuments(userId):
     jsonDocuments = json.dumps(aggregatedDocuments)
     return jsonDocuments
 
-def getDocument(documentId): 
+def getDocument(documentId, userId): 
   
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption')
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
 
   try: 
 
     with connection.cursor() as cursor: 
-      sql = "SELECT * FROM document WHERE document_id = %s"
-      cursor.execute(sql, (documentId))
+      sql = '''SELECT *, 
+                (SELECT COUNT(*)
+                  FROM vote V 
+                  JOIN triple T 
+                  ON V.triple_id = T.triple_id 
+                  JOIN sentence S 
+                  ON T.sentence_id = S.sentence_id 
+                  JOIN document D1 
+                  ON S.document_id = D1.document_id 
+                  WHERE D1.document_id = D.document_id 
+                  AND V.user_id = %s
+                ) AS total_votes, 
+                (SELECT COUNT(DISTINCT A.action_value)
+                  FROM action A 
+                  JOIN sentence S 
+                  ON A.action_value = S.sentence_id 
+                  JOIN document D2
+                  ON S.document_id = D2.document_id 
+                  WHERE A.action_key = 'sentenceExtracted'
+                  AND A.user_id = %s
+                  AND D2.document_id = D.document_id 
+                ) as number_of_sentences_extracted, 
+                (SELECT MIN(S.sentence_id)
+                  FROM sentence S 
+                  JOIN document D3
+                  ON S.document_id = D3.document_id 
+                  WHERE D3.document_id = D.document_id 
+                  AND S.sentence_id > (
+                    SELECT COALESCE(MAX(action_value), 0)
+                    FROM action A 
+                    JOIN sentence S1 
+                    ON A.action_value = S1.sentence_id
+                    WHERE A.action_key = 'sentenceExtracted'
+                    AND A.user_id = %s
+                    AND S1.document_id = D3.document_id
+                  )
+                ) AS next_sentence_id
+              FROM document D
+              WHERE D.document_id = %s'''
+
+      cursor.execute(sql, (userId, userId, userId, documentId))
       document = cursor.fetchone()
     
     #print('Document params: ', document, file=sys.stderr)
 
     aggregatedDocument = {
       'documentId': documentId, 
-      'value': document[3],
-      'color': document[4],
+      'value': document['value'],
+      'color': document['color'],
+      'sentenceCount': document['sentence_count'], 
+      'totalVotes': document['total_votes'], 
+      'numberOfSentencesExtracted': document['number_of_sentences_extracted'], 
+      'nextSentenceId': document['next_sentence_id'],
       'sentences': []
     }
     
@@ -243,12 +287,12 @@ def getDocument(documentId):
       sentences = cursor.fetchall()
 
     for sentence in sentences: 
-      sentenceId = sentence[0]
+      sentenceId = sentence['sentence_id']
 
       aggregatedSentence = {
         'sentenceId': sentenceId, 
-        'wordCount': sentence[2], 
-        'documentPosition': sentence[3], 
+        'wordCount': sentence['word_count'], 
+        'documentPosition': sentence['document_position'], 
         'words': []
       }
 
@@ -259,10 +303,10 @@ def getDocument(documentId):
       
       for word in words: 
         aggregatedWord = {
-          'id': word[0], 
-          'position': word[2], 
-          'value': word[3], 
-          'pos': word[4]
+          'id': word['word_id'], 
+          'position': word['word_position'], 
+          'value': word['value'], 
+          'pos': word['pos']
         }
 
         aggregatedSentence['words'].append(aggregatedWord)
@@ -298,6 +342,8 @@ def getSentence(documentId, sentenceId):
               AND document_id = %s'''
       cursor.execute(sql, (sentenceId, documentId, sentenceId, documentId, sentenceId, documentId))
       sentence = cursor.fetchone()
+
+    print('we are still alive', file=sys.stderr)
     
     aggregatedSentence = {
       'sentenceId': sentenceId, 
@@ -322,10 +368,14 @@ def getSentence(documentId, sentenceId):
       }
 
       aggregatedSentence['words'].append(aggregatedWord)
+    
+    jsonDocument = json.dumps(aggregatedSentence)
+
+  except Exception as inst:
+    print(inst.args, file=sys.stderr) 
   
   finally: 
     connection.close()
-    jsonDocument = json.dumps(aggregatedSentence)
     return jsonDocument
 
 def createPredicate(predicate): 

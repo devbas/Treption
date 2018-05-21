@@ -10,25 +10,7 @@ class DocumentItem extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { 
-      backgroundColor: ''
-    }
-
     this.onExtractClick = this.onExtractClick.bind(this)
-  }
-
-  componentDidMount() {
-    
-    const baseBackgroundColor = [0,0,0,0.8]
-    const documentColorArray = this.props.document.color ? this.props.document.color.split(',') : [0,0,0]
-    documentColorArray.push(0.4)
-
-    const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
-    const backgroundColorRgba = `rgba(${backgroundColor.join()}`
-
-    this.setState({
-      backgroundColor: backgroundColorRgba
-    })
   }
 
   onExtractClick() {
@@ -36,11 +18,29 @@ class DocumentItem extends Component {
   }
 
   render() {
+
+    const baseBackgroundColor = [0,0,0,0.8]
+    const documentColorArray = this.props.document.color ? this.props.document.color.split(',') : [0,0,0]
+    documentColorArray.push(0.4)
+
+    const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
+    const backgroundColorRgba = `rgba(${backgroundColor.join()}`
+
+    let documentTitleTrimmed = ''
+    if(this.props.document) {
+      
+      const documentTitle = this.props.document.value 
+      const maxLength = 100
+
+      documentTitleTrimmed = documentTitle.substr(0, maxLength);
+      documentTitleTrimmed = documentTitleTrimmed.substr(0, Math.min(documentTitleTrimmed.length, documentTitleTrimmed.lastIndexOf(" ")))
+    } 
+
     return (
       <DocumentItemComponent 
-        title={this.props.document.value.substring(0,40)} 
+        title={`${documentTitleTrimmed}..`} 
         id={this.props.document.documentId}
-        backgroundColor={this.state.backgroundColor}
+        backgroundColor={backgroundColorRgba}
         onExtractClick={this.onExtractClick}
         document={this.props.document}/>
     )
