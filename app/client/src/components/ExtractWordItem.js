@@ -9,7 +9,6 @@ const ExtractWordItem = ({ word, inactive, keystroke, onWordClick, wordState }) 
         {word}
       </div>
       <div className="shortkey">
-          
       </div>
     </span>
   </div>

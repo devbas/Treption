@@ -1,13 +1,31 @@
 import React, { Component } from 'react'
 import HeaderComponent from '../components/Header'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { getCookie } from '../utils'
 
 class Header extends Component {
-
   render() {
     return (
-      <HeaderComponent/>
+      <HeaderComponent 
+        scope={this.props.scope ? this.props.scope : ''}
+        documentId={this.props.documentId ? this.props.documentId : 0}
+        userIdentifier={getCookie('identifier')}
+      />
     )
   }
 }
 
-export default Header
+function mapStateToProps(state) {
+  return {
+    userIdentifier: state.loggedInUser
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+	  actions: bindActionCreators(Object.assign({}), dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header); 

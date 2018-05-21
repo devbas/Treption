@@ -1,8 +1,17 @@
 import React from 'react';
 
-const TripleItem = ({ subject, predicate, object, onChoiceClick }) => (
+const TripleItem = ({ subject, predicate, object, onChoiceClick, isActive }) => (
   <div className="triple-item-box left">
-    <p className="left">{subject} {predicate} {object}</p> <button onClick={() => onChoiceClick('agree')}>agree</button> <button onClick={() => onChoiceClick('disagree')}>disagree</button>
+
+    <div className="points-to-earn-box">
+      +1 
+    </div>
+
+    <div className="left subject">{subject}</div>
+    <div className="left predicate">{predicate} </div>
+    <div className="left object">{object}</div> 
+    
+    <button onClick={() => onChoiceClick('agree')}>agree</button> <button onClick={() => onChoiceClick('disagree')}>disagree</button>
   </div>
 )
 

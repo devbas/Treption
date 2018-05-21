@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Header from '../containers/Header'
 
 const Extract = ({ 
   sentence, 
@@ -14,7 +15,8 @@ const Extract = ({
   color, 
   documentId
 }) => (
-  <div className="extract" style={{backgroundColor: color}}>
+  <div className="extract" style={{backgroundColor: color}}> 
+    <Header scope="extract" documentId={documentId}/>
     <div className="extract-box">
 
       <div className="sentence-box">
