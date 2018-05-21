@@ -110,7 +110,7 @@ def createDocument(content):
 
     try: 
       with connection.cursor() as cursor: 
-        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`, `owner_id`, `graph_id`) VALUES (%s, %s, %s, %s, %s)" 
+        sql = "INSERT INTO `document` (`sentence_count`, `value`, `color`, `owner_id`, `graph_id`, `datetime`) VALUES (%s, %s, %s, %s, %s, NOW())" 
         cursor.execute(sql, (len(sentences), content, documentColor, 1, graphId))
         documentId = cursor.lastrowid
       
@@ -474,7 +474,7 @@ def createTripleVote(userId, tripleId, choice):
       voteBoolean = False
     
     with connection.cursor() as cursor: 
-      sql = "INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`) VALUES (%s, %s, NOW(), %s)"
+      sql = "INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`) VALUES (%s, %s, NOW(), %s, 1)"
       cursor.execute(sql, (voteBoolean, userId, tripleId) )
 
     connection.commit() 
@@ -500,15 +500,32 @@ def createTripleVote(userId, tripleId, choice):
       triple = cursor.fetchone()
 
     if triple['agree'] > triple['disagree']: 
-      query = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> INSERT DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
-    else: 
-      query = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> DELETE DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
+      with connection.cursor() as cursor:
+        cursor.execute('UPDATE vote SET `points` = 1 WHERE triple_id = %s AND agree = true', (tripleId))
+        cursor.execute('UPDATE vote SET `points` = 0 WHERE triple_id = %s AND agree = false', (tripleId))
 
-    response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
-    print('Fuseki response: ' + str(response) + ' ' + query, file=sys.stderr)
+      sparql = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> INSERT DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
+    else: 
+      with connection.cursor() as cursor:
+        cursor.execute('UPDATE vote SET `points` = 1 WHERE triple_id = %s AND agree = false', (tripleId))
+        cursor.execute('UPDATE vote SET `points` = 0 WHERE triple_id = %s AND agree = true', (tripleId))
+
+      sparql = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> DELETE DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
+
+    with connection.cursor() as cursor: 
+      cursor.execute('UPDATE tournament T INNER JOIN (SELECT SUM(points) AS total_points, tournament_id FROM vote WHERE tournament_id = %s) V1 ON V1.tournament_id = T.tournament_id SET `challenger_points` = V1.total_points', (1))
+
+    response = requests.post('http://fuseki:3030/treption/update', data={'update': sparql})
+    print('Fuseki response: ' + str(response) + ' ' + sparql, file=sys.stderr)
+    
+    connection.commit()
+
+    for column in updatedRow:
+      print(column, file=sys.stderr)  
 
 
   finally: 
+    print('we are done', file=sys.stderr)
     connection.close() 
     return 'done' 
 
