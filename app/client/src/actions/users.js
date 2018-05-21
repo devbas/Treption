@@ -14,16 +14,17 @@ const setUser = ({ email, accessToken, refreshToken }) => {
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
 
-    let bodyFormData = new FormData() 
-    bodyFormData.set('email', email)
-    bodyFormData.set('password', password) 
+    // let bodyFormData = new FormData() 
+    // bodyFormData.set('email', email)
+    // bodyFormData.set('password', password) 
 
     axios({
       method: 'post', 
       url: '/api/user', 
-      data: bodyFormData,
-      config: { headers: {'Content-Type': 'multipart/form-data' }}
+      data: `email=${email}&password=${password}`,
+      config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
     }).then((response) => {
+      console.log('response: ', response)
       dispatch(setUser({ email: email, accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }))
     })
   }
@@ -31,15 +32,13 @@ export const boundSetUser = (email, password) => {
 
 export const boundSetUserAction = (actionKey, value) => {
   return (dispatch, getState) => {
-    let bodyFormData = new FormData()
-    bodyFormData.set('actionKey', actionKey) 
-    bodyFormData.set('value', value) 
 
     axios({
       method: 'post', 
       url: `/api/user-action`, 
-      data: bodyFormData, 
-      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `accessToken=${getCookie('accessToken')}` }}
+      data: `actionKey=${actionKey}&value=${value}`, 
+      // config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `accessToken=${getCookie('accessToken')}` }}
+      config: { headers: {'Content-Type': 'multipart/form-data' }}
     })
   }
 }

@@ -56,14 +56,10 @@ export const setTripleObject = (object) => {
 
 export const boundTripleVote = (tripleId, choice) => {
   return (dispatch, getState) => {
-    let bodyFormData = new FormData()
-    bodyFormData.set('tripleId', tripleId) 
-    bodyFormData.set('choice', choice) 
-
     axios({
       method: 'post', 
       url: `/api/triple/vote`, 
-      data: bodyFormData, 
+      data: `tripleId=${tripleId}&choice=${choice}`, 
       config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': getCookie('accessToken') }}
     })
   }
