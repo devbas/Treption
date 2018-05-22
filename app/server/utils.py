@@ -583,5 +583,23 @@ def createTripleVote(userId, tripleId, choice):
 
   # First we need the graphId from MySQL
 
-  
+def getCurrentTournament(userId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
 
+  try: 
+    with connection.cursor() as cursor:
+      sql = '''SELECT * 
+              FROM tournament 
+              WHERE (challenger_id = %s
+              OR competitor_id = %s)
+              AND start_time > NOW() - INTERVAL 48 HOUR'''
+      cursor.execute(sql, (userId, userId))
+      tournament = cursor.fetchone()
+
+    if tournament: 
+      return tournament
+    else: 
+      return 0
+  
+  finally: 
+    connection.close()

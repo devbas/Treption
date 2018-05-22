@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../containers/Header'
+import CreateTournament from '../containers/CreateTournament'
 
 const Extract = ({ 
   sentence, 
@@ -13,41 +14,48 @@ const Extract = ({
   triples, 
   renderTriple, 
   color, 
-  documentId
+  documentId, 
+  tournament
 }) => (
   <div className="extract" style={{backgroundColor: color}}> 
     <Header scope="extract" documentId={documentId}/>
-    <div className="extract-box">
+    {tournament.length === 0 &&
+      <CreateTournament color={color}/>
+    }
 
-      <div className="sentence-box">
-        <div className="inner-box">
-          <div className="content">
-            {sentence.aggregatedWords &&
-              <div className="word-box">
-                {sentence.aggregatedWords.map(renderWord)}
-              </div>
+    {tournament > 0 &&
+      <div className="extract-box">
+        <div className="sentence-box">
+          <div className="inner-box">
+            <div className="content">
+              {sentence.aggregatedWords &&
+                <div className="word-box">
+                  {sentence.aggregatedWords.map(renderWord)}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div className="sentence-control-box">
+          <div className="inner-box">
+            {sentence.nextSentence &&
+              <Link to={`/extract/${documentId}/${sentence.nextSentence}`}><div className="done"></div></Link>
             }
           </div>
         </div>
-      </div>
 
-      <div className="sentence-control-box">
-        <div className="inner-box">
-          {sentence.nextSentence &&
-            <Link to={`/extract/${documentId}/${sentence.nextSentence}`}><div className="done"></div></Link>
-          }
-        </div>
-      </div>
-
-      <div className="editor-box">
-        <div className="inner-box" style={{backgroundColor: color}}>
-          <div className="content">
-            {triples.map(renderTriple)}
+        <div className="editor-box">
+          <div className="inner-box" style={{backgroundColor: color}}>
+            <div className="content">
+              {triples.map(renderTriple)}
+            </div>
           </div>
         </div>
-      </div>
 
-    </div>
+      </div>
+  
+    }
   </div>
 )
 /**/

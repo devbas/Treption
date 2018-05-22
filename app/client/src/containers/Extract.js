@@ -114,6 +114,7 @@ class Extract extends Component {
         renderTriple={this.renderTriple}
         color={backgroundColorRgba}
         documentId={this.props.document.documentId}
+        tournament={this.props.tournament}
       />
     )
   }
@@ -125,7 +126,8 @@ function mapStateToProps(state) {
     document: state.fetchedDocument,
     predicates: state.predicates, 
     stage: state.extractingStage, 
-    triples: state.fetchedTriples
+    triples: state.fetchedTriples, 
+    tournament: state.fetchedTournament
   }
 }
 

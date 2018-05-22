@@ -52,7 +52,7 @@ export const boundSetUserAction = (actionKey, value) => {
 
 export const boundFetchTournament = () => {
   return (dispatch, getState) => {
-    axios.get(`/api/current-tournament/`).then((response) => {
+    axios.get(`/api/current-tournament`).then((response) => {
       dispatch(fetchTournament(response.data.Tournament))
     }).catch((ex) => {
       console.log('ex: ', ex)

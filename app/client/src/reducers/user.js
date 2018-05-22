@@ -16,3 +16,11 @@ export const loggedInUser = createReducer([], {
     return newState
   }
 })
+
+export const fetchedTournament = createReducer([], {
+  [types.SET_TOURNAMENT](state, action) {
+    const newState = action.tournament
+
+    return newState
+  }
+})

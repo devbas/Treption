@@ -194,6 +194,37 @@ body {
   width: 200px; 
 }
 
+.extract .create-tournament-box {
+  float: left; 
+  width: 100%; 
+}
+
+.extract .create-tournament-box .inner-box {
+  width: 400px; 
+  margin: auto; 
+  background-color: rgba(255, 250, 246, 1); 
+  border-radius: 2px; 
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
+}
+
+.extract .create-tournament-box .inner-box .content {
+  padding: 50px 20px;
+  margin-top: 15px; 
+}
+
+.extract .create-tournament-box .inner-box .content .title {
+  font-size: 20px; 
+  color: rgba(255, 250, 246, 1);
+  font-weight: 600;
+}
+
+.extract .create-tournament-box .inner-box .content .divider {
+  margin-top: 16px;
+  height: 2px; 
+  width: 100px; 
+  background-color: rgba(255, 250, 246, 1);
+}
+
 .landing-box {
   margin: auto; 
 }

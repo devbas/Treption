@@ -11,7 +11,8 @@ from utils import (
   createUserAction, 
   getLastEditedDocument, 
   createTripleVote, 
-  getTriples
+  getTriples, 
+  getCurrentTournament
 )
 from rdf import createTriple
 from pprint import pprint
@@ -185,8 +186,6 @@ def saveTripleVote():
   createTripleVote(userId, tripleId, choice)
   return jsonify({ 'msg': 'OK' }), 200
 
-if __name__ == '__main__': 
-  app.run(debug=True)
 
 @app.route("/api/refresh", methods=['POST'])
 @jwt_refresh_token_required
@@ -202,3 +201,17 @@ def refresh():
 def exportDocument(): 
   triples = getTriples(documentId)
   return 1
+
+@app.route("/api/current-tournament", methods=['GET'])
+@jwt_required 
+def fetchTournament(): 
+  user = get_jwt_identity() 
+  userId = user['id']
+
+  tournament = getCurrentTournament(userId)
+
+  return jsonify(Tournament=tournament), 200
+
+
+if __name__ == '__main__': 
+  app.run(debug=True)
