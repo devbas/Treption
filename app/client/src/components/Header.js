@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import Tournament from '../containers/Tournament'
 
 const Header = ({ scope, documentId, userIdentifier }) => (
   <div className="header-box">
+    <Tournament/>
     <div className="inner-box">
       {scope === 'extract' &&
         <div>

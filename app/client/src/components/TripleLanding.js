@@ -8,6 +8,10 @@ const TripleLanding = ({ triples, renderTriple }) => (
           {triples.map(renderTriple)}
         </div>
       }
+
+      <div className="extraction">
+      
+      </div>
     </div>
   </div>
 )

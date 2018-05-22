@@ -11,6 +11,13 @@ const setUser = ({ email, accessToken, refreshToken }) => {
   }
 }
 
+const fetchTournament = ({ tournament }) => {
+  return {
+    type: types.SET_TOURNAMENT, 
+    tournament
+  }
+}
+
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
 
@@ -39,6 +46,16 @@ export const boundSetUserAction = (actionKey, value) => {
       data: `actionKey=${actionKey}&value=${value}`, 
       // config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `accessToken=${getCookie('accessToken')}` }}
       config: { headers: {'Content-Type': 'multipart/form-data' }}
+    })
+  }
+}
+
+export const boundFetchTournament = () => {
+  return (dispatch, getState) => {
+    axios.get(`/api/current-tournament/`).then((response) => {
+      dispatch(fetchTournament(response.data.Tournament))
+    }).catch((ex) => {
+      console.log('ex: ', ex)
     })
   }
 }

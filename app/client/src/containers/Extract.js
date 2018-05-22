@@ -36,7 +36,8 @@ class Extract extends Component {
   componentDidMount() {
     const documentId = this.props.match.params.documentId
     const sentenceId = this.props.match.params.sentenceId
-
+    
+    this.props.actions.boundFetchTournament()
     this.props.actions.boundFetchSentence(documentId, sentenceId)
     //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
