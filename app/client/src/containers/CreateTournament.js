@@ -11,15 +11,39 @@ class CreateTournament extends Component {
     super(props)
 
     this.state = {
-      popupVisible: false 
+      tournamentCreated: false,
+      tournamentJoined: false 
     }
 
+    this.onCreateClick = this.onCreateClick.bind(this) 
+    this.onJoinClick = this.onJoinClick.bind(this)
+    this.onPlayClick = this.onPlayClick.bind(this)
+  }
+
+  onCreateClick() {
+    this.props.actions.boundCreateTournament()
+  }
+
+  onJoinClick() {
+
+  }
+  
+  onPlayClick() {
+    this.props.actions.boundStartTournament() 
   }
 
   render() {
+    const hostname = window.location.host
+    
     return(
       <CreateTournamentComponent 
         color={this.props.color}
+        onCreateClick={this.onCreateClick}
+        onJoinClick={this.onJoinClick}
+        tournamentCreated={this.props.tournamentCreated}
+        tournament={this.props.tournament}
+        hostname={hostname}
+        onPlayClick={this.onPlayClick}
       />
     )
   }
@@ -27,6 +51,8 @@ class CreateTournament extends Component {
 
 function mapStateToProps(state) {
   return {
+    tournamentCreated: state.createdTournament, 
+    tournament: state.fetchedTournament
   }
 }
 

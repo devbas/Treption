@@ -15,15 +15,16 @@ const Extract = ({
   renderTriple, 
   color, 
   documentId, 
-  tournament
+  tournament, 
+  tournamentCreated
 }) => (
   <div className="extract" style={{backgroundColor: color}}> 
     <Header scope="extract" documentId={documentId}/>
-    {tournament.length === 0 &&
+    {(tournamentCreated || !tournament) &&
       <CreateTournament color={color}/>
     }
 
-    {tournament > 0 &&
+    {tournament && !tournamentCreated &&
       <div className="extract-box">
         <div className="sentence-box">
           <div className="inner-box">

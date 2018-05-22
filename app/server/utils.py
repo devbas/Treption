@@ -603,3 +603,28 @@ def getCurrentTournament(userId):
   
   finally: 
     connection.close()
+
+def createTournament(userId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  tournamentHash = random.getrandbits(128)
+
+  try: 
+    with connection.cursor() as cursor: 
+      sql = 'INSERT INTO tournament (`challenger_id`, `start_time`, `duration`, `hash`) VALUES (%s, NOW(), 48, %s)'
+      cursor.execute(sql, (userId, tournamentHash))
+      tournamentId = cursor.lastrowid
+
+    #connection.commit() 
+    
+    with connection.cursor() as cursor: 
+      cursor.execute('SELECT * FROM tournament WHERE tournament_id = %s', (tournamentId))
+      tournament = cursor.fetchone()
+    
+    if tournament: 
+      return tournament 
+    else: 
+      return 0 
+  
+  finally: 
+    connection.close()

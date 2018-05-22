@@ -209,7 +209,7 @@ body {
 
 .extract .create-tournament-box .inner-box .content {
   padding: 50px 20px;
-  margin-top: 15px; 
+  margin-top: 100px; 
 }
 
 .extract .create-tournament-box .inner-box .content .title {
@@ -223,6 +223,63 @@ body {
   height: 2px; 
   width: 100px; 
   background-color: rgba(255, 250, 246, 1);
+}
+
+.extract .create-tournament-box .inner-box .content .description {
+  font-size: 16px; 
+  color: rgba(255, 250, 246, 1);
+  margin-top: 12px; 
+}
+
+.extract .create-tournament-box .inner-box .content .button-box {
+  margin-top: 28px; 
+  margin-bottom: 0px;
+  display: flex;
+}
+
+.extract .create-tournament-box .inner-box .content .tournament-created-box input {
+  padding: 8px 5px 8px 28px; 
+  font-size: 14px;
+  border: 0; 
+  background-color:#fdede1; 
+  border-radius: 2px;
+  margin-top: 8px;
+  width: 300px;
+  background-image: url('./assets/img/copy.svg'); 
+  background-repeat: no-repeat;
+  background-size: 16px; 
+  background-position: 5px center;
+}
+
+.extract .create-tournament-box .inner-box .content .tournament-created-box .button-box {
+  margin-top: 14px;
+}
+
+.extract .create-tournament-box .inner-box .content .primary-action {
+  height: 20px; 
+  background-color: #FDE0CC; 
+  float: left; 
+  font-size: 16px; 
+  color: #0C1A24; 
+  border-radius: 20px; 
+  cursor: pointer;
+  font-weight: 500; 
+  border: 2px solid transparent;
+  padding: 7px 15px; 
+}
+
+.extract .create-tournament-box .inner-box .content .secondary-action {
+  height: 20px; 
+  background-color: transparent; 
+  float: left; 
+  font-size: 16px; 
+  color: #0C1A24; 
+  border-radius: 20px; 
+  cursor: pointer;
+  font-weight: 500; 
+  border: 2px solid #FDE0CC; 
+  padding: 7px 15px; 
+  margin-left: 20px;
 }
 
 .landing-box {

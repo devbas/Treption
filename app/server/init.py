@@ -12,7 +12,8 @@ from utils import (
   getLastEditedDocument, 
   createTripleVote, 
   getTriples, 
-  getCurrentTournament
+  getCurrentTournament, 
+  createTournament
 )
 from rdf import createTriple
 from pprint import pprint
@@ -209,6 +210,16 @@ def fetchTournament():
   userId = user['id']
 
   tournament = getCurrentTournament(userId)
+
+  return jsonify(Tournament=tournament), 200
+
+@app.route("/api/create-tournament", methods=['GET'])
+@jwt_required
+def addTournament():  
+  user = get_jwt_identity() 
+  userId = user['id']
+
+  tournament = createTournament(userId)
 
   return jsonify(Tournament=tournament), 200
 

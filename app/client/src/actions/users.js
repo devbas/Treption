@@ -18,6 +18,14 @@ const fetchTournament = ({ tournament }) => {
   }
 }
 
+const createTournament = ({ tournament, createdTournament }) => {
+  return {
+    type: types.CREATED_TOURNAMENT, 
+    tournament, 
+    createdTournament
+  }
+}
+
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
 
@@ -53,9 +61,26 @@ export const boundSetUserAction = (actionKey, value) => {
 export const boundFetchTournament = () => {
   return (dispatch, getState) => {
     axios.get(`/api/current-tournament`).then((response) => {
-      dispatch(fetchTournament(response.data.Tournament))
+      dispatch(fetchTournament({ tournament: response.data.Tournament }))
     }).catch((ex) => {
       console.log('ex: ', ex)
     })
+  }
+}
+
+export const boundCreateTournament = () => {
+  return (dispatch, getState) => {
+    axios.get(`/api/create-tournament`).then((response) => {
+      dispatch(createTournament({ tournament: response.data.Tournament, createdTournament: true })) 
+      dispatch(fetchTournament({ tournament: response.data.Tournament }))
+    }).catch((ex) => {
+      console.log('ex: ', ex)
+    })
+  }
+}
+
+export const boundStartTournament = () => {
+  return (dispatch, getState) => {
+    dispatch(createTournament({ createdTournament: false }))
   }
 }

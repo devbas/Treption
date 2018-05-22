@@ -19,8 +19,16 @@ export const loggedInUser = createReducer([], {
 
 export const fetchedTournament = createReducer([], {
   [types.SET_TOURNAMENT](state, action) {
+    console.log('fetchedTOurnament: ', action)
     const newState = action.tournament
 
     return newState
+  }
+})
+
+export const createdTournament = createReducer(false, {
+  [types.CREATED_TOURNAMENT](state, action) {
+    console.log('action: ', action)
+    return action.createdTournament
   }
 })
