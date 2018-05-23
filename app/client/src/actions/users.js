@@ -34,6 +34,13 @@ const fetchTournamentStatus = ({ status }) => {
   }
 }
 
+const updateTournamentJoinStatus = ({ status}) => {
+  return {
+    type: types.SET_TOURNAMENT_JOIN_STATUS, 
+    status 
+  }
+}
+
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
 
@@ -109,6 +116,22 @@ export const boundFetchTournamentStatus = (hash) => {
   return (dispatch, getState) => {
     axios.get(`/api/status-tournament/${hash}`).then((response) => {
       dispatch(fetchTournamentStatus({ status: response.data.TournamentStatus }))
+    })
+  }
+}
+
+export const boundUpdateTourmanentJoinStatus = (hash) => {
+  return (dispatch, getState) => {
+
+    axios({
+      method: 'post', 
+      url: `/api/update-tournament/${hash}`, 
+      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `accessToken=${getCookie('accessToken')}` }}
+      //config: { headers: {'Content-Type': 'multipart/form-data' }}
+    }).then((response) => {
+      response = JSON.parse(response.data)
+      dispatch(updateTournamentJoinStatus({ status: response.Status }))
+      dispatch(createTournament({ tournament: response.Tournament, joinedTournament: true  }))
     })
   }
 }

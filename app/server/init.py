@@ -252,7 +252,8 @@ def updateTournamentCompetitor(tournamentHash):
 
   tournament = setTournamentCompetitor(tournamentHash, userId)
 
-  return jsonify(Status=tournament['status'],Tournament=tournament['tournament'])
+  print('tournament: ' + tournament, file=sys.stderr)
+  return jsonify(tournament), 200
 
 if __name__ == '__main__': 
   app.run(debug=True)

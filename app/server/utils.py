@@ -660,3 +660,38 @@ def fetchTournamentStatus(tournamentHash):
 
   finally: 
     connection.close()
+
+def setTournamentCompetitor(tournamentHash, userId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  tournamentStatus = fetchTournamentStatus(tournamentHash)
+
+  if tournamentStatus: 
+    try: 
+      with connection.cursor() as cursor: 
+        cursor.execute('UPDATE tournament SET `competitor_id` = %s WHERE `hash` = %s', (userId, tournamentHash))
+      
+      connection.commit() 
+
+      with connection.cursor() as cursor: 
+        cursor.execute('SELECT * FROM tournament WHERE hash = %s', (tournamentHash))
+        tournament = cursor.fetchone()
+      
+      tournament['start_time'] = str(tournament['start_time'])
+
+      result = {
+        'Status': 'registered', 
+        'Tournament': tournament
+      }
+
+      return json.dumps(result)
+
+    finally: 
+      connection.close() 
+  else: 
+    result = {
+      'Status': 'unavailable', 
+      'Tournament': []
+    }
+
+    return json.dumps(result) 

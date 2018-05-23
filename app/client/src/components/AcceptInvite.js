@@ -9,10 +9,11 @@ const AcceptInvite = ({
   onLoginClick, 
   onEmailChange, 
   onPasswordChange, 
-  onConsentClick
+  onConsentClick, 
+  onSuccessMessageClose
 }) => (
   <div>
-    {!isLoggedIn &&
+    {!isLoggedIn && isTournamentOpen &&
       <div>
         <p>You need to login!</p>
         <form>
@@ -25,12 +26,15 @@ const AcceptInvite = ({
       </div>
     }
 
-    {isLoggedIn && !isTournamentOpen &&
+    {!isTournamentOpen &&
       <p>The tournament is not available anymore</p>
     }
 
     {isLoggedIn && isTournamentOpen && joinedConsent &&
-      <p>Congrats, you are now playing against blabla</p>
+      <div>
+        <p>Congrats, you are now playing against blabla</p>
+        <button onClick={onSuccessMessageClose}>Play</button>
+      </div>
     }
 
     {isLoggedIn && isTournamentOpen && !joinedConsent &&

@@ -24,11 +24,13 @@ class AcceptInvite extends Component {
     this.onLoginClick = this.onLoginClick.bind(this)
     this.onEmailChange = this.onEmailChange.bind(this)
     this.onPasswordChange = this.onPasswordChange.bind(this)
+    this.onSuccessMessageClose = this.onSuccessMessageClose.bind(this)
   }
 
   onConsentClick() {
 
     // Update tournament with competitorId === userId 
+    this.props.actions.boundUpdateTourmanentJoinStatus(this.state.hash)
 
     this.setState({
       joinedConsent: true 
@@ -47,6 +49,10 @@ class AcceptInvite extends Component {
     this.setState({password: event.target.value})
   }
 
+  onSuccessMessageClose() {
+    window.location.replace('/')
+  }
+
   componentDidMount() { 
     console.log('hash: ', this.state.hash)
 
@@ -57,6 +63,11 @@ class AcceptInvite extends Component {
         isLoggedIn: true 
       })
     } else {
+      if(!this.props.inviteTournamentStatus) {
+
+      } else {
+
+      }
       // Check if tournament is still open
 
       // Check if user is logged in, if not, show login      
@@ -69,13 +80,14 @@ class AcceptInvite extends Component {
       <AcceptInviteComponent
         isLoggedIn={this.state.isLoggedIn}
         isTournamentOpen={this.props.inviteTournamentStatus}
-        joinedConsent={this.state.joinedConsent}
+        joinedConsent={this.props.joinedConsent}
         email={this.state.email}
         password={this.state.password}
         onLoginClick={this.onLoginClick}
         onEmailChange={this.onEmailChange}
         onPasswordChange={this.onPasswordChange}
         onConsentClick={this.onConsentClick}
+        onSuccessMessageClose={this.onSuccessMessageClose}
       />
     )
   }
@@ -83,7 +95,8 @@ class AcceptInvite extends Component {
 
 function mapStateToProps(state) {
   return {
-    inviteTournamentStatus: state.inviteTournamentStatus
+    inviteTournamentStatus: state.inviteTournamentStatus,
+    joinedConsent: state.tournamentJoinStatus
   }
 }
 

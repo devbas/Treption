@@ -30,7 +30,7 @@ class App extends Component {
           </div>
         </Router>
       )
-    } else if(this.props.documents) {
+    } else {
       return (
         <Router>
           <div className="wrapper">
@@ -41,17 +41,12 @@ class App extends Component {
           </div>
         </Router>
       );
-     } else {
-      return (
-        <p>Something seems to be off. Please follow up on Twitter.</p>
-      )
-    }
+     }
   }
 }
 
 function mapStateToProps(state) {
   return {
-    documents: state.fetchedDocuments, 
     userAccessToken: state.loggedInUser.accessToken
   }
 }
