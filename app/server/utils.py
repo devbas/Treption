@@ -644,3 +644,19 @@ def searchOpenTournament(userId):
 
   finally: 
     connection.close()  
+
+def fetchTournamentStatus(tournamentHash): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  try: 
+    with connection.cursor() as cursor: 
+      cursor.execute('SELECT 1 AS status FROM tournament WHERE hash = %s AND competitor_id IS NULL AND start_time > NOW() - INTERVAL 48 HOUR', tournamentHash)
+      tournamentStatus = cursor.fetchone() 
+
+    if tournamentStatus: 
+      return tournamentStatus['status']
+    else: 
+      return False
+
+  finally: 
+    connection.close()

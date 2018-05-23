@@ -14,7 +14,8 @@ from utils import (
   getTriples, 
   getCurrentTournament, 
   createTournament, 
-  searchOpenTournament
+  searchOpenTournament, 
+  fetchTournamentStatus
 )
 from rdf import createTriple
 from pprint import pprint
@@ -233,6 +234,13 @@ def joinTournament():
   tournament = searchOpenTournament(userId) 
 
   return jsonify(Tournament=tournament), 200
+
+@app.route("/api/status-tournament/<tournamentHash>", methods=['GET'])
+def setTournamentStatus(tournamentHash): 
+
+  tournamentStatus = fetchTournamentStatus(tournamentHash)
+
+  return jsonify(TournamentStatus=tournamentStatus), 200
 
 if __name__ == '__main__': 
   app.run(debug=True)

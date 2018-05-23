@@ -33,3 +33,9 @@ export const createdTournament = createReducer(false, {
     return newState
   }
 })
+
+export const inviteTournamentStatus = createReducer(false, {
+  [types.SET_TOURNAMENT_STATUS](state, action) {
+    return action.status
+  }
+})

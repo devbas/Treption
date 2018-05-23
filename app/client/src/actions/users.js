@@ -27,6 +27,13 @@ const createTournament = ({ tournament, createdTournament, joinedTournament }) =
   }
 }
 
+const fetchTournamentStatus = ({ status }) => {
+  return {
+    type: types.SET_TOURNAMENT_STATUS, 
+    status
+  }
+}
+
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
 
@@ -94,6 +101,14 @@ export const boundJoinTournament = () => {
       } else {
         dispatch(createTournament({ joinedTournament: 'not found' }))
       }
+    })
+  }
+}
+
+export const boundFetchTournamentStatus = (hash) => {
+  return (dispatch, getState) => {
+    axios.get(`/api/status-tournament/${hash}`).then((response) => {
+      dispatch(fetchTournamentStatus({ status: response.data.TournamentStatus }))
     })
   }
 }

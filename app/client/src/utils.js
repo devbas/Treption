@@ -140,7 +140,8 @@ axios.interceptors.response.use((response) => {
       config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `refreshToken=${refreshToken}` }}
     }).then((data) => {
       document.cookie = `accessToken=${data.data.access_token}`
-      originalRequest.headers.Cookie = `accessToken=${data.data.access_token};`
+      console.log('cookies: ', document.cookie)
+      //originalRequest.headers.Cookie = `accessToken=${data.data.access_token};`
       axios.defaults.headers.common['Cookie'] = `accessToken=${data.data.access_token};`
       return axios(originalRequest)
     }).catch((error) => {
