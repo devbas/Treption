@@ -18,11 +18,12 @@ const fetchTournament = ({ tournament }) => {
   }
 }
 
-const createTournament = ({ tournament, createdTournament }) => {
+const createTournament = ({ tournament, createdTournament, joinedTournament }) => {
   return {
     type: types.CREATED_TOURNAMENT, 
     tournament, 
-    createdTournament
+    createdTournament, 
+    joinedTournament
   }
 }
 
@@ -82,5 +83,17 @@ export const boundCreateTournament = () => {
 export const boundStartTournament = () => {
   return (dispatch, getState) => {
     dispatch(createTournament({ createdTournament: false }))
+  }
+}
+
+export const boundJoinTournament = () => {
+  return (dispatch, getState) => {
+    axios.get(`/api/join-tournament`).then((response) => {
+      if(response.data.Tournament !== 'not found') {
+        dispatch(createTournament({ tournament: response.data.Tournament, joinedTournament: true }))
+      } else {
+        dispatch(createTournament({ joinedTournament: 'not found' }))
+      }
+    })
   }
 }

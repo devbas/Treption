@@ -615,7 +615,7 @@ def createTournament(userId):
       cursor.execute(sql, (userId, tournamentHash))
       tournamentId = cursor.lastrowid
 
-    #connection.commit() 
+    connection.commit() 
     
     with connection.cursor() as cursor: 
       cursor.execute('SELECT * FROM tournament WHERE tournament_id = %s', (tournamentId))
@@ -628,3 +628,19 @@ def createTournament(userId):
   
   finally: 
     connection.close()
+
+def searchOpenTournament(userId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  try: 
+    with connection.cursor() as cursor: 
+      cursor.execute('SELECT * FROM tournament WHERE competitor_id = NULL AND start_time > NOW() - INTERVAL 48 HOUR LIMIT 1')
+      tournament = cursor.fetchone() 
+  
+    if tournament: 
+      return tournament 
+    else: 
+      return 'not found'
+
+  finally: 
+    connection.close()  

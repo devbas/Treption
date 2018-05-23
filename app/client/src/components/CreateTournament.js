@@ -7,16 +7,29 @@ const CreateTournament = ({
   tournamentCreated, 
   tournament, 
   hostname, 
-  onPlayClick
+  onPlayClick, 
+  tournamentJoined
 }) => (
   <div className="create-tournament-box">
     <div className="inner-box" style={{backgroundColor: color}}>
       <div className="content">
-        {!tournamentCreated &&
+        {!tournamentCreated && tournamentJoined !== 'not found' &&
           <div>
             <div className="title">Create or join a tournament</div>
             <div className="divider"></div>
             <div className="description">You are not in an active tournament right now.</div>
+            <div className="button-box">
+              <div className="primary-action" onClick={onCreateClick}>Create tournament</div>
+              <div className="secondary-action" onClick={onJoinClick}>Join tournament</div>
+            </div>
+          </div>
+        }
+
+        {tournamentJoined === 'not found' &&
+          <div>
+            <div className="title">There are no active tournaments right now.</div>
+            <div className="divider"></div>
+            <div className="description"></div>
             <div className="button-box">
               <div className="primary-action" onClick={onCreateClick}>Create tournament</div>
               <div className="secondary-action" onClick={onJoinClick}>Join tournament</div>

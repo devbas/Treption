@@ -25,7 +25,7 @@ class CreateTournament extends Component {
   }
 
   onJoinClick() {
-
+    this.props.actions.boundJoinTournament()
   }
   
   onPlayClick() {
@@ -41,6 +41,7 @@ class CreateTournament extends Component {
         onCreateClick={this.onCreateClick}
         onJoinClick={this.onJoinClick}
         tournamentCreated={this.props.tournamentCreated}
+        tournamentJoined={this.props.tournamentJoined}
         tournament={this.props.tournament}
         hostname={hostname}
         onPlayClick={this.onPlayClick}
@@ -51,7 +52,8 @@ class CreateTournament extends Component {
 
 function mapStateToProps(state) {
   return {
-    tournamentCreated: state.createdTournament, 
+    tournamentCreated: state.createdTournament.createdTournament, 
+    tournamentJoined: state.createdTournament.joinedTournament, 
     tournament: state.fetchedTournament
   }
 }

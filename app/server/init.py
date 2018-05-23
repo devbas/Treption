@@ -13,7 +13,8 @@ from utils import (
   createTripleVote, 
   getTriples, 
   getCurrentTournament, 
-  createTournament
+  createTournament, 
+  searchOpenTournament
 )
 from rdf import createTriple
 from pprint import pprint
@@ -223,6 +224,15 @@ def addTournament():
 
   return jsonify(Tournament=tournament), 200
 
+@app.route("/api/join-tournament", methods=['GET'])
+@jwt_required
+def joinTournament(): 
+  user = get_jwt_identity() 
+  userId = user['id']
+
+  tournament = searchOpenTournament(userId) 
+
+  return jsonify(Tournament=tournament), 200
 
 if __name__ == '__main__': 
   app.run(debug=True)
