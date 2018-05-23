@@ -38,6 +38,9 @@ class AcceptInvite extends Component {
   }
 
   onLoginClick() {
+    if(this.state.password && this.state.email) {
+      this.props.actions.boundSetUser(this.state.email, this.state.password)
+    }
     // Login user with creds state.email, state.password
   }
 
@@ -88,6 +91,7 @@ class AcceptInvite extends Component {
         onPasswordChange={this.onPasswordChange}
         onConsentClick={this.onConsentClick}
         onSuccessMessageClose={this.onSuccessMessageClose}
+        loginError={this.props.loginError}
       />
     )
   }
@@ -96,7 +100,8 @@ class AcceptInvite extends Component {
 function mapStateToProps(state) {
   return {
     inviteTournamentStatus: state.inviteTournamentStatus,
-    joinedConsent: state.tournamentJoinStatus
+    joinedConsent: state.tournamentJoinStatus, 
+    loginError: state.loginError
   }
 }
 

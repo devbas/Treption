@@ -41,6 +41,13 @@ const updateTournamentJoinStatus = ({ status}) => {
   }
 }
 
+const setLoginError = ({ error }) => {
+  return {
+    type: types.SET_LOGIN_ERROR, 
+    error
+  }
+}
+
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
 
@@ -56,6 +63,8 @@ export const boundSetUser = (email, password) => {
     }).then((response) => {
       console.log('response: ', response)
       dispatch(setUser({ email: email, accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }))
+    }).catch((error) => {
+      dispatch(setLoginError({ error: error }))
     })
   }
 }
