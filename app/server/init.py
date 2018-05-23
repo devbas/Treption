@@ -15,7 +15,8 @@ from utils import (
   getCurrentTournament, 
   createTournament, 
   searchOpenTournament, 
-  fetchTournamentStatus
+  fetchTournamentStatus, 
+  setTournamentCompetitor
 )
 from rdf import createTriple
 from pprint import pprint
@@ -30,11 +31,12 @@ from flask_jwt_extended import (
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
-app.config['JWT_TOKEN_LOCATION'] = 'cookies'
-app.config['JWT_ACCESS_COOKIE_NAME'] = 'accessToken'
-app.config['JWT_REFRESH_COOKIE_NAME'] = 'refreshToken'
+app.config['JWT_TOKEN_LOCATION'] = 'headers'
+#app.config['JWT_ACCESS_COOKIE_NAME'] = 'accessToken'
+#app.config['JWT_REFRESH_COOKIE_NAME'] = 'refreshToken'
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False 
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = False 
 jwt = JWTManager(app)
 
 #@jwt.user_identity_loader
@@ -241,6 +243,16 @@ def setTournamentStatus(tournamentHash):
   tournamentStatus = fetchTournamentStatus(tournamentHash)
 
   return jsonify(TournamentStatus=tournamentStatus), 200
+
+@app.route("/api/update-tournament/<tournamentHash>", methods=['POST'])
+@jwt_required 
+def updateTournamentCompetitor(tournamentHash): 
+  user = get_jwt_identity() 
+  userId = user['id']
+
+  tournament = setTournamentCompetitor(tournamentHash, userId)
+
+  return jsonify(Status=tournament['status'],Tournament=tournament['tournament'])
 
 if __name__ == '__main__': 
   app.run(debug=True)

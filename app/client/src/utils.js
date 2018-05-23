@@ -119,10 +119,24 @@ export const getCookie = (cname) => {
   return "";
 }
 
-axios.interceptors.request.use(request => {
-  console.log('Starting Request', request)
-  return request
+axios.interceptors.request.use((request) => {
+  const accessToken = getCookie('accessToken')
+  const refreshToken = getCookie('refreshToken')
+  console.log('request: ', request)
+  if(request.url === '/api/refresh') {
+    request.headers.Authorization = `Bearer ${refreshToken}`
+  } else {
+    if (accessToken) {
+      request.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+      request.headers.Authorization = ``;
+    }
+  }
+
+  return request;
 })
+
+
 
 axios.interceptors.response.use((response) => {
   return response
@@ -140,14 +154,11 @@ axios.interceptors.response.use((response) => {
       config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `refreshToken=${refreshToken}` }}
     }).then((data) => {
       document.cookie = `accessToken=${data.data.access_token}`
-      console.log('cookies: ', document.cookie)
-      //originalRequest.headers.Cookie = `accessToken=${data.data.access_token};`
-      axios.defaults.headers.common['Cookie'] = `accessToken=${data.data.access_token};`
       return axios(originalRequest)
     }).catch((error) => {
       return Promise.reject(error)
     }) 
-  } else if(error.response.status === 401 && error.response.request.responseURL.includes('/api/refresh')) {
+  } else if(error.response.status === 401 && error.response.request.responseURL.includes('/api/refresh') && !window.location.pathname.includes('/invite/')) {
     if(window.location.pathname !== '/login') {
       window.location.replace(`/login?loginredirect=true`);
     }
