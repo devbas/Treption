@@ -9,7 +9,7 @@ const Header = ({
   tournament 
 }) => (
   <div className="header-box">
-    {tournament.length > 0 &&
+    {tournament &&
       <Tournament/>
     }
     

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import * as ExtractActions from '../actions/extract'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 
 import TripleItemComponent from '../components/TripleItem'
 
@@ -13,13 +14,28 @@ class TripleItem extends Component {
     this.state = {
       subject: '', 
       predicate: '', 
-      object: ''
+      object: '', 
+      hasClicked: false, 
+      clickedChoice: '', 
+      triple: []
+      //answer: 
     }
 
     this.onChoiceClick = this.onChoiceClick.bind(this)
+    this.onNextQuestionClick = this.onNextQuestionClick.bind(this)
   }
 
   componentDidMount() {
+
+    // Fetch first triple that is not processed
+    if(this.props.triples.length > 0) {
+      const triple = _.find(this.props.triples, { processed: false })
+      debugger;
+      this.setState({
+        triple: triple, 
+        answer: triple.agree > triple.disagree ? 'agree' : 'disagree'
+      }) 
+    }
 
     /*const supportedTokens = supportedPosTokens()
     console.log('recall')
@@ -75,22 +91,40 @@ class TripleItem extends Component {
   }
 
   onChoiceClick(choice) {
-    this.props.actions.boundTripleVote(this.props.triple.triple_id, choice)
+    this.setState({
+      hasClicked: true, 
+      clickedChoice: choice
+    })
+    this.props.actions.boundTripleVote(this.state.triple.triple_id, choice)
+    this.props.actions.boundSetTripleAsProcessed(this.state.triple.triple_id)
   } 
 
+  onNextQuestionClick() {
+    console.log('serve next question')
+  }
+
   render() {
+
+    //const answer = this.state.triple.agree > this.state.triple.disagree ? 'agree' : 'disagree'
+
     return (
       <TripleItemComponent 
-        subject={this.props.triple.subject} 
-        predicate={this.props.triple.predicate} 
-        object={this.props.triple.object}
-        onChoiceClick={this.onChoiceClick}/>
+        subject={this.state.triple.subject} 
+        predicate={this.state.triple.predicate} 
+        object={this.state.triple.object}
+        onChoiceClick={this.onChoiceClick}
+        hasClicked={this.state.hasClicked}
+        onNextQuestionClick={this.onNextQuestionClick}
+        answer={this.state.answer}
+        clickedChoice={this.state.clickedChoice}/>
     )
   }
 }
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    triples: state.fetchedTriples
+  }
 }
 
 function mapDispatchToProps(dispatch) {

@@ -7,26 +7,35 @@ export const extractingStage = createReducer('subject', {
   }
 })
 
-export const extractedTriples = (state = [], action) => {
+export const extractedTriples = (state = {}, action) => {
 
   const newState = state 
 
   switch(action.type) {
 
     case 'SET_TRIPLE_SUBJECT': 
+
+      /*if(!_.isEmpty(newState)) {
+        newState = 
+      } else {
+        newState = _.assign(newState, { subject: action.subject })
+      }
+
+      return newState*/
       if(newState.length > 0 && !('subject' in newState[newState.length-1])) {
         newState[newState.length-1] = {...newState[newState.length-1], subject: action.subject }
       } else {
-        newState.push({
+        newState.subject = action.subject
+        /*newState.push({
           subject: action.subject
-        })
+        })*/
       }
       return newState
 
     case 'SET_TRIPLE_PREDICATE': 
 
       if(newState.length > 0 && !('predicate' in newState[newState.length-1])) {
-        newState[newState.length-1].predicate = action.predicate
+        newState[newState.length-1] = {...newState[newState.length-1], predicate: action.predicate }
       } else {
         newState.push({
           predicate: action.predicate
@@ -99,3 +108,5 @@ export const extractedTriples = (state = [], action) => {
     return newState
   }
 }) */
+
+

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../containers/Header'
 import CreateTournament from '../containers/CreateTournament'
+import TripleItem from '../containers/TripleItem'
 
 const Extract = ({ 
   sentence, 
@@ -16,7 +17,9 @@ const Extract = ({
   color, 
   documentId, 
   tournament, 
-  tournamentCreated
+  tournamentCreated, 
+  isValidating, 
+  isExtracting
 }) => (
   <div className="extract" style={{backgroundColor: color}}> 
     <Header scope="extract" documentId={documentId}/>
@@ -48,9 +51,32 @@ const Extract = ({
 
         <div className="editor-box">
           <div className="inner-box" style={{backgroundColor: color}}>
-            <div className="content">
-              {triples.map(renderTriple)}
+            <div className="game-object-box">
+              <div className="progress left">1 of 5</div>
+              <div className="time-remaining left">00:15</div>
+              <div className="points left">230</div>
             </div>
+            <div className="content">
+              {isValidating &&
+                <div className="validation-box">
+                  <TripleItem/>
+                </div>
+              }
+              
+              {isExtracting &&
+                <div className="extract-box">
+                  <div className="divider"></div>
+                  <div className="description">Select one or multiple words:</div>
+                  <div className="word-choice-box">Building | structure</div>
+                  <div className="triple-box">
+                    <div className="subject">Building</div>
+                    <div className="predicate">consists of</div>
+                    <div className="object">variable structure</div>
+                  </div>
+                </div>
+              }
+            </div>
+            
           </div>
         </div>
 
@@ -59,6 +85,8 @@ const Extract = ({
     }
   </div>
 )
+
+//{triples.map(renderTriple)}
 /**/
 
 

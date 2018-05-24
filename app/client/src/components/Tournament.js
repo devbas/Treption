@@ -2,12 +2,18 @@ import React from 'react';
 
 const Tournament = ({ 
   onTournamentClick, 
-  popupVisible
+  popupVisible, 
+  tournament
 }) => (
   <div className="tournament-box">
     <div className="tournament-header-box" onClick={onTournamentClick}>
       <div className="inner-box">
-        Current tournament
+        <div className="left">
+          {tournament.challenger_name}
+        </div>
+        <div className="right">
+          {tournament.competitor_name}
+        </div>
       </div>
     </div>
 

@@ -5,6 +5,11 @@ import { connect } from 'react-redux'
 import { getCookie } from '../utils'
 
 class Header extends Component {
+
+  constructor(props) {
+    super(props) 
+  }
+
   render() {
     return (
       <HeaderComponent 

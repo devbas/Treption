@@ -79,7 +79,7 @@ body {
 }
 
 .extract-word-item-box span {
-  background-color: rgba(255, 239, 229, 1);
+  background-color: rgba(255, 239, 229, 0.6);
   float: left;
   border-radius: 2px; 
 }
@@ -178,6 +178,19 @@ body {
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
 }
 
+.extract .editor-box .inner-box .game-object-box {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 250, 246, 1)
+}
+
+.extract .editor-box .inner-box .game-object-box .progress {
+  border-right: 1px solid rgba(255, 250, 246, 1); 
+}
+
+.extract .editor-box .inner-box .game-object-box .time-remaining {
+  border-right: 1px solid rgba(255, 250, 246, 1); 
+}
+
 .extract .editor-box .inner-box .content {
   padding: 50px 20px;
   margin-top: 15px; 
@@ -192,6 +205,19 @@ body {
 .editor-box .triple-box .subject, .editor-box .triple-box .predicate, .editor-box .triple-box .object {
   float: left; 
   width: 200px; 
+}
+
+.editor-box .extract-box .triple-box .subject, .editor-box .extract-box .triple-box .predicate, .editor-box .extract-box .triple-box .object {
+  padding: 10px; 
+  border-radius: 30px; 
+  background-color: #fff; 
+  width: auto; 
+}
+
+.editor-box .extract-box .description {
+  font-size: 16px; 
+  color: rgba(255, 250, 246, 1); 
+  margin-top: 12px;
 }
 
 .extract .create-tournament-box {
@@ -618,8 +644,6 @@ body {
 
 .triple-item-box {
   width: 100%; 
-  border-top: 0.5px solid rgba(12, 26, 36, 0.8);
-  border-bottom: 0.5px solid rgba(12, 26, 36, 0.8);
   position: relative; 
   padding-top: 5px; 
   padding-bottom: 5px;
@@ -633,6 +657,98 @@ body {
   float: left; 
   border-radius: 20px;
   color: #fff; 
+}
+
+.triple-item-box .subject, .triple-item-box .predicate, .triple-item-box .object {
+  background-color: rgba(255, 239, 229, 1);
+  float: left; 
+  border-radius: 2px; 
+  font-weight: 600; 
+  font-size: 20px; 
+  color: #0C1A24; 
+  padding: 3px 9px; 
+}
+
+.triple-item-box .predicate {
+  margin-left: 4px; 
+  margin-right: 4px; 
+}
+
+.triple-item-box .triple-item-content-box {
+  margin-left: auto; 
+  margin-right: auto; 
+  display: table; 
+}
+
+.triple-item-box .button-box {
+  margin-left: auto;
+  margin-right: auto; 
+  display: table;
+  margin-top: 36px;
+}
+
+.triple-item-box .button-box .secondary-action {
+  height: 20px; 
+  background-color: transparent; 
+  float: left; 
+  font-size: 16px; 
+  color: #0C1A24; 
+  border-radius: 20px; 
+  cursor: pointer;
+  font-weight: 500; 
+  border: 2px solid #FDE0CC; 
+  padding: 7px 15px; 
+  margin-left: 20px;
+  background-color: rgba(255, 255, 255, 0.2); 
+  transition: background-color 0.15s ease-in-out;
+  width: 100px;
+  text-align: center;
+}
+
+.triple-item-box .button-box .secondary-action.correct.chosen {
+  /* Correct geantwoord! */
+  background-color: #FDE0CC; 
+  background-image: url('./assets/img/correct.svg');
+  background-size: 13px; 
+  background-repeat: no-repeat;
+  background-position: 14px center; 
+}
+
+.triple-item-box .button-box .secondary-action.correct.not-chosen {
+  /* Correct geantwoord, deze gaat nu beetje uitfaden */
+  background-color: #FDE0CC
+}
+
+.triple-item-box .button-box .secondary-action.incorrect.not-chosen {
+  /* Jammer hoor, dit was het correcte antwoord */
+  background-color: #FDE0CC; 
+}
+
+.triple-item-box .next-task {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 24px; 
+  text-decoration: underline; 
+  background-image: url('./assets/img/arrow-down.svg'); 
+  background-repeat: no-repeat; 
+  background-size: 13px; 
+  background-position: right 65%; 
+  width: 80px; 
+  margin: 24px auto;
+}
+
+.triple-item-box .button-box .secondary-action.incorrect.chosen {
+  /* Tja dit was dus niet goed */
+  background-color: #FDE0CC; 
+  background-image: url('./assets/img/incorrect.svg');
+  background-size: 13px; 
+  background-repeat: no-repeat;
+  background-position: 14px center; 
+}
+
+.triple-item-box .button-box .secondary-action:hover {
+  background-color: rgba(255, 255, 255, 0.6); 
+  transition: background-color 0.15s ease-in-out;
 }
 
 .tournament-header-box {
@@ -742,6 +858,8 @@ body {
   margin-top: 4px; 
   margin-bottom: 5px;
 }
+
+
 
 /*.extract-word-item-box.send, .extract-word-item-box.receive {
   position: relative;

@@ -61,7 +61,11 @@ export const fetchedSentence = createReducer([], {
 
 export const fetchedTriples = createReducer([], {
   [types.SET_TRIPLES](state, action) {
-    const newState = action.triples.triples
+    const newState = []
+    
+    action.triples.triples.forEach((triple) => {
+      newState.push({...triple, processed: false })
+    })
 
     return newState
   }

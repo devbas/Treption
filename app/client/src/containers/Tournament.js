@@ -28,6 +28,7 @@ class Tournament extends Component {
       <TournamentComponent 
         onTournamentClick={this.onTournamentClick}
         popupVisible={this.state.popupVisible}
+        tournament={this.props.tournament}
       />
     )
   }
@@ -35,6 +36,7 @@ class Tournament extends Component {
 
 function mapStateToProps(state) {
   return {
+    tournament: state.fetchedTournament
   }
 }
 

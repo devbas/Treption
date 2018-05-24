@@ -414,7 +414,18 @@ def getTriples(sentenceId):
 
   try: 
     with connection.cursor() as cursor:
-      sql = "SELECT * FROM triple WHERE sentence_id = %s"
+      sql = '''SELECT *, 
+                (SELECT COUNT(*) 
+                 FROM vote V
+                 WHERE V.agree = true
+                 AND triple_id = T.triple_id) AS agree, 
+                (SELECT COUNT(*)
+                 FROM vote V 
+                 WHERE V.agree = false
+                 AND triple_id = T.triple_id) as disagree 
+              FROM triple T
+              WHERE sentence_id = %s'''
+      #sql = "SELECT * FROM triple WHERE sentence_id = %s"
       cursor.execute(sql, sentenceId)
       triples = cursor.fetchall()
     
@@ -588,8 +599,16 @@ def getCurrentTournament(userId):
 
   try: 
     with connection.cursor() as cursor:
-      sql = '''SELECT * 
-              FROM tournament 
+      sql = '''SELECT T.*, 
+                U1.email AS challenger_name, 
+                U2.email AS competitor_name, 
+                U1.user_id AS challenger_id, 
+                U2.user_id AS competitor_id
+              FROM tournament T 
+              JOIN user U1 
+              ON T.challenger_id = U1.user_id
+              JOIN user U2 
+              ON T.competitor_id = U2.user_id 
               WHERE (challenger_id = %s
               OR competitor_id = %s)
               AND start_time > NOW() - INTERVAL 48 HOUR'''

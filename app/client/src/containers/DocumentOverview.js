@@ -27,6 +27,10 @@ class DocumentOverview extends Component {
     this.onDrop = this.onDrop.bind(this)
   }
 
+  componentDidMount() {
+    this.props.actions.boundFetchDocuments()
+  }
+
   onDocumentTextChange(event) {
     this.setState({
       documentText: event.target.value

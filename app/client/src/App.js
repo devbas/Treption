@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
+import './assets/css/animate.css'
 import {
   BrowserRouter as Router,
   Route
-} from 'react-router-dom'; 
+} from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as DocumentActions from './actions/documents'
+import * as UserActions from './actions/users'
 
 import DocumentOverview from './containers/DocumentOverview'
 import SentenceOverview from './containers/SentenceOverview'
@@ -17,7 +19,7 @@ import AcceptInvite from './containers/AcceptInvite'
 class App extends Component {
 
   componentDidMount() {
-    this.props.actions.boundFetchDocuments()
+    this.props.actions.boundFetchTournament()
   }
 
   render() {
@@ -53,7 +55,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-	  actions: bindActionCreators(Object.assign({}, DocumentActions), dispatch)
+	  actions: bindActionCreators(Object.assign({}, DocumentActions, UserActions), dispatch)
   }
 }
 

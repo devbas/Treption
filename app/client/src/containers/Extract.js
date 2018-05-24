@@ -18,13 +18,15 @@ class Extract extends Component {
     super(props)
 
     this.state = {
-      predicateInput: ''
+      predicateInput: '', 
+      isValidating: true, 
+      isExtracting: false 
       //stage: 'subject' // Can either be subject, predicate or object
     }
 
     this.renderWord = this.renderWord.bind(this)
     this.renderPredicate = this.renderPredicate.bind(this)
-    this.renderTriple = this.renderTriple.bind(this)
+    //this.renderTriple = this.renderTriple.bind(this)
     this.onPredicateAdd = this.onPredicateAdd.bind(this)
     this.onPredicateInputChange = this.onPredicateInputChange.bind(this)
   }
@@ -39,6 +41,13 @@ class Extract extends Component {
     
     this.props.actions.boundFetchTournament()
     this.props.actions.boundFetchSentence(documentId, sentenceId)
+
+    if(this.props.triples.length > 0) {
+      this.setState({ 
+        isValidating: true 
+      })
+    }
+
     //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
   }
@@ -84,16 +93,15 @@ class Extract extends Component {
     )
   }
 
-  renderTriple(triple) {
+  /*renderTriple(triple) {
     return (
       <TripleItem
         triple={triple}
       />
     )
-  }
+  }*/
 
   render() {
-
     const baseBackgroundColor = [0,0,0,0.4]
     const documentColorArray = this.props.document.color ? this.props.document.color.split(',') : [0,0,0]
     documentColorArray.push(0.3)
@@ -111,11 +119,13 @@ class Extract extends Component {
         predicates={this.props.predicates}
         renderPredicate={this.renderPredicate}
         triples={this.props.triples}
-        renderTriple={this.renderTriple}
+        //renderTriple={this.renderTriple}
         color={backgroundColorRgba}
         documentId={this.props.document.documentId}
         tournament={this.props.tournament}
         tournamentCreated={this.props.tournamentCreated}
+        isValidating={this.state.isValidating}
+        isExtracting={this.state.isExtracting}
       />
     )
   }
