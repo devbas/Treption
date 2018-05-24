@@ -675,6 +675,73 @@ body {
   left: 15px; 
 }
 
+.accept-invite-box {
+  background-color: #fefaf7; 
+  width: 100vw; 
+  height: 100vh; 
+  position: fixed;
+}
+
+.accept-invite-box .card-box {
+  background-color: #459999; 
+  border-radius: 2px; 
+  width: 350px; 
+  margin-left: auto; 
+  margin-right: auto; 
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30); 
+  margin-top: 100px;
+  padding: 50px 20px;
+  display: flex;
+}
+
+.accept-invite-box .card-box .inner-box .content .title {
+  font-size: 20px; 
+  color: rgba(255, 250, 246, 1);
+  font-weight: 600;
+}
+
+.accept-invite-box .card-box .inner-box .content .divider {
+  margin-top: 16px;
+  height: 2px; 
+  width: 100px; 
+  background-color: rgba(255, 250, 246, 1);
+}
+
+.accept-invite-box .card-box .inner-box .content .description {
+  font-size: 16px; 
+  color: rgba(255, 250, 246, 1);
+  /*color: #FDE0CC;*/
+  margin-top: 12px; 
+}
+
+.accept-invite-box .card-box .inner-box .content .button-box {
+  margin-top: 14px;
+}
+
+.accept-invite-box .card-box .inner-box .content .primary-action {
+  height: 20px; 
+  background-color: rgba(255, 250, 246, 1);
+  float: left; 
+  font-size: 16px; 
+  color: #0C1A24; 
+  border-radius: 20px; 
+  cursor: pointer;
+  font-weight: 500; 
+  border: 2px solid transparent;
+  padding: 7px 15px; 
+}
+
+.accept-invite-box .card-box .inner-box .content input {
+  padding: 6px 10px 6px 3px;
+  width: 100%; 
+  border: 0; 
+  border-radius: 2px; 
+  background-color: rgba(255, 250, 246, 1);
+  font-size: 16px; 
+  margin-top: 4px; 
+  margin-bottom: 5px;
+}
 
 /*.extract-word-item-box.send, .extract-word-item-box.receive {
   position: relative;

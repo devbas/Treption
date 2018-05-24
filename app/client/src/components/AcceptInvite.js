@@ -13,42 +13,81 @@ const AcceptInvite = ({
   onSuccessMessageClose, 
   loginError
 }) => (
-  <div>
+  <div className="accept-invite-box">
     {!isLoggedIn && isTournamentOpen &&
-      <div>
-        <p>You need to login!</p>
-        {loginError &&
-          <div>Oops, something went wrong</div>
-        }
-        <form>
-          <div className="login-label">Enter your email:</div>
-          <input type="email" className="login-email" value={email} placeholder="bastian.geneugelijk@student.uva.nl" onChange={onEmailChange} name="email"/>
-          <div className="password-label">Create or enter your password:</div>
-          <input type="password" className="login-password" value={password} onChange={onPasswordChange} name="password"/>
-          <button className="login-next" onClick={onLoginClick}>Continue</button>
-        </form>
+      <div className="card-box">
+        <div className="inner-box">
+          <div className="content">
+            <div className="title">Login or register to continue</div>
+            <div className="divider"></div>
+            {loginError &&
+              <div className="description">Email already taken or wrong password.</div>
+            }
+            <form>
+              <div className="description">Enter your email:</div>
+              <input type="email" className="login-email" value={email} placeholder="bastian.geneugelijk@student.uva.nl" onChange={onEmailChange} name="email"/>
+              <div className="description">Create or enter your password:</div>
+              <input type="password" className="login-password" value={password} onChange={onPasswordChange} name="password"/>
+              <div className="button-box">
+                <div className="primary-action" onClick={onLoginClick}>Continue</div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     }
 
     {!isTournamentOpen &&
-      <p>The tournament is not available anymore</p>
+      <div className="card-box">
+        <div className="inner-box">
+          <div className="content">
+            <div className="title">Tournament not found</div>
+            <div className="divider"></div>
+            <div className="description">The tournament has expired or is not found.</div>
+          </div>
+        </div>
+      </div>
     }
 
     {joinedConsent === 'unavailable' &&
-      <p>The tournament is not already filled</p>
+      <div className="card-box">
+        <div className="inner-box">
+          <div className="content">
+            <div className="title">Tournament unavailable</div>
+            <div className="divider"></div>
+            <div className="description">The tournament is not available anymore.</div>
+          </div>
+        </div>
+      </div>
     }
 
     {isLoggedIn && isTournamentOpen && joinedConsent === 'registered' &&
-      <div>
-        <p>Congrats, you are now playing against blabla</p>
-        <button onClick={onSuccessMessageClose}>Play</button>
+      <div className="card-box">
+        <div className="inner-box">
+          <div className="content">
+            <div className="title">Good Luck!</div>
+            <div className="divider"></div>
+            <div className="description">You are now playing against blabla</div>
+            <div className="button-box">
+              <div onClick={onSuccessMessageClose} className="primary-action">Start</div>
+            </div>
+          </div>
+        </div>
       </div>
     }
 
     {isLoggedIn && isTournamentOpen && !joinedConsent &&
-      <div>
-        <p>Would you like to participate in this tournament?</p>
-        <button onClick={onConsentClick}>Play</button>
+      <div className="card-box">
+        <div className="inner-box">
+          <div className="content">
+            <div className="title">Ready to play?</div>
+            <div className="divider"></div>
+            <div className="description">Would you like to participate in this tournament?</div>
+            <div className="button-box">
+              <div onClick={onConsentClick} className="primary-action">Play</div>
+            </div>
+          </div>
+        </div>
       </div>
     }
   </div>
