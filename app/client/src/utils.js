@@ -158,7 +158,7 @@ axios.interceptors.response.use((response) => {
     }).catch((error) => {
       return Promise.reject(error)
     }) 
-  } else if(error.response.status === 401 && error.response.request.responseURL.includes('/api/refresh') && !window.location.pathname.includes('/invite/')) {
+  } else if((error.response.status === 401 || error.response.status === 422) && error.response.request.responseURL.includes('/api/refresh') && !window.location.pathname.includes('/invite/')) {
     if(window.location.pathname !== '/login') {
       window.location.replace(`/login?loginredirect=true`);
     }
