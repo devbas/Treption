@@ -37,3 +37,10 @@ export const lastEditedDocumentId = createReducer(0, {
     return newState
   }
 })
+
+export const isDocumentLoading = createReducer(false, {
+  [types.DOCUMENT_LOADING_STATE](state, action) {
+    const newState = action.state; 
+    return newState
+  }
+})

@@ -1,42 +1,51 @@
 import React from 'react';
 
 const TripleItem = ({ 
-  subject, 
-  predicate, 
-  object, 
+  //subject, 
+  //predicate, 
+  //object, 
+  isSentenceLoading,
   onChoiceClick, 
   isActive, 
   hasClicked,
   onNextQuestionClick, 
   answer, 
-  clickedChoice
+  clickedChoice, 
+  triple
 }) => (
   <div className="triple-item-box">
-
-    <div className="points-to-earn-box">
-      +1 
-    </div>
-
-    <div className="triple-item-content-box">
-      <div className="left subject">{subject}</div>
-      <div className="left predicate">{predicate} </div>
-      <div className="left object">{object}</div>
-    </div>
-    
-    {!hasClicked &&
-      <div className="button-box">
-        <div onClick={() => onChoiceClick('agree')} className="secondary-action">agree</div> 
-        <div onClick={() => onChoiceClick('disagree')} className="secondary-action">disagree</div>
-      </div>
+    {isSentenceLoading &&
+      <div>Loading</div>
     }
-    
-    {hasClicked &&
+
+    {!isSentenceLoading &&
       <div>
-        <div className="button-box">
-          <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'agree' ? 'chosen' : 'not-chosen animated pulse'}`}>agree</div> 
-          <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'disagree' ? 'chosen' : 'not-chosen animated pulse'}`}>disagree</div>
+        <div className="points-to-earn-box">
+          +1 
         </div>
-        <div className="next-task" onClick={onNextQuestionClick}>Next</div>
+
+        <div className="triple-item-content-box">
+          <div className="left subject">{triple.subject}</div>
+          <div className="left predicate">{triple.predicate} </div>
+          <div className="left object">{triple.object}</div>
+        </div>
+        
+        {!hasClicked &&
+          <div className="button-box">
+            <div onClick={() => onChoiceClick('agree')} className="secondary-action">agree</div> 
+            <div onClick={() => onChoiceClick('disagree')} className="secondary-action">disagree</div>
+          </div>
+        }
+        
+        {hasClicked &&
+          <div>
+            <div className="button-box">
+              <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'agree' ? 'chosen' : 'not-chosen animated pulse'}`}>agree</div> 
+              <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'disagree' ? 'chosen' : 'not-chosen animated pulse'}`}>disagree</div>
+            </div>
+            <div className="next-task" onClick={onNextQuestionClick}>Next</div>
+          </div>
+        }
       </div>
     }
   </div>

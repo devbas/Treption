@@ -59,7 +59,35 @@ export const fetchedSentence = createReducer([], {
   }
 })
 
-export const fetchedTriples = createReducer([], {
+export const fetchedTriples = (state = [], action) => {
+  const newState = [] 
+  switch(action.type) {
+
+    case 'SET_TRIPLES': 
+      
+      action.triples.triples.forEach((triple) => {
+        newState.push({...triple, processed: false })
+      })
+  
+      return newState
+
+    case 'REPLACE_TRIPLE': 
+      
+      const triples = _.remove(state.fetchedTriples, { triple_id: action.triple.triple.triple_id })
+      triples.push(action.triple.triple)
+
+      newState.push(triples) 
+      //console.log('replace with the following data')
+      return newState 
+
+    default: 
+      return state 
+
+  }
+}
+
+/*export const fetchedTriples = createReducer([], {
+
   [types.SET_TRIPLES](state, action) {
     const newState = []
     
@@ -67,6 +95,13 @@ export const fetchedTriples = createReducer([], {
       newState.push({...triple, processed: false })
     })
 
+    return newState
+  }
+})*/
+
+export const isSentenceLoading = createReducer(true, {
+  [types.SENTENCE_LOADING_STATE](state, action) {
+    const newState = action.state 
     return newState
   }
 })

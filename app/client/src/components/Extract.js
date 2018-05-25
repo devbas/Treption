@@ -7,19 +7,14 @@ import TripleItem from '../containers/TripleItem'
 const Extract = ({ 
   sentence, 
   renderWord, 
-  predicates, 
-  onPredicateAdd, 
-  onPredicateInputChange,
-  predicateInput, 
-  renderPredicate, 
-  triples, 
   renderTriple, 
   color, 
   documentId, 
   tournament, 
   tournamentCreated, 
   isValidating, 
-  isExtracting
+  isExtracting, 
+  isSentenceLoading
 }) => (
   <div className="extract" style={{backgroundColor: color}}> 
     <Header scope="extract" documentId={documentId}/>
@@ -27,7 +22,7 @@ const Extract = ({
       <CreateTournament color={color}/>
     }
 
-    {tournament && !tournamentCreated &&
+    {tournament && !tournamentCreated && !isSentenceLoading &&
       <div className="extract-box">
         <div className="sentence-box">
           <div className="inner-box">
@@ -57,13 +52,13 @@ const Extract = ({
               <div className="points left">230</div>
             </div>
             <div className="content">
-              {isValidating &&
+              {isValidating() &&
                 <div className="validation-box">
                   <TripleItem/>
                 </div>
               }
               
-              {isExtracting &&
+              {isExtracting() &&
                 <div className="extract-box">
                   <div className="divider"></div>
                   <div className="description">Select one or multiple words:</div>

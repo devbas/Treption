@@ -22,6 +22,13 @@ export const fetchLastEditedDocument = (lastEditedDocumentId) => {
   }
 }
 
+const setDocumentLoadingState = (state) => {
+  return {
+    type: types.DOCUMENT_LOADING_STATE,
+    state: state
+  }
+}
+
 export const uploadText = (text) => {
   return (dispatch, getState) => {
 
@@ -33,10 +40,12 @@ export const uploadText = (text) => {
 
 export const boundFetchDocuments = () => {
   return (dispatch, getState) => {
+    dispatch(setDocumentLoadingState(true))
     axios.get(`/api/documents`).then((resp) => {
       console.log('boundFetchDocuments success ', resp)
       dispatch(fetchDocuments({ documents: JSON.parse(resp.data.Documents) }))
       dispatch(fetchLastEditedDocument({ lastEditedDocumentId: JSON.parse(resp.data.LastEditedDocumentId.action_value)}))
+      dispatch(setDocumentLoadingState(false))
     }).catch((ex) => {
       console.log('boundFetchDocuments error ', ex)
     })

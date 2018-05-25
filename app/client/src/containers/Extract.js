@@ -7,6 +7,7 @@ import * as UserActions from '../actions/users'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { blendColors } from '../utils'
+import _ from 'lodash'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
@@ -18,17 +19,16 @@ class Extract extends Component {
     super(props)
 
     this.state = {
-      predicateInput: '', 
-      isValidating: true, 
-      isExtracting: false 
+      predicateInput: ''
       //stage: 'subject' // Can either be subject, predicate or object
     }
 
     this.renderWord = this.renderWord.bind(this)
     this.renderPredicate = this.renderPredicate.bind(this)
-    //this.renderTriple = this.renderTriple.bind(this)
     this.onPredicateAdd = this.onPredicateAdd.bind(this)
     this.onPredicateInputChange = this.onPredicateInputChange.bind(this)
+    this.isValidating = this.isValidating.bind(this)
+    this.isExtracting = this.isExtracting.bind(this)
   }
 
   componentWillMount() {
@@ -41,12 +41,6 @@ class Extract extends Component {
     
     this.props.actions.boundFetchTournament()
     this.props.actions.boundFetchSentence(documentId, sentenceId)
-
-    if(this.props.triples.length > 0) {
-      this.setState({ 
-        isValidating: true 
-      })
-    }
 
     //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
@@ -75,6 +69,16 @@ class Extract extends Component {
     this.setState({ predicateInput: event.target.value });
   }
 
+  isValidating() {
+    const unprocessedTriples = _.find(this.props.triples, { processed: false })
+    return unprocessedTriples ? true : false 
+  }
+
+  isExtracting() {
+    const unprocessedTriples = _.find(this.props.triples, { processed: false })
+    return unprocessedTriples ? false : true 
+  }
+
   renderPredicate(predicate) {
     return (
       <ExtractPredicateItem 
@@ -93,14 +97,6 @@ class Extract extends Component {
     )
   }
 
-  /*renderTriple(triple) {
-    return (
-      <TripleItem
-        triple={triple}
-      />
-    )
-  }*/
-
   render() {
     const baseBackgroundColor = [0,0,0,0.4]
     const documentColorArray = this.props.document.color ? this.props.document.color.split(',') : [0,0,0]
@@ -113,19 +109,13 @@ class Extract extends Component {
       <ExtractComponent
         sentence={this.props.sentence}
         renderWord={this.renderWord}
-        onPredicateAdd={this.onPredicateAdd}
-        onPredicateInputChange={this.onPredicateInputChange}
-        predicateInput={this.state.predicateInput}
-        predicates={this.props.predicates}
-        renderPredicate={this.renderPredicate}
-        triples={this.props.triples}
-        //renderTriple={this.renderTriple}
         color={backgroundColorRgba}
         documentId={this.props.document.documentId}
         tournament={this.props.tournament}
         tournamentCreated={this.props.tournamentCreated}
-        isValidating={this.state.isValidating}
-        isExtracting={this.state.isExtracting}
+        isValidating={this.isValidating}
+        isExtracting={this.isExtracting}
+        isSentenceLoading={this.props.isSentenceLoading}
       />
     )
   }
@@ -139,7 +129,8 @@ function mapStateToProps(state) {
     stage: state.extractingStage, 
     triples: state.fetchedTriples, 
     tournament: state.fetchedTournament,
-    tournamentCreated: state.createdTournament
+    tournamentCreated: state.createdTournament, 
+    isSentenceLoading: state.isSentenceLoading
   }
 }
 
