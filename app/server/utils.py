@@ -607,7 +607,7 @@ def getCurrentTournament(userId):
               FROM tournament T 
               JOIN user U1 
               ON T.challenger_id = U1.user_id
-              JOIN user U2 
+              LEFT JOIN user U2 
               ON T.competitor_id = U2.user_id 
               WHERE (challenger_id = %s
               OR competitor_id = %s)
