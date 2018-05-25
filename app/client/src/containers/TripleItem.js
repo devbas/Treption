@@ -107,7 +107,6 @@ class TripleItem extends Component {
 
   onNextQuestionClick() {
     this.props.actions.boundSetTripleAsProcessed({...this.state.triple, processed: true })
-    console.log('serve next question')
   }
 
   render() {

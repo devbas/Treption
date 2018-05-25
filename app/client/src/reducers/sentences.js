@@ -77,7 +77,6 @@ export const fetchedTriples = (state = [], action) => {
       triples.push(action.triple.triple)
 
       newState.push(triples) 
-      //console.log('replace with the following data')
       return newState 
 
     default: 
@@ -85,19 +84,6 @@ export const fetchedTriples = (state = [], action) => {
 
   }
 }
-
-/*export const fetchedTriples = createReducer([], {
-
-  [types.SET_TRIPLES](state, action) {
-    const newState = []
-    
-    action.triples.triples.forEach((triple) => {
-      newState.push({...triple, processed: false })
-    })
-
-    return newState
-  }
-})*/
 
 export const isSentenceLoading = createReducer(true, {
   [types.SENTENCE_LOADING_STATE](state, action) {
