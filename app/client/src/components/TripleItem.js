@@ -1,9 +1,10 @@
 import React from 'react';
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
 
 const TripleItem = ({ 
-  //subject, 
-  //predicate, 
-  //object, 
   isSentenceLoading,
   onChoiceClick, 
   isActive, 
@@ -13,42 +14,46 @@ const TripleItem = ({
   clickedChoice, 
   triple
 }) => (
-  <div className="triple-item-box">
-    {isSentenceLoading &&
-      <div>Loading</div>
-    }
-
-    {!isSentenceLoading &&
-      <div>
-        <div className="points-to-earn-box">
-          +1 
-        </div>
-
-        <div className="triple-item-content-box">
-          <div className="left subject">{triple.subject}</div>
-          <div className="left predicate">{triple.predicate} </div>
-          <div className="left object">{triple.object}</div>
-        </div>
-        
-        {!hasClicked &&
-          <div className="button-box">
-            <div onClick={() => onChoiceClick('agree')} className="secondary-action">agree</div> 
-            <div onClick={() => onChoiceClick('disagree')} className="secondary-action">disagree</div>
-          </div>
+  <TransitionGroup className="triple-item-box">
+    <CSSTransition timeout={500} classNames="fade">
+      <div className="triple-item-box">
+        {isSentenceLoading &&
+          <div>Loading</div>
         }
-        
-        {hasClicked &&
+
+        {!isSentenceLoading &&
           <div>
-            <div className="button-box">
-              <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'agree' ? 'chosen' : 'not-chosen animated pulse'}`}>agree</div> 
-              <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'disagree' ? 'chosen' : 'not-chosen animated pulse'}`}>disagree</div>
+            <div className="points-to-earn-box">
+              +1 
             </div>
-            <div className="next-task" onClick={onNextQuestionClick}>Next</div>
+
+            <div className="triple-item-content-box">
+              <div className="left subject">{triple.subject}</div>
+              <div className="left predicate">{triple.predicate} </div>
+              <div className="left object">{triple.object}</div>
+            </div>
+            
+            {!hasClicked &&
+              <div className="button-box">
+                <div onClick={() => onChoiceClick('agree')} className="secondary-action">agree</div> 
+                <div onClick={() => onChoiceClick('disagree')} className="secondary-action">disagree</div>
+              </div>
+            }
+            
+            {hasClicked &&
+              <div>
+                <div className="button-box">
+                  <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'agree' ? 'chosen' : 'not-chosen animated pulse'}`}>agree</div> 
+                  <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'disagree' ? 'chosen' : 'not-chosen animated pulse'}`}>disagree</div>
+                </div>
+                <div className="next-task" onClick={onNextQuestionClick}>Next</div>
+              </div>
+            }
           </div>
         }
       </div>
-    }
-  </div>
+    </CSSTransition>
+  </TransitionGroup>
 )
 
 /*

@@ -20,6 +20,7 @@ class TripleItem extends Component {
       clickedChoice: '', 
       triple: [], 
       loading: true, 
+      processed: false,
       triple: !this.props.isSentenceLoading ? _.find(this.props.triples, { processed: false }) : []
       //answer: 
     }
@@ -97,6 +98,18 @@ class TripleItem extends Component {
 
   }
 
+  componentDidUpdate() {
+    if(this.state.processed) {
+      this.setState({
+        triple: !this.props.isSentenceLoading ? _.find(this.props.triples, { processed: false }) : [], 
+        processed: false, 
+        clickedChoice: '', 
+        hasClicked: false
+      })
+    }
+    //debugger;
+  }
+
   onChoiceClick(choice) {
     this.setState({
       hasClicked: true, 
@@ -106,6 +119,9 @@ class TripleItem extends Component {
   } 
 
   onNextQuestionClick() {
+    this.setState({
+      processed: true 
+    })
     this.props.actions.boundSetTripleAsProcessed({...this.state.triple, processed: true })
   }
 
@@ -115,7 +131,7 @@ class TripleItem extends Component {
     if(!this.props.isSentenceLoading) {
       answer = this.state.agree > this.state.disagree ? 'agree' : 'disagree'
     }
-
+    //debugger;
     return (
       <TripleItemComponent 
         //subject={this.state.triple.subject} 
@@ -128,8 +144,9 @@ class TripleItem extends Component {
         answer={answer}
         clickedChoice={this.state.clickedChoice}
         triple={this.state.triple}
-        />
+      />
     )
+    
   }
 }
 

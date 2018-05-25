@@ -34,8 +34,9 @@ export const boundFetchSentence = (documentId, sentenceId) => {
   return (dispatch, getState) => {
     dispatch(setSentenceLoadingState(true))
     axios.get(`/api/sentence/${documentId}/${sentenceId}`).then((resp) => {
+      const triples = JSON.parse(resp.data.Triples)
       dispatch(fetchSentence({ sentence: JSON.parse(resp.data.Sentence) }))
-      dispatch(fetchTriples({ triples: JSON.parse(resp.data.Triples) }))
+      dispatch(fetchTriples({ triples: triples }))
       dispatch(fetchDocument({ document: JSON.parse(resp.data.Document) }))
       dispatch(setSentenceLoadingState(false))
     })

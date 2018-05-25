@@ -179,16 +179,33 @@ body {
 }
 
 .extract .editor-box .inner-box .game-object-box {
-  padding: 20px;
-  border-bottom: 1px solid rgba(255, 250, 246, 1)
+  border-bottom: 1px solid rgba(255, 250, 246, 1); 
+  float: left; 
+  width: 100%; 
 }
 
 .extract .editor-box .inner-box .game-object-box .progress {
   border-right: 1px solid rgba(255, 250, 246, 1); 
+  width: 33%; 
+  text-align: center;
+  padding: 10px 0;
+  font-size: 20px;
 }
 
 .extract .editor-box .inner-box .game-object-box .time-remaining {
   border-right: 1px solid rgba(255, 250, 246, 1); 
+  width: 33%; 
+  text-align: center;
+  padding: 10px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.extract .editor-box .inner-box .game-object-box .points {
+  width: 33%; 
+  text-align: center;
+  padding: 10px 0;
+  font-size: 20px;
 }
 
 .extract .editor-box .inner-box .content {

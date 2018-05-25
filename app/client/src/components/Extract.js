@@ -14,7 +14,9 @@ const Extract = ({
   tournamentCreated, 
   isValidating, 
   isExtracting, 
-  isSentenceLoading
+  isSentenceLoading, 
+  totalTriples,
+  currentTripleOffset
 }) => (
   <div className="extract" style={{backgroundColor: color}}> 
     <Header scope="extract" documentId={documentId}/>
@@ -47,7 +49,13 @@ const Extract = ({
         <div className="editor-box">
           <div className="inner-box" style={{backgroundColor: color}}>
             <div className="game-object-box">
-              <div className="progress left">1 of 5</div>
+              {isValidating() &&
+                <div className="progress left">{currentTripleOffset} of {totalTriples}</div>
+              }
+              
+              {isExtracting() &&
+                <div className="progress left">0 extracted</div>
+              }
               <div className="time-remaining left">00:15</div>
               <div className="points left">230</div>
             </div>

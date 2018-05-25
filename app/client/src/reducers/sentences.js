@@ -72,12 +72,16 @@ export const fetchedTriples = (state = [], action) => {
       return newState
 
     case 'REPLACE_TRIPLE': 
-      
-      const triples = _.remove(state.fetchedTriples, { triple_id: action.triple.triple.triple_id })
-      triples.push(action.triple.triple)
+      state.forEach((triple) => {
+        if(triple.triple_id === action.triple.triple.triple_id) {
+          newState.push(action.triple.triple)
+        } else {
+          newState.push(triple)
+        }
+        
+      })
 
-      newState.push(triples) 
-      return newState 
+      return newState
 
     default: 
       return state 

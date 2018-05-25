@@ -19,7 +19,9 @@ class Extract extends Component {
     super(props)
 
     this.state = {
-      predicateInput: ''
+      predicateInput: '', 
+      totalTriples: !this.props.isSentenceLoading ? this.props.triples.length : 0, 
+      currentTripleOffset: 0, 
       //stage: 'subject' // Can either be subject, predicate or object
     }
 
@@ -70,6 +72,7 @@ class Extract extends Component {
   }
 
   isValidating() {
+    
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
     return unprocessedTriples ? true : false 
   }
@@ -105,6 +108,13 @@ class Extract extends Component {
     const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
     const backgroundColorRgba = `rgba(${backgroundColor.join()}`
 
+    let totalTriples = 0
+    let currentTripleOffset = 0
+    if(!this.props.isSentenceLoading) {
+      totalTriples = this.props.triples.length
+      currentTripleOffset = _.sumBy(this.props.triples, triple => (triple.processed ? 1 : 0))
+    }
+
     return(
       <ExtractComponent
         sentence={this.props.sentence}
@@ -116,6 +126,8 @@ class Extract extends Component {
         isValidating={this.isValidating}
         isExtracting={this.isExtracting}
         isSentenceLoading={this.props.isSentenceLoading}
+        currentTripleOffset={currentTripleOffset}
+        totalTriples={totalTriples}
       />
     )
   }
