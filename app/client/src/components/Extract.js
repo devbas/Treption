@@ -70,7 +70,15 @@ const Extract = ({
                 <div className="extract-box">
                   <div className="divider"></div>
                   <div className="description">Select one or multiple words:</div>
-                  <div className="word-choice-box">Building | structure</div>
+
+
+
+
+
+
+                  <div className="word-choice-box">
+                    <div class="extract-word-item-box send"><span><div class="character">Window</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">with</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">a</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">heat-sensitive</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">material</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">,</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">that</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">lights-up</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">if</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">a</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">person</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">is</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">in</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">the</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">room</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">during</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">a</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">fire</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">.</div><div class="shortkey"></div></span></div>
+                  </div>
                   <div className="triple-box">
                     <div className="subject">Building</div>
                     <div className="predicate">consists of</div>

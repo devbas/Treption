@@ -153,7 +153,7 @@ axios.interceptors.response.use((response) => {
       url: `/api/refresh`, 
       config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `refreshToken=${refreshToken}` }}
     }).then((data) => {
-      document.cookie = `accessToken=${data.data.access_token}; path=/`
+      document.cookie = `accessToken=${data.data.access_token};path=/`
       return axios(originalRequest)
     }).catch((error) => {
       return Promise.reject(error)
