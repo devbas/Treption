@@ -109,6 +109,13 @@ body {
   padding: 30px 0 50px 0;
 }
 
+.extract .sentence-box.is-extracting {
+  position: absolute;
+  margin-top: 100px; 
+  top: 0;
+  transition: margin 0.2s linear;
+}
+
 .extract .sentence-box .inner-box {
   padding: 20px 12px 5px 20px;
   border-radius: 2px;
@@ -130,6 +137,7 @@ body {
 .extract .sentence-control-box {
   float: left; 
   width: 100%; 
+  margin-bottom: 50px;
 }
 
 .extract .sentence-control-box .inner-box {
@@ -137,7 +145,7 @@ body {
   margin: auto; 
 }
 
-.extract .sentence-control-box .done {
+.extract .extract-box .done {
   width: 50px; 
   height: 50px; 
   border-radius: 40px; 
@@ -150,7 +158,7 @@ body {
   background-repeat: no-repeat;
 }
 
-.extract .sentence-control-box .done:hover {
+.extract .extract-box .done:hover {
   background-color: rgba(12, 26, 36, 1);
   transition: background-color ease-in-out 0.13s
 }
@@ -163,11 +171,21 @@ body {
 .extract .sentence-control-box .next {
   float: right;
   font-weight: 700; 
+  color: rgba(12, 26, 36, 1);
+  margin-top: 12px;
+}
+
+.extract .editor-box .validation-box {
+  padding: 50px 20px;
 }
 
 .extract .editor-box {
   float: left; 
   width: 100%; 
+}
+
+.extract .editor-box.is-extracting {
+  margin-top: 60px;
 }
 
 .extract .editor-box .inner-box {
@@ -182,6 +200,7 @@ body {
   border-bottom: 1px solid rgba(255, 250, 246, 1); 
   float: left; 
   width: 100%; 
+  color: #FDE1CC; 
 }
 
 .extract .editor-box .inner-box .game-object-box .progress {
@@ -208,33 +227,115 @@ body {
   font-size: 20px;
 }
 
+.extract .editor-box .extract-word-box {
+  width: 100%; 
+  float: left; 
+  padding-bottom: 0;
+}
+
 .extract .editor-box .inner-box .content {
-  padding: 50px 20px;
   margin-top: 15px; 
+  display: table;
+  width: 100%; 
 }
 
 .editor-box .triple-box {
   width: 100%; 
-  border-top: 0.5px solid rgba(12, 26, 36, 0.4);
-  border-bottom: 0.5px solid rgba(12, 26, 36, 0.4)
+  margin-top: 50px;
+  margin-bottom: 80px;
+}
+
+.extract .editor-box .extract-word-box .content {
+  padding: 20px;
+  width: auto;
+  margin-top: 0;
 }
 
 .editor-box .triple-box .subject, .editor-box .triple-box .predicate, .editor-box .triple-box .object {
   float: left; 
-  width: 200px; 
+  width: 182px; 
 }
 
 .editor-box .extract-box .triple-box .subject, .editor-box .extract-box .triple-box .predicate, .editor-box .extract-box .triple-box .object {
-  padding: 10px; 
-  border-radius: 30px; 
-  background-color: #fff; 
-  width: auto; 
+  padding: 20px 10px; 
+  border-radius: 2px; 
+  background-color: rgba(255, 255, 255, 0.1); 
+  border: 2px dashed #FDE1CC; 
+}
+
+.editor-box .extract-box .triple-box .predicate {
+  margin-left: 20px; 
+  margin-right: 20px; 
 }
 
 .editor-box .extract-box .description {
   font-size: 16px; 
   color: rgba(255, 250, 246, 1); 
   margin-top: 12px;
+}
+
+.editor-box .extract-box {
+  padding: 0px 20px;
+}
+
+.editor-box .extract-box .feeling-lucky-box {
+  width: 100%; 
+  position: relative;
+}
+
+.editor-box .extract-box .feeling-lucky-button {
+  background-color: rgba(255, 255, 255, 0.9); 
+  border-radius: 20px; 
+  padding: 10px 20px;
+  width: 130px; 
+  margin: auto;
+  background-image: url('./assets/img/dice.svg'); 
+  background-size: 15%;
+  background-repeat: no-repeat;
+  background-position: 90% center; 
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.editor-box .extract-box .feeling-lucky-button:hover {
+  background-color: rgba(255, 255, 255, 1); 
+  transition: background-color 0.2s ease-in-out;
+}
+
+.editor-box .extract-box .feeling-lucky-box::before {
+  content: ""; 
+  position: absolute; 
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  width: calc(100% - calc(50% + 85px));
+  top: 20px; 
+}
+
+.editor-box .extract-box .feeling-lucky-box::after {
+  content: ""; 
+  position: absolute; 
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  width: calc(100% - calc(50% + 85px));
+  top: 20px; 
+  right: 0;
+}
+
+.editor-box .explanation-box {
+  width: 100%; 
+  background-color: rgba(255, 239, 229, 0.1);
+  border-bottom: 1px solid rgba(255, 239, 229, 1);
+  float: left; 
+  background-image: url('./assets/img/tip.svg');
+  background-size: 2.5%;
+  background-repeat: no-repeat;
+  background-position: 1% center;
+}
+
+.editor-box .explanation-box .description {
+  text-align: center; 
+  padding: 10px 0;
+  color: rgba(255, 239, 229, 1);
+  font-weight: 300;
+  font-size: 14px;
 }
 
 .extract .create-tournament-box {
@@ -667,13 +768,25 @@ body {
 }
 
 .triple-item-box .points-to-earn-box {
-  margin-left: -60px; 
+  margin-right: -60px; 
   width: 30px; 
-  height: 30px; 
+  height: 26px; 
   background-color: #000; 
-  float: left; 
+  float: right; 
   border-radius: 20px;
   color: #fff; 
+  position: absolute;
+  right: 0;
+  margin-top: 0px;
+  opacity: 0; 
+  text-align: center;
+  padding-top: 4px;
+}
+
+.triple-item-box .points-to-earn-box.active {
+  transition: margin 1500ms ease-in-out, opacity 1000ms;
+  margin-top: -140px;
+  opacity: 1;
 }
 
 .triple-item-box .subject, .triple-item-box .predicate, .triple-item-box .object {

@@ -18,10 +18,10 @@ class TripleItem extends Component {
       object: '', 
       hasClicked: false, 
       clickedChoice: '', 
-      triple: [], 
       loading: true, 
       processed: false,
-      triple: !this.props.isSentenceLoading ? _.find(this.props.triples, { processed: false }) : []
+      triple: !this.props.isSentenceLoading ? _.find(this.props.triples, { processed: false }) : [], 
+      isPointBoxActive: false 
       //answer: 
     }
 
@@ -111,6 +111,30 @@ class TripleItem extends Component {
   }
 
   onChoiceClick(choice) {
+    if(this.state.triple.agree > this.state.triple.disagree && choice === 'agree') {
+      console.log('correct!')
+      this.setState({
+        isPointBoxActive: true 
+      })
+
+      setTimeout(() => {
+        this.setState({ 
+          isPointBoxActive: false
+        });
+      }, 2000)
+    } else if(this.state.triple.disagree > this.state.triple.agree && choice === 'disagree') {
+      console.log('correct 2!')
+      this.setState({
+        isPointBoxActive: false 
+      })
+
+      setTimeout(() => {
+        this.setState({ 
+          isPointBoxActive: false
+        });
+      }, 1300)
+    }
+
     this.setState({
       hasClicked: true, 
       clickedChoice: choice
@@ -129,7 +153,7 @@ class TripleItem extends Component {
 
     let answer = ''
     if(!this.props.isSentenceLoading) {
-      answer = this.state.agree > this.state.disagree ? 'agree' : 'disagree'
+      answer = this.state.triple.agree > this.state.triple.disagree ? 'agree' : 'disagree'
     }
     //debugger;
     return (
@@ -144,6 +168,7 @@ class TripleItem extends Component {
         answer={answer}
         clickedChoice={this.state.clickedChoice}
         triple={this.state.triple}
+        isPointBoxActive={this.state.isPointBoxActive}
       />
     )
     

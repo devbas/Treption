@@ -16,7 +16,8 @@ const Extract = ({
   isExtracting, 
   isSentenceLoading, 
   totalTriples,
-  currentTripleOffset
+  currentTripleOffset, 
+  playerType
 }) => (
   <div className="extract" style={{backgroundColor: color}}> 
     <Header scope="extract" documentId={documentId}/>
@@ -26,27 +27,23 @@ const Extract = ({
 
     {tournament && !tournamentCreated && !isSentenceLoading &&
       <div className="extract-box">
-        <div className="sentence-box">
-          <div className="inner-box">
-            <div className="content">
-              {sentence.aggregatedWords &&
-                <div className="word-box">
-                  {sentence.aggregatedWords.map(renderWord)}
-                </div>
-              }
+        
+        {isValidating() &&
+          <div className={`sentence-box ${isValidating() ? 'is-validating' : 'is-extracting'}`}>
+            <div className="inner-box">
+              <div className="content">
+                {sentence.aggregatedWords &&
+                  <div className="word-box">
+                    {sentence.aggregatedWords.map(renderWord)}
+                  </div>
+                }
+              </div>
             </div>
-          </div>
-        </div>
+          </div>        
+        }
 
-        <div className="sentence-control-box">
-          <div className="inner-box">
-            {sentence.nextSentence &&
-              <Link to={`/extract/${documentId}/${sentence.nextSentence}`}><div className="done"></div></Link>
-            }
-          </div>
-        </div>
 
-        <div className="editor-box">
+        <div className={`editor-box ${isExtracting() ? 'is-extracting' : 'is-validating'}`}>
           <div className="inner-box" style={{backgroundColor: color}}>
             <div className="game-object-box">
               {isValidating() &&
@@ -57,8 +54,30 @@ const Extract = ({
                 <div className="progress left">0 extracted</div>
               }
               <div className="time-remaining left">00:15</div>
-              <div className="points left">230</div>
+              <div className="points left">{playerType === 'competitor' ? tournament.competitor_points : tournament.challenger_points } points</div>
             </div>
+            <div className="explanation-box">
+              {isValidating() &&
+                <div className="description">Agree or disagree on the presented relation relative to the sentence above.</div>
+              }
+
+              {isExtracting() &&
+                <div className="description">Now try to create your own relations. No inspiration? Try the random button!</div>
+              }
+            </div>
+            
+            {isExtracting() &&
+              <div className="sentence-box extract-word-box">
+                <div className="content">
+                  {sentence.aggregatedWords &&
+                    <div className="word-box">
+                      {sentence.aggregatedWords.map(renderWord)}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
             <div className="content">
               {isValidating() &&
                 <div className="validation-box">
@@ -68,26 +87,28 @@ const Extract = ({
               
               {isExtracting() &&
                 <div className="extract-box">
-                  <div className="divider"></div>
-                  <div className="description">Select one or multiple words:</div>
-
-
-
-
-
-
-                  <div className="word-choice-box">
-                    <div class="extract-word-item-box send"><span><div class="character">Window</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">with</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">a</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">heat-sensitive</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">material</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">,</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">that</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">lights-up</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">if</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">a</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">person</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">is</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">in</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">the</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">room</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">during</div><div class="shortkey"></div></span></div><div class="extract-word-item-box receive"><span><div class="character">a</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">fire</div><div class="shortkey"></div></span></div><div class="extract-word-item-box send"><span><div class="character">.</div><div class="shortkey"></div></span></div>
+                  <div className="feeling-lucky-box">
+                    <div className="feeling-lucky-button">Randomize</div>
                   </div>
+
                   <div className="triple-box">
-                    <div className="subject">Building</div>
-                    <div className="predicate">consists of</div>
-                    <div className="object">variable structure</div>
+                    <div className="subject"></div>
+                    <div className="predicate"></div>
+                    <div className="object"></div>
                   </div>
+                  <div className="done"></div>
                 </div>
               }
             </div>
             
+          </div>
+        </div>
+
+        <div className="sentence-control-box">
+          <div className="inner-box">
+            {sentence.nextSentence && isExtracting() &&
+              <Link to={`/extract/${documentId}/${sentence.nextSentence}`} className="next">Next sentence ></Link>
+            }
           </div>
         </div>
 

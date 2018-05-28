@@ -188,8 +188,20 @@ def saveTripleVote():
   if not tripleId or not choice: 
     return jsonify({ 'msg': 'Missing parameters' }), 400
 
-  createTripleVote(userId, tripleId, choice)
-  return jsonify({ 'msg': 'OK' }), 200
+  currentTournament = getCurrentTournament(userId)
+
+  if currentTournament['challenger_id'] == userId: 
+    playerType = 'challenger'
+  
+  if currentTournament['competitor_id'] == userId: 
+    playerType = 'competitor'
+
+
+  print(' Current tournament: ' + str(currentTournament), file=sys.stderr)
+  createTripleVote(userId, tripleId, choice, currentTournament['tournament_id'], playerType)
+
+  updatedTournament = getCurrentTournament(userId)
+  return jsonify({ 'Tournament': updatedTournament }), 200
 
 
 @app.route("/api/refresh", methods=['POST'])

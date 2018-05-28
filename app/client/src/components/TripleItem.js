@@ -12,7 +12,8 @@ const TripleItem = ({
   onNextQuestionClick, 
   answer, 
   clickedChoice, 
-  triple
+  triple, 
+  isPointBoxActive
 }) => (
   <TransitionGroup className="triple-item-box">
     <CSSTransition timeout={500} classNames="fade">
@@ -23,9 +24,10 @@ const TripleItem = ({
 
         {!isSentenceLoading &&
           <div>
-            <div className="points-to-earn-box">
-              +1 
-            </div>
+              <div className={`points-to-earn-box ${isPointBoxActive ? 'active' : ''}`}>
+                +1 
+              </div>
+            
 
             <div className="triple-item-content-box">
               <div className="left subject">{triple.subject}</div>

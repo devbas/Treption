@@ -9,9 +9,6 @@ const Header = ({
   tournament 
 }) => (
   <div className="header-box">
-    {tournament &&
-      <Tournament/>
-    }
     
     <div className="inner-box">
       {scope === 'extract' &&

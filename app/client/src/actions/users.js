@@ -11,7 +11,7 @@ const setUser = ({ email, accessToken, refreshToken }) => {
   }
 }
 
-const fetchTournament = ({ tournament }) => {
+export const fetchTournament = ({ tournament }) => {
   return {
     type: types.SET_TOURNAMENT, 
     tournament

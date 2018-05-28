@@ -108,6 +108,8 @@ class Extract extends Component {
     const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
     const backgroundColorRgba = `rgba(${backgroundColor.join()}`
 
+    const playerType = this.props.tournament.challenger_id === this.props.tournament.user_id ? 'challenger' : 'competitor'
+
     let totalTriples = 0
     let currentTripleOffset = 0
     if(!this.props.isSentenceLoading) {
@@ -128,6 +130,7 @@ class Extract extends Component {
         isSentenceLoading={this.props.isSentenceLoading}
         currentTripleOffset={currentTripleOffset}
         totalTriples={totalTriples}
+        playerType={playerType}
       />
     )
   }

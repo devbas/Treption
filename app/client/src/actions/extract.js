@@ -1,6 +1,7 @@
 import * as types from './types'
 import axios from 'axios'
 import { getCookie } from '../utils'
+import * as userActions from './users'
 
 const extractingStage = (stage) => {
   return {
@@ -61,6 +62,8 @@ export const boundTripleVote = (tripleId, choice) => {
       url: `/api/triple/vote`, 
       data: `tripleId=${tripleId}&choice=${choice}`, 
       config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': getCookie('accessToken') }}
+    }).then((response) => {
+      dispatch(userActions.fetchTournament({ tournament: response.data.Tournament }))
     })
   }
 }

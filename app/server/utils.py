@@ -525,7 +525,7 @@ def getLastEditedDocument(userId):
   finally: 
     connection.close()
 
-def createTripleVote(userId, tripleId, choice): 
+def createTripleVote(userId, tripleId, choice, tournamentId, playerType): 
   connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
   
   try: 
@@ -535,8 +535,8 @@ def createTripleVote(userId, tripleId, choice):
       voteBoolean = False
     
     with connection.cursor() as cursor: 
-      sql = "INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`) VALUES (%s, %s, NOW(), %s, 1)"
-      cursor.execute(sql, (voteBoolean, userId, tripleId) )
+      sql = "INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`, `tournament_id`) VALUES (%s, %s, NOW(), %s, 1, %s)"
+      cursor.execute(sql, (voteBoolean, userId, tripleId, tournamentId) )
 
     connection.commit() 
 
@@ -574,7 +574,26 @@ def createTripleVote(userId, tripleId, choice):
       sparql = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> DELETE DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
 
     with connection.cursor() as cursor: 
-      cursor.execute('UPDATE tournament T INNER JOIN (SELECT SUM(points) AS total_points, tournament_id FROM vote WHERE tournament_id = %s) V1 ON V1.tournament_id = T.tournament_id SET `challenger_points` = V1.total_points', (1))
+      if playerType == 'competitor': 
+        cursor.execute('''UPDATE tournament T 
+                          INNER JOIN (
+                            SELECT SUM(points) AS total_points, tournament_id 
+                            FROM vote 
+                            WHERE tournament_id = %s
+                            AND user_id = %s) V1 
+                          ON V1.tournament_id = T.tournament_id 
+                          SET `competitor_points` = V1.total_points''', (tournamentId, userId))
+
+      if playerType == 'challenger': 
+        cursor.execute('''UPDATE tournament T 
+                          INNER JOIN (
+                            SELECT SUM(points) AS total_points, tournament_id 
+                            FROM vote 
+                            WHERE tournament_id = %s
+                            AND user_id = %s) V1 
+                          ON V1.tournament_id = T.tournament_id 
+                          SET `challenger_points` = V1.total_points''', (tournamentId, userId))
+
 
     response = requests.post('http://fuseki:3030/treption/update', data={'update': sparql})
     print('Fuseki response: ' + str(response) + ' ' + sparql, file=sys.stderr)
@@ -616,6 +635,7 @@ def getCurrentTournament(userId):
       tournament = cursor.fetchone()
 
     if tournament: 
+      tournament['user_id'] = userId
       return tournament
     else: 
       return 0
