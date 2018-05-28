@@ -7,10 +7,11 @@ export const extractingStage = createReducer('subject', {
   }
 })
 
-export const extractedTriples = (state = {}, action) => {
+export const extractedTriples = (state = [], action) => {
 
-  const newState = state 
-
+  let newState = [...state]
+  const existingConceptIndex = newState.findIndex(triple => triple.concept === true)
+  // debugger;
   switch(action.type) {
 
     case 'SET_TRIPLE_SUBJECT': 
@@ -22,20 +23,25 @@ export const extractedTriples = (state = {}, action) => {
       }
 
       return newState*/
-      if(newState.length > 0 && !('subject' in newState[newState.length-1])) {
-        newState[newState.length-1] = {...newState[newState.length-1], subject: action.subject }
+      
+      if(existingConceptIndex > -1) {
+        newState[existingConceptIndex] = {...newState[existingConceptIndex], subject: action.subject}
+      } else if(newState.length > 0 && !('subject' in newState[newState.length-1])) {
+        newState[newState.length-1] = {...newState[newState.length-1], subject: action.subject, concept: true }
       } else {
-        newState.subject = action.subject
-        /*newState.push({
+        //newState.subject = action.subject
+        newState.push({
           subject: action.subject
-        })*/
+        })
       }
       return newState
 
     case 'SET_TRIPLE_PREDICATE': 
 
-      if(newState.length > 0 && !('predicate' in newState[newState.length-1])) {
-        newState[newState.length-1] = {...newState[newState.length-1], predicate: action.predicate }
+      if(existingConceptIndex > -1) {
+        newState[existingConceptIndex] = {...newState[existingConceptIndex], predicate: action.predicate}
+      } else if(newState.length > 0 && !('predicate' in newState[newState.length-1])) {
+        newState[newState.length-1] = {...newState[newState.length-1], predicate: action.predicate, concept: true }
       } else {
         newState.push({
           predicate: action.predicate
@@ -46,8 +52,10 @@ export const extractedTriples = (state = {}, action) => {
     
     case 'SET_TRIPLE_OBJECT': 
 
-      if(newState.length > 0 && !('object' in newState[newState.length-1])) {
-        newState[newState.length-1] = {...newState[newState.length-1], object: action.object }
+      if(existingConceptIndex > -1) {
+        newState[existingConceptIndex] = {...newState[existingConceptIndex], object: action.object}
+      } else if(newState.length > 0 && !('object' in newState[newState.length-1])) {
+        newState[newState.length-1] = {...newState[newState.length-1], object: action.object, concept: true }
       } else {
         newState.push({
           subject: action.object

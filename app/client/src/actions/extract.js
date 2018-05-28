@@ -37,19 +37,19 @@ export const setExtractingStage = (stage) => {
   }
 }
 
-export const setTriplePredicate = (predicate) => {
+export const boundUpdateTriplePredicate = (predicate) => {
   return (dispatch, getState) => {
     dispatch(triplePredicate(predicate))
   }
 }
 
-export const setTripleSubject = (subject) => {
+export const boundUpdateTripleSubject = (subject) => {
   return (dispatch, getState) => {
     dispatch(tripleSubject(subject))
   }
 }
 
-export const setTripleObject = (object) => {
+export const boundUpdateTripleObject = (object) => {
   return (dispatch, getState) => {
     dispatch(tripleObject(object))
   } 

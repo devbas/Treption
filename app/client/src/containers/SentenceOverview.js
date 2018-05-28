@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SentenceOverviewComponent from '../components/SentenceOverview'; 
 import * as DocumentActions from '../actions/documents'
+import * as ExtractActions from '../actions/extract'
 import SentenceItem from './SentenceItem'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -83,7 +84,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-	  actions: bindActionCreators(Object.assign({}, DocumentActions), dispatch)
+	  actions: bindActionCreators(Object.assign({}, DocumentActions, ExtractActions), dispatch)
   }
 }
 

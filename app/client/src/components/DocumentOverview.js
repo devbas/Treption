@@ -57,7 +57,7 @@ const DocumentOverview = ({
           
           {files && 
             <div className="loading-box">
-              <div className="loader-label">Processing..</div>
+              <div className="loader-label">Processing (This can take a while)..</div>
               <div className="loader"></div>
             </div>
           }

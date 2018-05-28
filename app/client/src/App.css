@@ -146,8 +146,8 @@ body {
 }
 
 .extract .extract-box .done {
-  width: 50px; 
-  height: 50px; 
+  width: 40px; 
+  height: 40px; 
   border-radius: 40px; 
   background-color: rgba(12, 26, 36, 0.8);
   transition: background-color ease-in-out 0.13s;
@@ -156,6 +156,10 @@ body {
   background-size: 50%; 
   background-position: center; 
   background-repeat: no-repeat;
+  margin-top: 1px;
+  float: right; 
+  margin-left: 20px; 
+  cursor: pointer;
 }
 
 .extract .extract-box .done:hover {
@@ -243,6 +247,7 @@ body {
   width: 100%; 
   margin-top: 50px;
   margin-bottom: 80px;
+  float: left; 
 }
 
 .extract .editor-box .extract-word-box .content {
@@ -253,11 +258,15 @@ body {
 
 .editor-box .triple-box .subject, .editor-box .triple-box .predicate, .editor-box .triple-box .object {
   float: left; 
-  width: 182px; 
+  width: 23%; 
+  color: #0C1A24; 
+  font-size: 24px; 
+  font-style: italic;
+  font-weight: 600;
 }
 
 .editor-box .extract-box .triple-box .subject, .editor-box .extract-box .triple-box .predicate, .editor-box .extract-box .triple-box .object {
-  padding: 20px 10px; 
+  padding: 5px 10px; 
   border-radius: 2px; 
   background-color: rgba(255, 255, 255, 0.1); 
   border: 2px dashed #FDE1CC; 
@@ -327,7 +336,7 @@ body {
   background-image: url('./assets/img/tip.svg');
   background-size: 2.5%;
   background-repeat: no-repeat;
-  background-position: 1% center;
+  background-position: 20px center;
 }
 
 .editor-box .explanation-box .description {

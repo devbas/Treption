@@ -4,6 +4,7 @@ import * as SentenceActions from '../actions/sentences'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { DragSource } from 'react-dnd';
 
 import TripleItemComponent from '../components/TripleItem'
 

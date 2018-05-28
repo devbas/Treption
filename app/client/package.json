@@ -8,6 +8,8 @@
     "lodash": "4.17.10",
     "moment": "^2.22.1",
     "react": "16.3.2",
+    "react-dnd": "^2.6.0",
+    "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "16.3.2",
     "react-dropzone": "4.2.9",
     "react-redux": "5.0.7",

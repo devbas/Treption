@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Header from '../containers/Header'
 import CreateTournament from '../containers/CreateTournament'
 import TripleItem from '../containers/TripleItem'
+import ExtractedTripleItem from './ExtractedTripleItem'
 
 const Extract = ({ 
   sentence, 
@@ -17,7 +18,9 @@ const Extract = ({
   isSentenceLoading, 
   totalTriples,
   currentTripleOffset, 
-  playerType
+  playerType, 
+  onRandomizeClick, 
+  extractedTriples
 }) => (
   <div className="extract" style={{backgroundColor: color}}> 
     <Header scope="extract" documentId={documentId}/>
@@ -62,7 +65,7 @@ const Extract = ({
               }
 
               {isExtracting() &&
-                <div className="description">Now try to create your own relations. No inspiration? Try the random button!</div>
+                <div className="description">Now try to create your own relations. Need inspiration? Try the random button!</div>
               }
             </div>
             
@@ -88,15 +91,15 @@ const Extract = ({
               {isExtracting() &&
                 <div className="extract-box">
                   <div className="feeling-lucky-box">
-                    <div className="feeling-lucky-button">Randomize</div>
+                    <div className="feeling-lucky-button" onClick={onRandomizeClick}>Randomize</div>
                   </div>
-
-                  <div className="triple-box">
-                    <div className="subject"></div>
-                    <div className="predicate"></div>
-                    <div className="object"></div>
-                  </div>
-                  <div className="done"></div>
+                  {extractedTriples.length > 0 && extractedTriples[0].subject && extractedTriples[0].predicate && extractedTriples[0].object &&
+                    <span>
+                      {extractedTriples.map((triple) => {
+                        return <ExtractedTripleItem subject={triple.subject[0].value} predicate={triple.predicate[0].value} object={triple.object[0].value} concept={triple.concept}/>
+                      })}
+                    </span>
+                  }
                 </div>
               }
             </div>

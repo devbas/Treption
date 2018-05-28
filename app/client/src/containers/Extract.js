@@ -31,6 +31,7 @@ class Extract extends Component {
     this.onPredicateInputChange = this.onPredicateInputChange.bind(this)
     this.isValidating = this.isValidating.bind(this)
     this.isExtracting = this.isExtracting.bind(this)
+    this.onRandomizeClick = this.onRandomizeClick.bind(this)
   }
 
   componentWillMount() {
@@ -69,6 +70,40 @@ class Extract extends Component {
 
   onPredicateInputChange(event) {
     this.setState({ predicateInput: event.target.value });
+  }
+
+  onRandomizeClick() {
+    // We have this.props.sentence 
+    console.log('start', this.props.sentence)
+    const randomizeBucket = []
+    for(let i = 0; i < this.props.sentence.aggregatedWords.length; i++) {
+      randomizeBucket[i] = this.props.sentence.aggregatedWords[i].words
+    }
+
+    const randomSubjectNumber = Math.floor(Math.random() * randomizeBucket.length)
+    this.props.actions.boundUpdateTripleSubject(randomizeBucket[randomSubjectNumber])
+    randomizeBucket.splice(randomSubjectNumber, 1)
+
+    const randomPredicateNumber = Math.floor(Math.random() * randomizeBucket.length)
+    this.props.actions.boundUpdateTriplePredicate(randomizeBucket[randomPredicateNumber])
+    randomizeBucket.splice(randomPredicateNumber, 1)
+
+    const randomObjectNumber = Math.floor(Math.random() * randomizeBucket.length)
+    this.props.actions.boundUpdateTripleObject(randomizeBucket[randomObjectNumber])
+    randomizeBucket.splice(randomObjectNumber, 1)
+    
+
+    console.log('randomizebucket: ', randomizeBucket) 
+
+    // Get all words from sentence
+
+    // Create sentenceWord bucket
+
+    // Select random word from sentence, dispatch as subject, remove from sentenceWord bucket 
+
+    // Select another random word, dispatch as predicate, remove from sentenceWord bucket
+
+    // Select another random word, dispatch as object, remove from sentenceWord bucket
   }
 
   isValidating() {
@@ -117,6 +152,8 @@ class Extract extends Component {
       currentTripleOffset = _.sumBy(this.props.triples, triple => (triple.processed ? 1 : 0))
     }
 
+    console.log('render extract', this.props.extractedTriples)
+
     return(
       <ExtractComponent
         sentence={this.props.sentence}
@@ -131,6 +168,8 @@ class Extract extends Component {
         currentTripleOffset={currentTripleOffset}
         totalTriples={totalTriples}
         playerType={playerType}
+        onRandomizeClick={this.onRandomizeClick}
+        extractedTriples={this.props.extractedTriples}
       />
     )
   }
@@ -145,7 +184,8 @@ function mapStateToProps(state) {
     triples: state.fetchedTriples, 
     tournament: state.fetchedTournament,
     tournamentCreated: state.createdTournament, 
-    isSentenceLoading: state.isSentenceLoading
+    isSentenceLoading: state.isSentenceLoading, 
+    extractedTriples: state.extractedTriples
   }
 }
 
