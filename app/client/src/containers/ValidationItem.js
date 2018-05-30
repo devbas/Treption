@@ -6,9 +6,9 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import { DragSource } from 'react-dnd';
 
-import TripleItemComponent from '../components/TripleItem'
+import ValidationItemComponent from '../components/ValidationItem'
 
-class TripleItem extends Component {
+class ValidationItem extends Component {
   
   constructor(props) {
     super(props) 
@@ -158,7 +158,7 @@ class TripleItem extends Component {
     }
     //debugger;
     return (
-      <TripleItemComponent 
+      <ValidationItemComponent 
         //subject={this.state.triple.subject} 
         //predicate={this.state.triple.predicate} 
         //object={this.state.triple.object}
@@ -189,4 +189,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
   
-export default connect(mapStateToProps, mapDispatchToProps)(TripleItem); 
+export default connect(mapStateToProps, mapDispatchToProps)(ValidationItem); 

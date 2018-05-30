@@ -79,19 +79,19 @@ body {
 }
 
 .extract-word-item-box span {
-  background-color: rgba(255, 239, 229, 0.6);
+  background-color: rgba(255, 239, 229, 0.8);
   float: left;
   border-radius: 2px; 
 }
 
 
 .extract-word-item-box.inactive {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.1);
   cursor: default;
 }
 
 .extract-word-item-box.inactive span {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .extract-word-item-box .character {

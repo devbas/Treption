@@ -2,8 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../containers/Header'
 import CreateTournament from '../containers/CreateTournament'
-import TripleItem from '../containers/TripleItem'
-import ExtractedTripleItem from './ExtractedTripleItem'
+import ValidationItem from '../containers/ValidationItem'
+import ExtractedTripleItem from '../containers/ExtractedTripleItem'
 
 const Extract = ({ 
   sentence, 
@@ -65,7 +65,7 @@ const Extract = ({
               }
 
               {isExtracting() &&
-                <div className="description">Now try to create your own relations. Need inspiration? Try the random button!</div>
+                <div className="description">Now create your own relations. Need inspiration? Try the random button!</div>
               }
             </div>
             
@@ -84,7 +84,7 @@ const Extract = ({
             <div className="content">
               {isValidating() &&
                 <div className="validation-box">
-                  <TripleItem/>
+                  <ValidationItem/>
                 </div>
               }
               
@@ -96,7 +96,12 @@ const Extract = ({
                   {extractedTriples.length > 0 && extractedTriples[0].subject && extractedTriples[0].predicate && extractedTriples[0].object &&
                     <span>
                       {extractedTriples.map((triple) => {
-                        return <ExtractedTripleItem subject={triple.subject[0].value} predicate={triple.predicate[0].value} object={triple.object[0].value} concept={triple.concept}/>
+                        return <ExtractedTripleItem 
+                          subject={triple.subject[0].value} 
+                          predicate={triple.predicate[0].value} 
+                          object={triple.object[0].value} 
+                          concept={triple.concept}
+                        />
                       })}
                     </span>
                   }

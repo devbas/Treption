@@ -4,7 +4,7 @@ import {
   TransitionGroup,
 } from 'react-transition-group';
 
-const TripleItem = ({ 
+const ValidationItem = ({ 
   isSentenceLoading,
   onChoiceClick, 
   isActive, 
@@ -72,4 +72,4 @@ const TripleItem = ({
       }
 */
 
-export default TripleItem
+export default ValidationItem

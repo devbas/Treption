@@ -1,9 +1,7 @@
 import React from 'react';
 
 const ExtractWordItem = ({ word, inactive, keystroke, onWordClick, wordState }) => (
-  <div className={
-    wordState === 'send' ? 'extract-word-item-box send' : 'extract-word-item-box receive'
-  } onClick={onWordClick}>
+  <div className={`extract-word-item-box ${inactive ? 'inactive' : 'active' }`} onClick={onWordClick}>
     <span>
       <div className="character">
         {word}

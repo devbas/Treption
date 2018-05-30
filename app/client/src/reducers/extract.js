@@ -70,6 +70,12 @@ export const extractedTriples = (state = [], action) => {
 
 }
 
+export const selectedTripleAttribute = createReducer('', {
+  [types.SELECTED_TRIPLE_ATTRIBUTE](state, action) {
+    return action.attribute
+  }
+})
+
 /*export const extractedTriples = createReducer([], {
 
   [types.SET_TRIPLE_SUBJECT](state, action) {

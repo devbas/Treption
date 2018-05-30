@@ -31,6 +31,13 @@ const tripleObject = (object) => {
   }
 }
 
+const selectedTripleAttribute = (attribute) => {
+  return {
+    type: types.SELECTED_TRIPLE_ATTRIBUTE, 
+    attribute: attribute
+  }
+}
+
 export const setExtractingStage = (stage) => {
   return (dispatch, getState) => {
     dispatch(extractingStage(stage))
@@ -65,5 +72,11 @@ export const boundTripleVote = (tripleId, choice) => {
     }).then((response) => {
       dispatch(userActions.fetchTournament({ tournament: response.data.Tournament }))
     })
+  }
+}
+
+export const boundTripleAttributeSelected = (attribute) => {
+  return (dispatch, getState) => {
+    dispatch(selectedTripleAttribute(attribute))
   }
 }

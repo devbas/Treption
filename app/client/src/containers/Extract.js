@@ -11,7 +11,7 @@ import _ from 'lodash'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
-import TripleItem from './TripleItem'
+import ValidationItem from './ValidationItem'
 
 class Extract extends Component {
 
@@ -130,7 +130,7 @@ class Extract extends Component {
     return(
       <ExtractWordItem
         scope={word}
-        stage={this.props.stage}
+        //stage={this.props.stage}
       />
     )
   }
@@ -180,7 +180,7 @@ function mapStateToProps(state) {
     sentence: state.fetchedSentence, 
     document: state.fetchedDocument,
     predicates: state.predicates, 
-    stage: state.extractingStage, 
+    //stage: state.extractingStage, 
     triples: state.fetchedTriples, 
     tournament: state.fetchedTournament,
     tournamentCreated: state.createdTournament, 

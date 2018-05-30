@@ -21,7 +21,7 @@ class ExtractWordItem extends Component {
   componentDidMount() {
     if(!this.state.inactive) {
       
-      if(this.props.stage === 'subject') {
+      if(this.props.selectedTripleAttribute === 'subject') {
 
         const nounWord = _.find(this.props.scope.words, (word) => {
           if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
@@ -29,16 +29,12 @@ class ExtractWordItem extends Component {
           }
         })
 
-        if(!nounWord) {
+        if(nounWord && this.props.selectedTripleAttribute === 'subject') {
           this.setState({
-            // inactive: true, 
-            wordState: 'receive'
-          })
-        } else {
-          this.setState({
-            wordState: 'send'
+            inactive: false 
           })
         }
+
       }
 
     }
@@ -48,13 +44,13 @@ class ExtractWordItem extends Component {
     if(!this.state.inactive) {
       //this.props.actions.setExtractingStage('predicate')
       
-      if(this.props.stage === 'subject') {
-        this.props.actions.setTripleSubject(this.props.scope)
-      }
+      //if(this.props.stage === 'subject') {
+        //this.props.actions.setTripleSubject(this.props.scope)
+      //}
 
-      if(this.props.stage === 'object') {
-        this.props.actions.setTripleObject(this.props.scope)
-      }
+      //if(this.props.stage === 'object') {
+        //this.props.actions.setTripleObject(this.props.scope)
+      //}
     }
   }
   
@@ -75,7 +71,8 @@ class ExtractWordItem extends Component {
 function mapStateToProps(state) {
   return {
     stage: state.extractingStage, 
-    triples: state.extractedTriples
+    triples: state.extractedTriples, 
+    selectedTripleAttribute: state.selectedTripleAttribute
   }
 }
 
