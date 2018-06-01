@@ -31,6 +31,13 @@ const tripleObject = (object) => {
   }
 }
 
+const addTriple = (triple) => {
+  return {
+    type: types.SET_SAVED_TRIPLE, 
+    triple
+  }
+}
+
 const selectedTripleAttribute = (attribute) => {
   return {
     type: types.SELECTED_TRIPLE_ATTRIBUTE, 
@@ -78,5 +85,19 @@ export const boundTripleVote = (tripleId, choice) => {
 export const boundTripleAttributeSelected = (attribute) => {
   return (dispatch, getState) => {
     dispatch(selectedTripleAttribute(attribute))
+  }
+}
+
+export const boundAddTriple = ({ subject, predicate, object, sentenceId }) => {
+  return (dispatch, getState) => {
+    axios({
+      method: 'post', 
+      url: `/api/triple/add`, 
+      data: `subject=${subject}&predicate=${predicate}&object=${object}&sentenceId=${sentenceId}`, 
+      config: { headers: {'Content-Type': 'multipart/form-data'}}
+    }).then((response) => {
+      dispatch(addTriple(JSON.parse(response.data.Triple)))
+      dispatch(userActions.fetchTournament({ tournament: response.data.Tournament }))
+    })
   }
 }

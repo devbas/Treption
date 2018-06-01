@@ -6,7 +6,8 @@ const ExtractedTripleItem = ({
   object, 
   concept, 
   onTripleAttributeSelect, 
-  selectedAttribute
+  selectedAttribute, 
+  onTripleSubmit
 }) => (
   <div className="triple-box">
     <div className={`subject ${selectedAttribute === 'subject' ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('subject')}>{subject}</div>
@@ -14,7 +15,7 @@ const ExtractedTripleItem = ({
     <div className={`object ${selectedAttribute === 'object' ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('object')}>{object}</div>
 
     {concept &&
-      <div className="done"></div>
+      <div className="done" onClick={onTripleSubmit}></div>
     }
   </div>
 )

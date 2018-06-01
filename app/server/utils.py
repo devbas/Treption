@@ -734,3 +734,83 @@ def setTournamentCompetitor(tournamentHash, userId):
     }
 
     return json.dumps(result) 
+
+def createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userId, tournamentId, playerType): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  try: 
+
+    with connection.cursor() as cursor: 
+      cursor.execute('SELECT * FROM triple WHERE subject = %s AND predicate = %s AND object = %s AND sentence_id = %s', (tripleSubject, triplePredicate, tripleObject, sentenceId))
+      triple = cursor.fetchone() 
+    
+
+    if(triple): 
+      return False 
+
+
+    with connection.cursor() as cursor: 
+      cursor.execute('INSERT INTO `triple` (`subject`, `predicate`, `object`, `sentence_id`, `creator_id`) VALUES (%s, %s, %s, %s, %s)', (tripleSubject, triplePredicate, tripleObject, sentenceId, userId))
+      tripleId = cursor.lastrowid
+      
+    connection.commit()
+
+
+    # Recalculate points
+    with connection.cursor() as cursor: 
+      cursor.execute('INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`, `tournament_id`) VALUES (1, %s, NOW(), %s, 5, %s)', (userId, tripleId, tournamentId))
+    
+    connection.commit()
+
+    # Update tournament points
+    with connection.cursor() as cursor: 
+      if playerType == 'competitor': 
+        cursor.execute('''UPDATE tournament T 
+                          INNER JOIN (
+                            SELECT SUM(points) AS total_points, tournament_id 
+                            FROM vote 
+                            WHERE tournament_id = %s
+                            AND user_id = %s) V1 
+                          ON V1.tournament_id = T.tournament_id 
+                          SET `competitor_points` = V1.total_points''', (tournamentId, userId))
+
+      if playerType == 'challenger': 
+        cursor.execute('''UPDATE tournament T 
+                          INNER JOIN (
+                            SELECT SUM(points) AS total_points, tournament_id 
+                            FROM vote 
+                            WHERE tournament_id = %s
+                            AND user_id = %s) V1 
+                          ON V1.tournament_id = T.tournament_id 
+                          SET `challenger_points` = V1.total_points''', (tournamentId, userId))
+
+    connection.commit() 
+
+    # Insert sparql in Jena with graphId
+    with connection.cursor() as cursor: 
+      cursor.execute('''SELECT D.graph_id 
+                        FROM document D 
+                        JOIN sentence S
+                        ON D.document_id = S.document_id 
+                        WHERE S.sentence_id = %s''', (sentenceId))
+      graphId = cursor.fetchone()
+
+    sparql = 'PREFIX trp: <http://www.treption.com/' + graphId['graph_id'] + '#> INSERT DATA { '
+    sparql = sparql + 'trp:' + tripleSubject + ' trp:' + triplePredicate + ' trp:' + tripleObject + ' . '
+    sparql = sparql + '}'
+
+    response = requests.post('http://fuseki:3030/treption/update', data={'update': sparql})
+
+    
+    triple = {
+      'subject': tripleSubject, 
+      'predicate': triplePredicate, 
+      'object': tripleObject, 
+      'sentenceId': sentenceId, 
+      'tripleId': tripleId
+    }
+
+    return json.dumps(triple)
+  
+  finally: 
+    connection.close() 

@@ -16,9 +16,10 @@ from utils import (
   createTournament, 
   searchOpenTournament, 
   fetchTournamentStatus, 
-  setTournamentCompetitor
+  setTournamentCompetitor, 
+  createTriple
 )
-from rdf import createTriple
+#from rdf import createTriple
 from pprint import pprint
 import sys
 from flask_jwt_extended import (
@@ -132,15 +133,15 @@ def fetchPredicates():
   predicates = getPredicates()
   return jsonify(Predicates=predicates)
 
-@app.route("/api/triple", methods=['POST'])
-def saveTriple(): 
+#@app.route("/api/triple", methods=['POST'])
+#def saveTriple(): 
   # Saves triple, action, (predicate)
-  subject = request.form['subject']
-  predicate = request.form['predicate']
-  objectValue = request.form['object']
+#  subject = request.form['subject']
+#  predicate = request.form['predicate']
+#  objectValue = request.form['object']
 
-  triple = createTriple(subject, predicate, objectValue)
-  return 'done' 
+#  triple = createTriple(subject, predicate, objectValue)
+#  return 'done' 
 
 @app.route("/api/user", methods=['POST'])
 def fetchUser(): 
@@ -266,6 +267,38 @@ def updateTournamentCompetitor(tournamentHash):
 
   print('tournament: ' + tournament, file=sys.stderr)
   return jsonify(tournament), 200
+
+@app.route("/api/triple/add", methods=['POST'])
+@jwt_required 
+def addTriple(): 
+  user = get_jwt_identity() 
+  userId = user['id']
+
+  tripleSubject = request.form['subject']
+  triplePredicate = request.form['predicate']
+  tripleObject = request.form['object']
+  sentenceId = request.form['sentenceId']
+  currentTournament = getCurrentTournament(userId)
+
+  if currentTournament['challenger_id'] == userId: 
+    playerType = 'challenger'
+  
+  if currentTournament['competitor_id'] == userId: 
+    playerType = 'competitor'
+
+  if tripleSubject and triplePredicate and tripleObject and sentenceId:
+    triple = createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userId, currentTournament['tournament_id'], playerType)
+    
+    currentTournament = getCurrentTournament(userId)
+    if triple: 
+      return jsonify({ 'Triple': triple, 'Tournament': currentTournament }), 200
+    else: 
+      return jsonify({ 'msg': 'Relation already exists' }), 400
+
+  else: 
+    return jsonify({ 'msg': 'Missing parameters' }), 400
+
+  
 
 if __name__ == '__main__': 
   app.run(debug=True)

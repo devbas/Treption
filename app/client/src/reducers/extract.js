@@ -64,6 +64,24 @@ export const extractedTriples = (state = [], action) => {
       console.log('newState: ', newState)
       return newState
     
+    case 'SET_SAVED_TRIPLE': 
+      console.log('action: ', action.triple, state)
+      debugger;
+      
+      newState[existingConceptIndex] = {
+        concept: false, 
+        object: action.triple.object, 
+        predicate: action.triple.predicate,
+        subject: action.triple.subject,
+        tripleId: action.triple.tripleId, 
+        sentenceId: action.triple.sentenceId
+      }
+
+      return newState
+      // Remove the concept 
+
+
+    
     default: 
       return state 
   }
@@ -75,6 +93,11 @@ export const selectedTripleAttribute = createReducer('', {
     return action.attribute
   }
 })
+
+
+// UPDATE_EXTRACTED_TRIPLES
+
+
 
 /*export const extractedTriples = createReducer([], {
 
