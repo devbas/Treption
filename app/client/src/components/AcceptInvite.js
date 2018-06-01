@@ -41,9 +41,9 @@ const AcceptInvite = ({
       <div className="card-box">
         <div className="inner-box">
           <div className="content">
-            <div className="title">Tournament not found</div>
+            <div className="title">Challenge not found</div>
             <div className="divider"></div>
-            <div className="description">The tournament has expired or is not found.</div>
+            <div className="description">The challenge has expired or is not found.</div>
           </div>
         </div>
       </div>
@@ -53,9 +53,9 @@ const AcceptInvite = ({
       <div className="card-box">
         <div className="inner-box">
           <div className="content">
-            <div className="title">Tournament unavailable</div>
+            <div className="title">Challenge unavailable</div>
             <div className="divider"></div>
-            <div className="description">The tournament is not available anymore.</div>
+            <div className="description">The challenge is not available anymore.</div>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@ const AcceptInvite = ({
           <div className="content">
             <div className="title">Ready to play?</div>
             <div className="divider"></div>
-            <div className="description">Would you like to participate in this tournament?</div>
+            <div className="description">Would you like to participate in this challenge?</div>
             <div className="button-box">
               <div onClick={onConsentClick} className="primary-action">Play</div>
             </div>
