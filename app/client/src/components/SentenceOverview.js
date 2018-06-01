@@ -14,7 +14,7 @@ const SentenceOverview = ({
     <div className="sentence-context-box">
       <div className="inner-box">
         <div className="left">
-          <Link to={`/`}>Back to all documents</Link>
+          <Link to={`/`}>&lt; Back to all documents</Link>
         </div>
         <div className="right">
           <button onClick={onExportClick}>Export to RDF</button>
@@ -37,7 +37,7 @@ const SentenceOverview = ({
     </div>
     <div className="sentence-box">
       {document.sentences &&
-        <div>
+        <div className="inner-box">
           <div className="items">
             {document.sentences.map((sentence) => renderSentence(sentence, backgroundColor))}
           </div>

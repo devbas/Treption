@@ -129,7 +129,7 @@ body {
 }
 
 .extract {
-  background-color: rgba(13, 26, 37, 0.1);
+  background-color:  rgba(255, 250, 246, 1);
   width: 100vw; 
   height: 100vh; 
 }
@@ -186,9 +186,6 @@ body {
 .extract .editor-box {
   float: left; 
   width: 100%; 
-}
-
-.extract .editor-box.is-extracting {
   margin-top: 60px;
 }
 
@@ -505,14 +502,35 @@ body {
 
 .sentence-item {
   float: left; 
-  border-radius: 2px; 
-  margin-left: 10px;
-  margin-right: 10px; 
-  width: calc(33% - 20px); 
-  margin-top: 20px; 
+  border-radius: 6px; 
+  margin-left: 20px;
+  margin-right: 20px; 
+  width: calc(33% - 40px); 
+  margin-top: 40px; 
+  height: 150px;
+}
+
+.sentence-box .sentence-item .inner-box {
+  width: auto;
+  padding: 20px; 
+}
+
+.sentence-item .inner-box a, .sentence-item .inner-box a:visited {
+  color: #fff; 
+  text-decoration: none;
+}
+
+.sentence-item .inner-box a:hover {
+  text-decoration: underline;
 }
 
 .sentence-box {
+  float: left; 
+  width: 100%; 
+  margin-bottom: 200px;
+}
+
+.sentence-box .inner-box {
   width: 950px; 
   margin-left: auto; 
   margin-right: auto;
@@ -624,6 +642,7 @@ body {
   background-color: #FE4365; 
   width: 100%; 
   float: left; 
+  margin-bottom: 100px;
 }
 
 .superhero .inner-box {
@@ -678,10 +697,17 @@ body {
 .sentence-context-box {
   background-color: #0C1A24; 
   width: 100%; 
+  float: left; 
 }
 
 .sentence-context-box .inner-box {
   padding: 10px; 
+  float: left; 
+  width: calc(100% - 20px);
+}
+
+.sentence-context-box .inner-box a, .sentence-context-box .inner-box a:hover, .sentence-context-box .inner-box a:visited {
+  color: #fff; 
 }
 
 .dropzone-box {
