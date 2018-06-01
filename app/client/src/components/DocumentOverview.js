@@ -25,15 +25,8 @@ const DocumentOverview = ({
         {featuredDocument &&
           <div className="inner-box">
             <div className="title">{featuredDocumentTitle}..</div>
-            <div className="progress-box">
-              <div className="label">{featuredDocument.numberOfSentencesExtracted} / {featuredDocument ? featuredDocument.sentenceCount : 0} sentences</div>
-              <div className="bar">
-                <div className="progress" style={{width: `${featuredDocument.numberOfSentencesExtracted / featuredDocument.sentenceCount * 100}%`}}></div>
-              </div>
-            </div>
             <div className="action-box">
-              <Link to={`/extract/${featuredDocument.documentId}/${featuredDocument.nextSentenceId}`} onClick={onHeroExtractClick}><button className="primary-action">{featuredDocument.totalVotes > 0 ? 'Continue' : 'Start'}</button></Link>
-              <Link to={`/document/${featuredDocument.documentId}`}><button className="secondary-action">More info</button></Link>
+              <Link to={`/extract/${featuredDocument.documentId}/${featuredDocument.nextSentenceId}`} onClick={onHeroExtractClick}><button className="primary-action">{featuredDocument.totalVotes > 0 ? 'Play' : 'Play'}</button></Link>
             </div>
           </div>
         }
@@ -74,6 +67,14 @@ const DocumentOverview = ({
     </div>
   </div>
 )
-//{documents.map(renderDocumentView)}
+
+// <Link to={`/document/${featuredDocument.documentId}`}><button className="secondary-action">More info</button></Link>
+
+/* <div className="progress-box">
+              <div className="label">{featuredDocument.numberOfSentencesExtracted} / {featuredDocument ? featuredDocument.sentenceCount : 0} sentences</div>
+              <div className="bar">
+                <div className="progress" style={{width: `${featuredDocument.numberOfSentencesExtracted / featuredDocument.sentenceCount * 100}%`}}></div>
+              </div>
+            </div>*/
 
 export default DocumentOverview;

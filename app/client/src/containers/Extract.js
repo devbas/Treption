@@ -136,9 +136,9 @@ class Extract extends Component {
   }
 
   render() {
-    const baseBackgroundColor = [0,0,0,0.4]
+    const baseBackgroundColor = [0,0,0,0.8]
     const documentColorArray = this.props.document.color ? this.props.document.color.split(',') : [0,0,0]
-    documentColorArray.push(0.3)
+    documentColorArray.push(0.6)
 
     const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
     const backgroundColorRgba = `rgba(${backgroundColor.join()}`

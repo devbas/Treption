@@ -22,7 +22,7 @@ const Extract = ({
   onRandomizeClick, 
   extractedTriples
 }) => (
-  <div className="extract" style={{backgroundColor: color}}> 
+  <div className="extract"> 
     <Header scope="extract" documentId={documentId}/>
     {(tournamentCreated || !tournament) &&
       <CreateTournament color={color}/>
@@ -30,23 +30,8 @@ const Extract = ({
 
     {tournament && !tournamentCreated && !isSentenceLoading &&
       <div className="extract-box">
-        
-        {isValidating() &&
-          <div className={`sentence-box ${isValidating() ? 'is-validating' : 'is-extracting'}`}>
-            <div className="inner-box">
-              <div className="content">
-                {sentence.aggregatedWords &&
-                  <div className="word-box">
-                    {sentence.aggregatedWords.map(renderWord)}
-                  </div>
-                }
-              </div>
-            </div>
-          </div>        
-        }
-
-
-        <div className={`editor-box ${isExtracting() ? 'is-extracting' : 'is-validating'}`}>
+    
+        <div className="editor-box">
           <div className="inner-box" style={{backgroundColor: color}}>
             <div className="game-object-box">
               {isValidating() &&
@@ -57,7 +42,7 @@ const Extract = ({
                 <div className="progress left">0 extracted</div>
               }
               <div className="time-remaining left">00:15</div>
-              <div className="points left">{playerType === 'competitor' ? tournament.competitor_points : tournament.challenger_points } points</div>
+              <div className="points left pulse animated">{playerType === 'competitor' ? tournament.competitor_points : tournament.challenger_points } points</div>
             </div>
             <div className="explanation-box">
               {isValidating() &&
@@ -69,21 +54,20 @@ const Extract = ({
               }
             </div>
             
-            {isExtracting() &&
-              <div className="sentence-box extract-word-box">
-                <div className="content">
-                  {sentence.aggregatedWords &&
-                    <div className="word-box">
-                      {sentence.aggregatedWords.map(renderWord)}
-                    </div>
-                  }
-                </div>
+            <div className="sentence-box extract-word-box">
+              <div className="content">
+                {sentence.aggregatedWords &&
+                  <div className="word-box">
+                    {sentence.aggregatedWords.map(renderWord)}
+                  </div>
+                }
               </div>
-            }
+            </div>
 
             <div className="content">
               {isValidating() &&
                 <div className="validation-box">
+                  <div className="divider"></div>
                   <ValidationItem/>
                 </div>
               }
@@ -96,12 +80,7 @@ const Extract = ({
                   {extractedTriples.length > 0 && extractedTriples[0].subject && extractedTriples[0].predicate && extractedTriples[0].object &&
                     <span>
                       {extractedTriples.map((triple) => {
-                        return <ExtractedTripleItem 
-                          subject={triple.subject[0].value} 
-                          predicate={triple.predicate[0].value} 
-                          object={triple.object[0].value} 
-                          concept={triple.concept}
-                        />
+                        return <ExtractedTripleItem triple={triple}/>
                       })}
                     </span>
                   }
