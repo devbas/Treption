@@ -1,0 +1,50 @@
+version: '3'
+services: 
+  web: 
+    build: 
+      context: ./app/client/ 
+      dockerfile: Dockerfile.web
+    ports: 
+      - "3000:3000"
+    volumes: 
+      - ./app/client:/var/www/treption
+    depends_on: 
+      - api
+    restart: always
+  api: 
+    build: 
+      context: ./app/server/
+      dockerfile: Dockerfile.api
+    container_name: treption
+    ports: 
+      - "5000:5000"
+    depends_on: 
+      - db
+      - postagger
+    volumes: 
+      - ../treption:/opt/code
+    restart: always
+  db:  
+    command: --disable-partition-engine-check  # Check more info about this command at: https://github.com/docker-library/mysql/issues/361
+    ports: 
+      - 3306:3306
+    volumes: 
+      - ./app/db:/docker-entrypoint-initdb.d
+    image: mysql:5.7
+    environment: 
+      - MYSQL_DATABASES=treption
+      - MYSQL_ROOT_PASSWORD=root
+    restart: always
+  postagger: 
+    image: motiz88/corenlp
+    ports: 
+      - 9000:9000
+    restart: always
+  fuseki: 
+    image: stain/jena-fuseki
+    ports: 
+      - 3030:3030
+    environment: 
+      ADMIN_PASSWORD: "pw123"
+    restart: always
+  
