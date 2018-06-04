@@ -10,8 +10,8 @@ With Treption (a-lack-of-inspiration-temporarily-working-name) we propose a syst
 4. Open the application in your browser at `http://localhost:5000` to start extracting!
 
 ## System design 
-TBD 
+To Be Described
 
 ## Background 
-TBD
+To Be Described
 
