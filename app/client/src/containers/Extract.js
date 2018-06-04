@@ -26,7 +26,8 @@ class Extract extends Component {
       remainingTime: 0, 
       isExtracting: false , 
       hasStartedValidating: false, 
-      hoverBoxStyle: 'hover-layer'
+      hoverBoxStyle: 'hover-layer', 
+      hasStartedExtracting: false 
       //stage: 'subject' // Can either be subject, predicate or object
     }
 
@@ -39,6 +40,7 @@ class Extract extends Component {
     this.onRandomizeClick = this.onRandomizeClick.bind(this)
     this.timer = this.timer.bind(this)
     this.onValidatingStartClick = this.onValidatingStartClick.bind(this)
+    this.onExtractingStartClick = this.onExtractingStartClick.bind(this)
   }
 
   componentWillMount() {
@@ -115,7 +117,21 @@ class Extract extends Component {
 
     setTimeout(() => {
       this.setState({
-        hasStartedValidating: true
+        hasStartedValidating: true,
+        hoverBoxStyle: 'hover-layer'
+      })
+    }, 500)
+  }
+
+  onExtractingStartClick() {
+    this.setState({
+      hoverBoxStyle: 'hover-layer animated fadeOut'
+    })
+
+    setTimeout(() => {
+      this.setState({
+        hasStartedExtracting: true, 
+        hoverBoxStyle: 'hover-layer'
       })
     }, 500)
   }
@@ -241,6 +257,8 @@ class Extract extends Component {
         onValidatingStartClick={this.onValidatingStartClick}
         hasStartedValidating={this.state.hasStartedValidating}
         hoverBoxStyle={this.state.hoverBoxStyle}
+        hasStartedExtracting={this.state.hasStartedExtracting}
+        onExtractingStartClick={this.onExtractingStartClick}
       />
     )
   }

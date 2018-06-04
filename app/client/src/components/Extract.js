@@ -27,7 +27,9 @@ const Extract = ({
   backgroundColorMedium, 
   hasStartedValidating, 
   onValidatingStartClick, 
-  hoverBoxStyle
+  hoverBoxStyle, 
+  hasStartedExtracting, 
+  onExtractingStartClick
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 
     {(tournamentCreated || !tournament) &&
@@ -50,11 +52,6 @@ const Extract = ({
               <div className="time-remaining left">00:{remainingTime}</div>
               <div className="points left pulse animated">{playerType === 'competitor' ? tournament.competitor_points : tournament.challenger_points } points</div>
               <div className="competitor-tooltip-box"></div>
-            </div>
-            <div className="explanation-box" style={{backgroundColor: color}}>
-              {isExtracting() &&
-                <div className="description">Now create your own relations. Need inspiration? Try the random button!</div>
-              }
             </div>
             
             <div className="sentence-box extract-word-box" style={{backgroundColor: backgroundColorMedium}}>
@@ -94,6 +91,15 @@ const Extract = ({
                         return <ExtractedTripleItem triple={triple}/>
                       })}
                     </span>
+                  }
+
+                  {!hasStartedExtracting &&
+                    <div className={hoverBoxStyle}>
+                      <div className="explanation-box" style={{backgroundColor: color}}>
+                        <div className="description">Now create your own relations. Need inspiration? Try the random button!</div>
+                      </div>
+                      <div className="primary-action" onClick={onExtractingStartClick}>Start</div>
+                    </div>
                   }
                 </div>
               }

@@ -183,11 +183,11 @@ body {
   margin-top: 12px;
 }
 
-.extract .editor-box .validation-box {
+.extract .editor-box .validation-box, .extract .editor-box .extract-box {
   position: relative;
 }
 
-.extract .editor-box .validation-box .hover-layer {
+.extract .editor-box .hover-layer {
   position: absolute;
   top: -40px; 
   background-color: rgba(000, 000, 000, 0.6); 
@@ -200,7 +200,7 @@ body {
   animation-duration: 500ms;
 }
 
-.extract .editor-box .validation-box .hover-layer .primary-action {
+.extract .editor-box .hover-layer .primary-action {
   height: 20px; 
   background-color: #FDE0CC; 
   font-size: 20px; 
@@ -366,16 +366,17 @@ body {
 .editor-box .extract-box .description {
   font-size: 16px; 
   color: rgba(255, 250, 246, 1); 
-  margin-top: 12px;
 }
 
 .editor-box .extract-box {
   padding: 0px 20px;
+  height: 200px;
 }
 
 .editor-box .extract-box .feeling-lucky-box {
   width: 100%; 
   position: relative;
+  margin-top: -21px;
 }
 
 .editor-box .extract-box .feeling-lucky-button {
