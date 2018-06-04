@@ -62,6 +62,7 @@ class ExtractWordItem extends Component {
         keystroke={this.props.scope.keystroke}
         onWordClick={this.onWordClick}
         wordState={this.state.wordState}
+        isExtracting={this.props.isExtracting}
       />
     ) 
   }

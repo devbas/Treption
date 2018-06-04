@@ -22,7 +22,8 @@ class ValidationItem extends Component {
       loading: true, 
       processed: false,
       triple: !this.props.isSentenceLoading ? _.find(this.props.triples, { processed: false }) : [], 
-      isPointBoxActive: false 
+      isPointBoxActive: false, 
+      isFeedbackBoxActive: false 
       //answer: 
     }
 
@@ -112,34 +113,55 @@ class ValidationItem extends Component {
   }
 
   onChoiceClick(choice) {
-    if(this.state.triple.agree > this.state.triple.disagree && choice === 'agree') {
+    console.log('agree: ', this.state.triple.agree, '   versus disagree: ', this.state.triple.disagree)
+    if( (this.state.triple.agree + 1 > this.state.triple.disagree && choice === 'agree') || (this.state.triple.disagree + 1 > this.state.triple.agree && choice === 'disagree') ) {
       console.log('correct!')
       this.setState({
-        isPointBoxActive: true 
+        isPointBoxActive: true, 
+        isFeedbackBoxActive: true, 
+        hasClicked: true, 
+        clickedChoice: choice
       })
 
       setTimeout(() => {
+        this.setState({
+          isPointBoxActive: false 
+        })
+      }, 1200)
+
+      setTimeout(() => {
         this.setState({ 
-          isPointBoxActive: false
-        });
-      }, 2000)
-    } else if(this.state.triple.disagree > this.state.triple.agree && choice === 'disagree') {
+          isFeedbackBoxActive: false, 
+          processed: true 
+        })
+
+        this.props.actions.boundSetTripleAsProcessed({...this.state.triple, processed: true })
+      }, 1500)
+    } else {
       console.log('correct 2!')
       this.setState({
-        isPointBoxActive: false 
+        isPointBoxActive: true,
+        isFeedbackBoxActive: true, 
+        hasClicked: true, 
+        clickedChoice: choice
       })
 
       setTimeout(() => {
-        this.setState({ 
+        this.setState({
           isPointBoxActive: false
-        });
-      }, 1300)
+        })
+      }, 1200)
+
+      setTimeout(() => {
+        this.setState({ 
+          isFeedbackBoxActive: false, 
+          processed: true 
+        })
+
+        this.props.actions.boundSetTripleAsProcessed({...this.state.triple, processed: true })
+      }, 1500)
     }
 
-    this.setState({
-      hasClicked: true, 
-      clickedChoice: choice
-    })
     this.props.actions.boundTripleVote(this.state.triple.triple_id, choice)
   } 
 
@@ -156,6 +178,7 @@ class ValidationItem extends Component {
     if(!this.props.isSentenceLoading) {
       answer = this.state.triple.agree > this.state.triple.disagree ? 'agree' : 'disagree'
     }
+    // console.log('answer: ', answer, '   clickedChoice: ', this.state.clickedChoice)
     //debugger;
     return (
       <ValidationItemComponent 
@@ -170,6 +193,7 @@ class ValidationItem extends Component {
         clickedChoice={this.state.clickedChoice}
         triple={this.state.triple}
         isPointBoxActive={this.state.isPointBoxActive}
+        isFeedbackBoxActive={this.state.isFeedbackBoxActive}
       />
     )
     

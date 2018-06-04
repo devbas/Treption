@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { blendColors } from '../utils'
 import _ from 'lodash'
+import moment from 'moment'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
@@ -22,6 +23,10 @@ class Extract extends Component {
       predicateInput: '', 
       totalTriples: !this.props.isSentenceLoading ? this.props.triples.length : 0, 
       currentTripleOffset: 0, 
+      remainingTime: 0, 
+      isExtracting: false , 
+      hasStartedValidating: false, 
+      hoverBoxStyle: 'hover-layer'
       //stage: 'subject' // Can either be subject, predicate or object
     }
 
@@ -32,6 +37,8 @@ class Extract extends Component {
     this.isValidating = this.isValidating.bind(this)
     this.isExtracting = this.isExtracting.bind(this)
     this.onRandomizeClick = this.onRandomizeClick.bind(this)
+    this.timer = this.timer.bind(this)
+    this.onValidatingStartClick = this.onValidatingStartClick.bind(this)
   }
 
   componentWillMount() {
@@ -45,8 +52,37 @@ class Extract extends Component {
     this.props.actions.boundFetchTournament()
     this.props.actions.boundFetchSentence(documentId, sentenceId)
 
+    const currentTime = moment().unix()
+    const endTime = moment().add(15, 'seconds').unix()
+    const intervalId = setInterval(this.timer, 1000)
+
+    this.setState({
+      currentTime: currentTime,
+      endTime: endTime, 
+      remainingTime: moment.unix(moment(endTime).diff(moment(currentTime))).format('ss'), 
+      intervalId: intervalId
+    })
     //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
+  timer() {
+    const currentTime = moment().unix() 
+    const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('ss')
+
+    if(remainingTime > 0) {
+      this.setState({
+        currentTime: currentTime, 
+        remainingTime: remainingTime
+      })
+    } else {
+      console.log('we are done')
+      clearInterval(this.state.intervalId);
+    }
   }
 
   componentDidUpdate (prevProps) {
@@ -70,6 +106,18 @@ class Extract extends Component {
 
   onPredicateInputChange(event) {
     this.setState({ predicateInput: event.target.value });
+  }
+
+  onValidatingStartClick() {
+    this.setState({
+      hoverBoxStyle: 'hover-layer animated fadeOut'
+    })
+
+    setTimeout(() => {
+      this.setState({
+        hasStartedValidating: true
+      })
+    }, 500)
   }
 
   onRandomizeClick() {
@@ -109,11 +157,21 @@ class Extract extends Component {
   isValidating() {
     
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
+
+    // this.setState({
+    //   isExtracting: unprocessedTriples ? true : false 
+    // })
+
     return unprocessedTriples ? true : false 
   }
 
   isExtracting() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
+
+    // this.setState({
+    //   isExtracting: unprocessedTriples ? false : true 
+    // })
+
     return unprocessedTriples ? false : true 
   }
 
@@ -130,6 +188,7 @@ class Extract extends Component {
     return(
       <ExtractWordItem
         scope={word}
+        isExtracting={this.state.isExtracting}
         //stage={this.props.stage}
       />
     )
@@ -142,6 +201,14 @@ class Extract extends Component {
 
     const backgroundColor = blendColors(baseBackgroundColor, documentColorArray.map(Number))
     const backgroundColorRgba = `rgba(${backgroundColor.join()}`
+    
+    const backgroundColorLight = backgroundColor
+    backgroundColorLight[3] = 0.1 // Change opacity 
+    const backgroundColorLightRgba = `rgba(${backgroundColorLight.join()})`
+
+    const backgroundColorMedium = backgroundColor 
+    backgroundColorMedium[3] = 0.4
+    const backgroundColorMediumRgba = `rgba(${backgroundColorMedium.join()})`
 
     const playerType = this.props.tournament.challenger_id === this.props.tournament.user_id ? 'challenger' : 'competitor'
 
@@ -152,13 +219,13 @@ class Extract extends Component {
       currentTripleOffset = _.sumBy(this.props.triples, triple => (triple.processed ? 1 : 0))
     }
 
-    console.log('render extract', this.props.extractedTriples)
-
     return(
       <ExtractComponent
         sentence={this.props.sentence}
         renderWord={this.renderWord}
         color={backgroundColorRgba}
+        backgroundColorLight={backgroundColorLightRgba}
+        backgroundColorMedium={backgroundColorMediumRgba}
         documentId={this.props.document.documentId}
         tournament={this.props.tournament}
         tournamentCreated={this.props.tournamentCreated}
@@ -170,6 +237,10 @@ class Extract extends Component {
         playerType={playerType}
         onRandomizeClick={this.onRandomizeClick}
         extractedTriples={this.props.extractedTriples}
+        remainingTime={this.state.remainingTime}
+        onValidatingStartClick={this.onValidatingStartClick}
+        hasStartedValidating={this.state.hasStartedValidating}
+        hoverBoxStyle={this.state.hoverBoxStyle}
       />
     )
   }
@@ -180,7 +251,6 @@ function mapStateToProps(state) {
     sentence: state.fetchedSentence, 
     document: state.fetchedDocument,
     predicates: state.predicates, 
-    //stage: state.extractingStage, 
     triples: state.fetchedTriples, 
     tournament: state.fetchedTournament,
     tournamentCreated: state.createdTournament, 

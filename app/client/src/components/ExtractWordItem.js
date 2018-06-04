@@ -1,7 +1,14 @@
 import React from 'react';
 
-const ExtractWordItem = ({ word, inactive, keystroke, onWordClick, wordState }) => (
-  <div className={`extract-word-item-box ${inactive ? 'inactive' : 'active' }`} onClick={onWordClick}>
+const ExtractWordItem = ({ 
+  word, 
+  inactive, 
+  keystroke, 
+  onWordClick, 
+  wordState, 
+  isExtracting 
+}) => (
+  <div className={`extract-word-item-box ${inactive ? 'inactive' : 'active' } ${isExtracting ? 'is-extracting' : 'is-validating'}`} onClick={onWordClick}>
     <span>
       <div className="character">
         {word}

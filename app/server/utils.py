@@ -545,10 +545,12 @@ def createTripleVote(userId, tripleId, choice, tournamentId, playerType):
       sql = '''SELECT DISTINCT(T.triple_id), T.subject, T.predicate, T.object, D.graph_id,
                   (SELECT COUNT(*) 
                   FROM vote V
-                    WHERE V.agree = true) AS agree, 
+                    WHERE V.agree = true
+                    AND triple_id = T.triple_id) AS agree, 
                   (SELECT COUNT(*)
                     FROM vote V 
-                    WHERE V.agree = false) as disagree
+                    WHERE V.agree = false
+                    AND triple_id = T.triple_id) as disagree
                 FROM vote V 
                 JOIN triple T 
                 ON T.triple_id = V.triple_id

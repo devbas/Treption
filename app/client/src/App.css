@@ -72,10 +72,15 @@ body {
 }
 
 .extract-word-item-box {
-  float: left; 
+  display: inline-block;
   margin-right: 6px;
   margin-bottom: 15px;
   cursor: pointer;
+}
+
+.extract-word-item-box.is-validating {
+  opacity: 0.7; 
+  cursor: default;
 }
 
 .extract-word-item-box span {
@@ -96,7 +101,7 @@ body {
 
 .extract-word-item-box .character {
   font-weight: 600; 
-  font-size: 24px; 
+  font-size: 20px; 
   color: #0C1A24; 
   padding: 3px 9px 3px 5px; 
   font-style: italic;
@@ -106,7 +111,6 @@ body {
   width: 100%; 
   margin: auto;
   float: left; 
-  padding: 30px 0 50px 0;
 }
 
 .extract .sentence-box.is-extracting {
@@ -180,7 +184,72 @@ body {
 }
 
 .extract .editor-box .validation-box {
-  padding: 50px 20px;
+  position: relative;
+}
+
+.extract .editor-box .validation-box .hover-layer {
+  position: absolute;
+  top: -40px; 
+  background-color: rgba(000, 000, 000, 0.6); 
+  left: 0; 
+  width: 100%; 
+  height: calc(100% + 40px); 
+  border-bottom-left-radius: 5px; 
+  border-bottom-right-radius: 5px;
+  transition: all 250ms linear;
+  animation-duration: 500ms;
+}
+
+.extract .editor-box .validation-box .hover-layer .primary-action {
+  height: 20px; 
+  background-color: #FDE0CC; 
+  font-size: 20px; 
+  color: #0C1A24; 
+  border-radius: 40px; 
+  cursor: pointer;
+  font-weight: 700; 
+  border: 2px solid #FDE0CC; 
+  padding: 15px 15px; 
+  transition: background-color 0.15s ease-in-out;
+  width: 100px; 
+  text-align: center;
+  line-height: 0.9;
+  margin: 93px auto auto auto;
+}
+
+.extract .validation-conclusion-box {
+  background-color: rgba(000, 000, 000, 0.3); 
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  top: 0; 
+}
+
+.extract .validation-conclusion-box .label {
+  width: 75px; 
+  height: 75px; 
+  border-radius: 40px; 
+  position: absolute;
+  top: 0;
+  right: 0; 
+  bottom: 0; 
+  left: 0; 
+  margin: auto;
+  animation-duration: 250ms;
+  font-size: 34px; 
+  font-weight: 700; 
+  line-height: 75px;
+  text-align: center;
+  color: #FDE0CC
+  /* animation-delay: 800ms; */
+}
+
+.extract .validation-conclusion-box .label.correct {
+  background-color: #A3D654;
+}
+
+.extract .validation-conclusion-box .label.incorrect {
+  background-color: #DD444F;
 }
 
 .extract .editor-box {
@@ -193,7 +262,7 @@ body {
   width: 700px; 
   margin: auto; 
   background-color: rgba(255, 250, 246, 1); 
-  border-radius: 2px; 
+  border-radius: 5px; 
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
 }
 
@@ -202,6 +271,9 @@ body {
   float: left; 
   width: 100%; 
   color: #FDE1CC; 
+  background-color: #0C1A24; 
+  border-top-left-radius: 3px;
+  position: relative;
 }
 
 .extract .editor-box .inner-box .game-object-box .progress {
@@ -209,7 +281,8 @@ body {
   width: 33%; 
   text-align: center;
   padding: 10px 0;
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: 700; 
 }
 
 .extract .editor-box .inner-box .game-object-box .time-remaining {
@@ -217,15 +290,27 @@ body {
   width: 33%; 
   text-align: center;
   padding: 10px 0;
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .extract .editor-box .inner-box .game-object-box .points {
   width: 33%; 
   text-align: center;
   padding: 10px 0;
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.extract .editor-box .inner-box .game-object-box .competitor-tooltip-box {
+  background-color: rgba(12, 26, 36, 0.8); 
+  width: 44%; 
+  position: absolute;
+  top: -40px; 
+  height: 40px; 
+  right: 0; 
+  border-top-right-radius: 3px; 
+  border-top-left-radius: 3px; 
 }
 
 .extract .editor-box .extract-word-box {
@@ -238,6 +323,8 @@ body {
   margin-top: 15px; 
   display: table;
   width: 100%; 
+  border-bottom-left-radius: 5px; 
+  border-bottom-right-radius: 5px;
 }
 
 .editor-box .triple-box {
@@ -248,9 +335,11 @@ body {
 }
 
 .extract .editor-box .extract-word-box .content {
-  padding: 20px;
+  padding: 50px 20px;
   width: auto;
   margin-top: 0;
+  display: inline-block;
+  text-align: center;
 }
 
 .editor-box .triple-box .subject, .editor-box .triple-box .predicate, .editor-box .triple-box .object {
@@ -329,19 +418,19 @@ body {
   width: 100%; 
   background-color: rgba(255, 239, 229, 0.1);
   border-bottom: 1px solid rgba(255, 239, 229, 1);
-  float: left; 
-  background-image: url('./assets/img/tip.svg');
-  background-size: 2.5%;
-  background-repeat: no-repeat;
-  background-position: 20px center;
 }
 
 .editor-box .explanation-box .description {
   text-align: center; 
   padding: 10px 0;
-  color: rgba(255, 239, 229, 1);
-  font-weight: 300;
-  font-size: 14px;
+  color: #0C1A24;
+  font-weight: 600;
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.9);
+  background-image: url('./assets/img/tip.svg');
+  background-size: 2.5%;
+  background-repeat: no-repeat;
+  background-position: 20px center;
 }
 
 .extract .create-tournament-box {
@@ -798,8 +887,8 @@ body {
 .triple-item-box {
   width: 100%; 
   position: relative; 
-  padding-top: 5px; 
-  padding-bottom: 5px;
+  padding-top: 25px; 
+  padding-bottom: 25px;
 }
 
 .triple-item-box .points-to-earn-box {
@@ -829,7 +918,7 @@ body {
   float: left; 
   border-radius: 2px; 
   font-weight: 600; 
-  font-size: 20px; 
+  font-size: 24px; 
   color: #0C1A24; 
   padding: 3px 9px; 
 }
@@ -858,16 +947,28 @@ body {
   float: left; 
   font-size: 16px; 
   color: #0C1A24; 
-  border-radius: 20px; 
+  border-radius: 40px; 
   cursor: pointer;
   font-weight: 500; 
   border: 2px solid #FDE0CC; 
-  padding: 7px 15px; 
-  margin-left: 20px;
+  padding: 15px 15px; 
   background-color: rgba(255, 255, 255, 0.2); 
   transition: background-color 0.15s ease-in-out;
-  width: 100px;
+  width: 20px; 
   text-align: center;
+  background-size: 50%; 
+  background-repeat: no-repeat; 
+  background-position: center;
+}
+
+.triple-item-box .button-box .secondary-action.agree {
+  background-image: url('./assets/img/validation-correct.svg');
+  background-size: 60%;
+}
+
+.triple-item-box .button-box .secondary-action.disagree {
+  background-image: url('./assets/img/validation-incorrect.svg');
+  margin-left: 20px;
 }
 
 .triple-item-box .button-box .secondary-action.correct.chosen {

@@ -7,26 +7,25 @@ import {
 const ValidationItem = ({ 
   isSentenceLoading,
   onChoiceClick, 
-  isActive, 
   hasClicked,
   onNextQuestionClick, 
   answer, 
   clickedChoice, 
   triple, 
-  isPointBoxActive
+  isPointBoxActive, 
+  isFeedbackBoxActive
 }) => (
-  <TransitionGroup className="triple-item-box">
-    <CSSTransition timeout={500} classNames="fade">
+    <span>
       <div className="triple-item-box">
         {isSentenceLoading &&
           <div>Loading</div>
         }
 
         {!isSentenceLoading &&
-          <div>
-              <div className={`points-to-earn-box ${isPointBoxActive ? 'active' : ''}`}>
-                +1 
-              </div>
+          <span>
+              {/* <div className={`points-to-earn-box ${isPointBoxActive ? 'active' : ''}`}> */}
+                {/* +1  */}
+              {/* </div> */}
             
 
             <div className="triple-item-content-box">
@@ -35,41 +34,20 @@ const ValidationItem = ({
               <div className="left object">{triple.object}</div>
             </div>
             
-            {!hasClicked &&
-              <div className="button-box">
-                <div onClick={() => onChoiceClick('agree')} className="secondary-action">agree</div> 
-                <div onClick={() => onChoiceClick('disagree')} className="secondary-action">disagree</div>
-              </div>
-            }
-            
-            {hasClicked &&
-              <div>
-                <div className="button-box">
-                  <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'agree' ? 'chosen' : 'not-chosen animated pulse'}`}>agree</div> 
-                  <div className={`secondary-action ${answer === clickedChoice ? 'correct': 'incorrect'} ${clickedChoice === 'disagree' ? 'chosen' : 'not-chosen animated pulse'}`}>disagree</div>
-                </div>
-                <div className="next-task" onClick={onNextQuestionClick}>Next</div>
-              </div>
-            }
-          </div>
+            <div className="button-box">
+              <div onClick={() => onChoiceClick('agree')} className="secondary-action agree"></div> 
+              <div onClick={() => onChoiceClick('disagree')} className="secondary-action disagree"></div>
+            </div>
+
+          </span>
         }
       </div>
-    </CSSTransition>
-  </TransitionGroup>
+      {isFeedbackBoxActive &&
+        <div className="validation-conclusion-box">
+          <div className={`label ${isPointBoxActive ? 'animated bounceIn' : 'animated bounceOut' } ${answer === clickedChoice ? 'correct' : 'incorrect' }`}>{answer === clickedChoice ? '+1' : '0'}</div>
+        </div>
+      } 
+    </span>
 )
-
-/*
-          {triple && triple.subject &&
-        <div className="triple-subject">{triple.subject}</div>
-      }
-
-      {triple && triple.predicate &&
-        <div className="triple-predicate">{triple.predicate}</div>
-      }
-
-      {triple.object &&
-        <div className="triple-object">{triple.object}</div>
-      }
-*/
 
 export default ValidationItem
