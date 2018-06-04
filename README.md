@@ -16,3 +16,6 @@ To Be Described
 ## Background 
 To Be Described
 
+## Troubleshooting (In progress)
+1. Check whether the Docker containers are running by entering `Docker ps` in your terminal
+2. Are the required ports (`3000`, `3306`, `3030`, `5000`, `9000`) available?
