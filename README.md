@@ -7,7 +7,8 @@ With Treption (a-lack-of-inspiration-temporarily-working-name) we propose a syst
 1. Install the latest version of [Docker](https://docs.docker.com/install/)
 2. Open the project folder in a terminal of your choice
 3. enter `docker-compose up --build`
-4. Open the application in your browser at `http://localhost:5000` to start extracting!
+4. To enable triple storage in Apache Jena Fuseki, open `http://localhost:3030` and create a `Treption` dataset (To be automated).
+5. Open the application in your browser at `http://localhost:5000` to start extracting!
 
 ## System design 
 To Be Described
