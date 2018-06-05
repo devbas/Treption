@@ -29,7 +29,8 @@ const Extract = ({
   onValidatingStartClick, 
   hoverBoxStyle, 
   hasStartedExtracting, 
-  onExtractingStartClick
+  onExtractingStartClick, 
+  extractionContainsConcept
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 
     {(tournamentCreated || !tournament) &&
@@ -49,7 +50,15 @@ const Extract = ({
               {isExtracting() &&
                 <div className="progress left">0 extracted</div>
               }
-              <div className="time-remaining left">00:{remainingTime}</div>
+
+              {isValidating() &&
+                <div className="time-remaining left">00:{remainingTime}</div>
+              }
+
+              {isExtracting() &&
+                <div className="time-remaining left"></div>
+              }
+      
               <div className="points left pulse animated">{playerType === 'competitor' ? tournament.competitor_points : tournament.challenger_points } points</div>
               <div className="competitor-tooltip-box"></div>
             </div>
@@ -85,13 +94,17 @@ const Extract = ({
                   <div className="feeling-lucky-box">
                     <div className="feeling-lucky-button" onClick={onRandomizeClick}>Randomize</div>
                   </div>
-                  {extractedTriples.length > 0 && extractedTriples[0].subject && extractedTriples[0].predicate && extractedTriples[0].object &&
+                  {extractedTriples.length > 0 && (extractedTriples[0].subject || extractedTriples[0].predicate || extractedTriples[0].object) &&
                     <span>
                       {extractedTriples.map((triple) => {
                         return <ExtractedTripleItem triple={triple}/>
                       })}
                     </span>
                   }
+
+                  {!extractionContainsConcept &&
+                    <ExtractedTripleItem concept={true}/>  
+                  }                  
 
                   {!hasStartedExtracting &&
                     <div className={hoverBoxStyle}>

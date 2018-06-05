@@ -54,16 +54,6 @@ class Extract extends Component {
     this.props.actions.boundFetchTournament()
     this.props.actions.boundFetchSentence(documentId, sentenceId)
 
-    const currentTime = moment().unix()
-    const endTime = moment().add(15, 'seconds').unix()
-    const intervalId = setInterval(this.timer, 1000)
-
-    this.setState({
-      currentTime: currentTime,
-      endTime: endTime, 
-      remainingTime: moment.unix(moment(endTime).diff(moment(currentTime))).format('ss'), 
-      intervalId: intervalId
-    })
     //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
   }
@@ -115,6 +105,8 @@ class Extract extends Component {
       hoverBoxStyle: 'hover-layer animated fadeOut'
     })
 
+    
+
     setTimeout(() => {
       this.setState({
         hasStartedValidating: true,
@@ -124,9 +116,18 @@ class Extract extends Component {
   }
 
   onExtractingStartClick() {
+    const currentTime = moment().unix()
+    const endTime = moment().add(15, 'seconds').unix()
+
     this.setState({
-      hoverBoxStyle: 'hover-layer animated fadeOut'
+      hoverBoxStyle: 'hover-layer animated fadeOut',
+      currentTime: currentTime,
+      endTime: endTime, 
+      remainingTime: moment.unix(moment(endTime).diff(moment(currentTime))).format('ss'), 
+      intervalId: intervalId
     })
+
+    const intervalId = setInterval(this.timer, 1000)
 
     setTimeout(() => {
       this.setState({
@@ -138,10 +139,9 @@ class Extract extends Component {
 
   onRandomizeClick() {
     // We have this.props.sentence 
-    console.log('start', this.props.sentence)
     const randomizeBucket = []
     for(let i = 0; i < this.props.sentence.aggregatedWords.length; i++) {
-      randomizeBucket[i] = this.props.sentence.aggregatedWords[i].words
+      randomizeBucket[i] = this.props.sentence.aggregatedWords[i]
     }
 
     const randomSubjectNumber = Math.floor(Math.random() * randomizeBucket.length)
@@ -155,9 +155,6 @@ class Extract extends Component {
     const randomObjectNumber = Math.floor(Math.random() * randomizeBucket.length)
     this.props.actions.boundUpdateTripleObject(randomizeBucket[randomObjectNumber])
     randomizeBucket.splice(randomObjectNumber, 1)
-    
-
-    console.log('randomizebucket: ', randomizeBucket) 
 
     // Get all words from sentence
 
@@ -174,19 +171,11 @@ class Extract extends Component {
     
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
 
-    // this.setState({
-    //   isExtracting: unprocessedTriples ? true : false 
-    // })
-
     return unprocessedTriples ? true : false 
   }
 
   isExtracting() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
-
-    // this.setState({
-    //   isExtracting: unprocessedTriples ? false : true 
-    // })
 
     return unprocessedTriples ? false : true 
   }
@@ -201,10 +190,13 @@ class Extract extends Component {
   }
 
   renderWord(word) {
+
+    const isExtracting = this.isExtracting()
+
     return(
       <ExtractWordItem
         scope={word}
-        isExtracting={this.state.isExtracting}
+        isExtracting={isExtracting}
         //stage={this.props.stage}
       />
     )
@@ -235,6 +227,8 @@ class Extract extends Component {
       currentTripleOffset = _.sumBy(this.props.triples, triple => (triple.processed ? 1 : 0))
     }
 
+    const extractionContainsConcept = _.find(this.props.extractedTriples, { concept: true })
+
     return(
       <ExtractComponent
         sentence={this.props.sentence}
@@ -259,6 +253,7 @@ class Extract extends Component {
         hoverBoxStyle={this.state.hoverBoxStyle}
         hasStartedExtracting={this.state.hasStartedExtracting}
         onExtractingStartClick={this.onExtractingStartClick}
+        extractionContainsConcept={extractionContainsConcept}
       />
     )
   }

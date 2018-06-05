@@ -41,7 +41,21 @@ class ExtractWordItem extends Component {
   }
 
   onWordClick() {
-    if(!this.state.inactive) {
+    if(!this.state.inactive && this.props.isExtracting && this.props.selectedAttribute) {
+
+      if(this.props.selectedAttribute === 'subject') {
+        this.props.actions.boundUpdateTripleSubject(this.props.scope)
+      }
+
+      if(this.props.selectedAttribute === 'predicate') {
+        this.props.actions.boundUpdateTriplePredicate(this.props.scope)
+      }
+
+      if(this.props.selectedAttribute === 'object') {
+        this.props.actions.boundUpdateTripleObject(this.props.scope)
+      }
+
+      console.log('lets handle this')
       //this.props.actions.setExtractingStage('predicate')
       
       //if(this.props.stage === 'subject') {
@@ -73,7 +87,7 @@ function mapStateToProps(state) {
   return {
     stage: state.extractingStage, 
     triples: state.extractedTriples, 
-    selectedTripleAttribute: state.selectedTripleAttribute
+    selectedAttribute: state.selectedTripleAttribute
   }
 }
 

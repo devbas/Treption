@@ -86,7 +86,13 @@ body {
 .extract-word-item-box span {
   background-color: rgba(255, 239, 229, 0.8);
   float: left;
+  transition: background-color 0.15s ease-in-out;
   border-radius: 2px; 
+}
+
+.extract-word-item-box.is-extracting.active span:hover {
+  background-color: #fff;
+  transition: background-color 0.15s ease-in-out;
 }
 
 
@@ -150,25 +156,22 @@ body {
 }
 
 .extract .extract-box .done {
-  width: 40px; 
-  height: 40px; 
+  width: 20px; 
+  height: 20px; 
   border-radius: 40px; 
-  background-color: rgba(12, 26, 36, 0.8);
-  transition: background-color ease-in-out 0.13s;
   float: right; 
-  background-image: url('./assets/img/accept-button.svg');
-  background-size: 50%; 
+  background-image: url('./assets/img/validation-correct.svg');
+  background-size: 60%; 
   background-position: center; 
   background-repeat: no-repeat;
   margin-top: 1px;
-  float: right; 
   margin-left: 20px; 
   cursor: pointer;
+  border: 2px solid #FDE0CC;  
+  padding: 10px;
 }
 
 .extract .extract-box .done:hover {
-  background-color: rgba(12, 26, 36, 1);
-  transition: background-color ease-in-out 0.13s
 }
 
 .extract .sentence-control-box .prev {
@@ -292,6 +295,7 @@ body {
   padding: 10px 0;
   font-size: 24px;
   font-weight: 700;
+  height: 29px;
 }
 
 .extract .editor-box .inner-box .game-object-box .points {
@@ -329,9 +333,30 @@ body {
 
 .editor-box .triple-box {
   width: 100%; 
-  margin-top: 50px;
-  margin-bottom: 80px;
+  margin-top: 10px;
+  margin-bottom: 15px;
   float: left; 
+  position: relative;
+}
+
+.editor-box .triple-box .submit-box {
+  position: absolute;
+  bottom: -43px; 
+  right: 9px; 
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border: 2px solid rgb(253, 225, 204);
+}
+
+.editor-box .triple-box .token-box {
+  background-color: #fff; 
+  padding: 1px; 
+  border-radius: 5px; 
+  display: inline-block;
+  line-height: 27px;
+  position: relative; 
+  padding: 1px 10px 1px 5px; 
+  margin-right: 3px; 
 }
 
 .extract .editor-box .extract-word-box .content {
@@ -344,23 +369,45 @@ body {
 
 .editor-box .triple-box .subject, .editor-box .triple-box .predicate, .editor-box .triple-box .object {
   float: left; 
-  width: 23%; 
+  width: 31%; 
   color: #0C1A24; 
-  font-size: 24px; 
+  font-size: 22px; 
   font-style: italic;
   font-weight: 600;
 }
 
 .editor-box .extract-box .triple-box .subject, .editor-box .extract-box .triple-box .predicate, .editor-box .extract-box .triple-box .object {
-  padding: 5px 10px; 
-  border-radius: 2px; 
+  padding: 5px; 
   background-color: rgba(255, 255, 255, 0.1); 
   border: 2px dashed #FDE1CC; 
+  cursor: pointer;
+  height: 29px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.editor-box .extract-box .triple-box .active {
+  border: 2px solid #FDE1CC !important; 
+}
+
+.editor-box .extract-box .triple-box .subject {
+  border-top-left-radius: 2px; 
+  border-bottom-left-radius: 2px; 
+  border-right: 2px solid transparent; 
+  margin-right: -2px;
 }
 
 .editor-box .extract-box .triple-box .predicate {
-  margin-left: 20px; 
-  margin-right: 20px; 
+  border-radius: 0; 
+}
+
+.editor-box .extract-box .triple-box .object {
+  border-top-right-radius: 2px; 
+  border-bottom-right-radius: 2px; 
+  border-left: 2px solid transparent; 
+  margin-left: -2px; 
 }
 
 .editor-box .extract-box .description {
@@ -377,6 +424,7 @@ body {
   width: 100%; 
   position: relative;
   margin-top: -21px;
+  margin-bottom: 40px;
 }
 
 .editor-box .extract-box .feeling-lucky-button {
