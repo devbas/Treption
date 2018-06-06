@@ -6,18 +6,22 @@ const ExtractWordItem = ({
   keystroke, 
   onWordClick, 
   wordState, 
-  isExtracting 
-}) => (
-  <div className={`extract-word-item-box ${inactive ? 'inactive' : 'active' } ${isExtracting ? 'is-extracting' : 'is-validating'}`} onClick={onWordClick}>
-    <span>
-      <div className="character">
-        {word}
-      </div>
-      <div className="shortkey">
-      </div>
-    </span>
-  </div>
-)
+  isExtracting, 
+  connectDragSource, 
+  isDragging
+}) => {
+  return connectDragSource(
+    <div className={`extract-word-item-box ${inactive ? 'inactive' : 'active' } ${isExtracting ? 'is-extracting' : 'is-validating'}`} onClick={onWordClick}>
+      <span>
+        <div className="character">
+          {word}
+        </div>
+        <div className="shortkey">
+        </div>
+      </span>
+    </div>
+  )
+}
 
 //inactive ? 'extract-word-item-box inactive' : 'extract-word-item-box'
 

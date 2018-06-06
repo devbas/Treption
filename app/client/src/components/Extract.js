@@ -30,7 +30,10 @@ const Extract = ({
   hoverBoxStyle, 
   hasStartedExtracting, 
   onExtractingStartClick, 
-  extractionContainsConcept
+  extractionContainsConcept, 
+  onCorrectValidationAnswer, 
+  gameOver, 
+  onNewGameStartClick
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 
     {(tournamentCreated || !tournament) &&
@@ -59,7 +62,7 @@ const Extract = ({
                 <div className="time-remaining left"></div>
               }
       
-              <div className="points left pulse animated">{playerType === 'competitor' ? tournament.competitor_points : tournament.challenger_points } points</div>
+              <div className="points left pulse animated">{playerType === 'competitor' ? tournament.competitor_points ? tournament.competitor_points : 0 : tournament.challenger_points ? tournament.challenger_points : 0 } points</div>
               <div className="competitor-tooltip-box"></div>
             </div>
             
@@ -77,13 +80,22 @@ const Extract = ({
               {isValidating() &&
                 <div className="validation-box">
                   <div className="divider"></div>
-                  <ValidationItem/>
+                  <ValidationItem onCorrectValidationAnswer={onCorrectValidationAnswer}/>
                   {!hasStartedValidating &&
                     <div className={hoverBoxStyle}>
                       <div className="explanation-box" style={{backgroundColor: color}}>
                         <div className="description">Agree or disagree on the presented relation relative to the sentence above.</div>
                       </div>
                       <div className="primary-action" onClick={onValidatingStartClick}>Start</div>
+                    </div>
+                  }
+
+                  {gameOver &&
+                    <div className={hoverBoxStyle}>
+                      <div className="explanation-box" style={{backgroundColor: color}}>
+                        <div className="description">Time is up!</div>
+                      </div>
+                      <div className="primary-action" onClick={onNewGameStartClick}>Play again</div>
                     </div>
                   }
                 </div>

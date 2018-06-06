@@ -4,6 +4,24 @@ import _ from 'lodash'
 import * as ExtractActions from '../actions/extract'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { DragSource } from 'react-dnd';
+
+const ItemTypes = {
+  WORD: 'word'
+};
+
+const cardSource = {
+  beginDrag(props) {
+    return {}
+  }
+}
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+}
 
 class ExtractWordItem extends Component {
 
@@ -54,22 +72,11 @@ class ExtractWordItem extends Component {
       if(this.props.selectedAttribute === 'object') {
         this.props.actions.boundUpdateTripleObject(this.props.scope)
       }
-
-      console.log('lets handle this')
-      //this.props.actions.setExtractingStage('predicate')
-      
-      //if(this.props.stage === 'subject') {
-        //this.props.actions.setTripleSubject(this.props.scope)
-      //}
-
-      //if(this.props.stage === 'object') {
-        //this.props.actions.setTripleObject(this.props.scope)
-      //}
     }
   }
   
   render() {
-    return (
+    return(
       <ExtractWordItemComponent
         word={this.props.scope.words.map(w => w.value).join('')}
         inactive={this.state.inactive}
@@ -77,6 +84,8 @@ class ExtractWordItem extends Component {
         onWordClick={this.onWordClick}
         wordState={this.state.wordState}
         isExtracting={this.props.isExtracting}
+        connectDragSource={this.props.connectDragSource}
+        isDragging={this.props.isDragging}
       />
     ) 
   }
@@ -97,4 +106,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExtractWordItem); 
+export default DragSource(ItemTypes.WORD, cardSource, collect)(connect(mapStateToProps, mapDispatchToProps)(ExtractWordItem))

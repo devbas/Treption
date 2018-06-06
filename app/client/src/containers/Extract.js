@@ -9,10 +9,11 @@ import { connect } from 'react-redux'
 import { blendColors } from '../utils'
 import _ from 'lodash'
 import moment from 'moment'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
-import ValidationItem from './ValidationItem'
 
 class Extract extends Component {
 
@@ -23,12 +24,12 @@ class Extract extends Component {
       predicateInput: '', 
       totalTriples: !this.props.isSentenceLoading ? this.props.triples.length : 0, 
       currentTripleOffset: 0, 
-      remainingTime: 0, 
+      remainingTime: '', 
       isExtracting: false , 
       hasStartedValidating: false, 
       hoverBoxStyle: 'hover-layer', 
-      hasStartedExtracting: false 
-      //stage: 'subject' // Can either be subject, predicate or object
+      hasStartedExtracting: false, 
+      gameOver: false 
     }
 
     this.renderWord = this.renderWord.bind(this)
@@ -41,6 +42,8 @@ class Extract extends Component {
     this.timer = this.timer.bind(this)
     this.onValidatingStartClick = this.onValidatingStartClick.bind(this)
     this.onExtractingStartClick = this.onExtractingStartClick.bind(this)
+    this.onCorrectValidationAnswer = this.onCorrectValidationAnswer.bind(this)
+    this.onNewGameStartClick = this.onNewGameStartClick.bind(this)
   }
 
   componentWillMount() {
@@ -63,17 +66,21 @@ class Extract extends Component {
   }
 
   timer() {
-    const currentTime = moment().unix() 
-    const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('ss')
 
-    if(remainingTime > 0) {
+    const currentTime = moment().unix() 
+    const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('mm:ss')
+
+    if(remainingTime !== '00:00') {
       this.setState({
         currentTime: currentTime, 
         remainingTime: remainingTime
       })
     } else {
-      console.log('we are done')
       clearInterval(this.state.intervalId);
+      this.setState({
+        gameOver: true, 
+        remainingTime: '00:00'
+      })
     }
   }
 
@@ -101,11 +108,17 @@ class Extract extends Component {
   }
 
   onValidatingStartClick() {
-    this.setState({
-      hoverBoxStyle: 'hover-layer animated fadeOut'
-    })
+    const currentTime = moment().unix()
+    const endTime = moment().add(15, 'seconds').unix()
+    const intervalId = setInterval(this.timer, 1000)
 
-    
+    this.setState({
+      hoverBoxStyle: 'hover-layer animated fadeOut',
+      currentTime: currentTime,
+      endTime: endTime, 
+      remainingTime: moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss'), 
+      intervalId: intervalId
+    })
 
     setTimeout(() => {
       this.setState({
@@ -116,18 +129,9 @@ class Extract extends Component {
   }
 
   onExtractingStartClick() {
-    const currentTime = moment().unix()
-    const endTime = moment().add(15, 'seconds').unix()
-
     this.setState({
-      hoverBoxStyle: 'hover-layer animated fadeOut',
-      currentTime: currentTime,
-      endTime: endTime, 
-      remainingTime: moment.unix(moment(endTime).diff(moment(currentTime))).format('ss'), 
-      intervalId: intervalId
+      hoverBoxStyle: 'hover-layer animated fadeOut'
     })
-
-    const intervalId = setInterval(this.timer, 1000)
 
     setTimeout(() => {
       this.setState({
@@ -135,6 +139,23 @@ class Extract extends Component {
         hoverBoxStyle: 'hover-layer'
       })
     }, 500)
+  }
+
+  onCorrectValidationAnswer() {
+    const endTime = moment.unix(this.state.endTime).add(15, 'seconds').unix()
+    
+    this.setState((prevState, props) => {
+      return {
+        endTime: endTime
+      }
+    })
+
+    clearInterval(this.state.intervalId)
+    const intervalId = setInterval(this.timer, 1000)
+
+    this.setState({
+      intervalId: intervalId
+    })
   }
 
   onRandomizeClick() {
@@ -167,16 +188,24 @@ class Extract extends Component {
     // Select another random word, dispatch as object, remove from sentenceWord bucket
   }
 
-  isValidating() {
-    
-    const unprocessedTriples = _.find(this.props.triples, { processed: false })
+  onNewGameStartClick() {
+    // Redirect to next sentence
 
+    if(this.props.sentence.nextSentence) {
+      const documentId = this.props.match.params.documentId
+      window.location.replace(`/extract/${documentId}/${this.props.sentence.nextSentence}`)
+    } else {
+      window.location.replace('/')
+    }
+  }
+
+  isValidating() {
+    const unprocessedTriples = _.find(this.props.triples, { processed: false })
     return unprocessedTriples ? true : false 
   }
 
   isExtracting() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
-
     return unprocessedTriples ? false : true 
   }
 
@@ -190,7 +219,6 @@ class Extract extends Component {
   }
 
   renderWord(word) {
-
     const isExtracting = this.isExtracting()
 
     return(
@@ -254,6 +282,9 @@ class Extract extends Component {
         hasStartedExtracting={this.state.hasStartedExtracting}
         onExtractingStartClick={this.onExtractingStartClick}
         extractionContainsConcept={extractionContainsConcept}
+        onCorrectValidationAnswer={this.onCorrectValidationAnswer}
+        gameOver={this.state.gameOver}
+        onNewGameStartClick={this.onNewGameStartClick}
       />
     )
   }
@@ -278,4 +309,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Extract); 
+export default DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(Extract)); 

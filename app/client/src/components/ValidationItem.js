@@ -8,7 +8,6 @@ const ValidationItem = ({
   isSentenceLoading,
   onChoiceClick, 
   hasClicked,
-  onNextQuestionClick, 
   answer, 
   clickedChoice, 
   triple, 

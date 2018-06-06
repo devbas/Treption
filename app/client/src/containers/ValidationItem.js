@@ -27,8 +27,8 @@ class ValidationItem extends Component {
       //answer: 
     }
 
+    this.onCorrectValidationAnswer = this.props.onCorrectValidationAnswer.bind(this)
     this.onChoiceClick = this.onChoiceClick.bind(this)
-    this.onNextQuestionClick = this.onNextQuestionClick.bind(this)
   }
 
   componentDidMount() {
@@ -116,6 +116,10 @@ class ValidationItem extends Component {
     console.log('agree: ', this.state.triple.agree, '   versus disagree: ', this.state.triple.disagree)
     if( (this.state.triple.agree + 1 > this.state.triple.disagree && choice === 'agree') || (this.state.triple.disagree + 1 > this.state.triple.agree && choice === 'disagree') ) {
       console.log('correct!')
+
+      this.onCorrectValidationAnswer()
+      // debugger
+
       this.setState({
         isPointBoxActive: true, 
         isFeedbackBoxActive: true, 
@@ -138,7 +142,7 @@ class ValidationItem extends Component {
         this.props.actions.boundSetTripleAsProcessed({...this.state.triple, processed: true })
       }, 1500)
     } else {
-      console.log('correct 2!')
+      console.log('incorrect')
       this.setState({
         isPointBoxActive: true,
         isFeedbackBoxActive: true, 
@@ -165,13 +169,6 @@ class ValidationItem extends Component {
     this.props.actions.boundTripleVote(this.state.triple.triple_id, choice)
   } 
 
-  onNextQuestionClick() {
-    this.setState({
-      processed: true 
-    })
-    this.props.actions.boundSetTripleAsProcessed({...this.state.triple, processed: true })
-  }
-
   render() {
 
     let answer = ''
@@ -188,7 +185,6 @@ class ValidationItem extends Component {
         isSentenceLoading={this.props.isSentenceLoading}
         onChoiceClick={this.onChoiceClick}
         hasClicked={this.state.hasClicked}
-        onNextQuestionClick={this.onNextQuestionClick}
         answer={answer}
         clickedChoice={this.state.clickedChoice}
         triple={this.state.triple}
