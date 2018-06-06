@@ -12,7 +12,9 @@ const ItemTypes = {
 
 const cardSource = {
   beginDrag(props) {
-    return {}
+    return {
+      scope: props.scope
+    }
   }
 }
 

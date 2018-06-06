@@ -3,24 +3,6 @@ import _ from 'lodash'
 
 import ExtractedTripleItemTokenComponent from '../components/ExtractedTripleItemToken'
 
-const ItemTypes = {
-  WORD: 'word'
-};
-
-const squareTarget = {
-  drop(props, monitor) {
-    console.log('logged!')
-    // moveKnight(props.x, props.y);
-  }
-};
-
-function collect(connect, monitor) {
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
-  };
-}
-
 class ExtractedTripleItemToken extends Component {
 
   constructor(props) {

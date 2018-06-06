@@ -1,6 +1,7 @@
 import React from 'react'
 
-import ExtractedTripleItemToken from '../containers/ExtractedTripleItemToken'
+// import ExtractedTripleItemToken from '../containers/ExtractedTripleItemToken'
+import ExtractedTripleElement from '../containers/ExtractedTripleElement'
 
 const ExtractedTripleItem = ({ 
   subject, 
@@ -14,22 +15,13 @@ const ExtractedTripleItem = ({
 }) => (
   <div className="triple-box">
     <div className={`subject ${selectedAttribute === 'subject' ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('subject')}>
-      {subject.map((subjectTokens) => renderTripleItemToken(subjectTokens, 'subject', concept))}
-      
-      {/* <ExtractedTripleItemToken tokens={subject} attribute='subject'/> */}
-      {/* {subject} */}
+      <ExtractedTripleElement data={subject} attribute='subject' concept={concept}/>
     </div>
     <div className={`predicate ${selectedAttribute === 'predicate' ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('predicate')}>
-      {predicate.map((predicateTokens) => renderTripleItemToken(predicateTokens, 'predicate', concept))}
-      
-      {/* <ExtractedTripleItemToken attribute='predicate' tokens={predicate}/> */}
-      {/* {predicate} */}
+      <ExtractedTripleElement data={predicate} attribute='predicate' concept={concept}/>
     </div>
     <div className={`object ${selectedAttribute === 'object' ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('object')}>
-      {object.map((objectTokens) => renderTripleItemToken(objectTokens, 'object', concept))}
-      
-      {/* <ExtractedTripleItemToken attribute='object' tokens={object}/> */}
-      {/* {object} */}
+      <ExtractedTripleElement data={object} attribute='object' concept={concept}/>
     </div>
 
     {concept &&

@@ -24,7 +24,7 @@ class Extract extends Component {
       predicateInput: '', 
       totalTriples: !this.props.isSentenceLoading ? this.props.triples.length : 0, 
       currentTripleOffset: 0, 
-      remainingTime: '', 
+      remainingTime: '00:15', 
       isExtracting: false , 
       hasStartedValidating: false, 
       hoverBoxStyle: 'hover-layer', 

@@ -8,7 +8,6 @@ export const extractingStage = createReducer('subject', {
 })
 
 export const extractedTriples = (state = [], action) => {
-
   let newState = [...state]
   let existingConceptIndex = newState.findIndex(triple => triple.concept === true)
 

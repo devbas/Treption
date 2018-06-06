@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import ExtractedTripleItemComponent from '../components/ExtractedTripleItem'
-import ExtractedTripleItemToken from './ExtractedTripleItemToken'
 
 class ExtractedTripleItem extends Component {
 
@@ -14,7 +13,6 @@ class ExtractedTripleItem extends Component {
 
     this.onTripleAttributeSelect = this.onTripleAttributeSelect.bind(this) 
     this.onTripleSubmit = this.onTripleSubmit.bind(this)
-    this.renderTripleItemToken = this.renderTripleItemToken.bind(this)
 
     this.state = {
       subject: [], 
@@ -86,19 +84,7 @@ class ExtractedTripleItem extends Component {
     })
   }
 
-  renderTripleItemToken(tokens, attribute, concept) {
-    return (
-      <ExtractedTripleItemToken tokens={tokens} attribute={attribute} isConcept={concept}/>
-    )
-  }
-
   render() {
-
-    console.log('triple: ', this.props.triple)
-
-    //const subject = this.props.triple ? this.props.triple.subject.length > 0 ? this.props.triple.subject[0].words[0].value : this.props.triple.subject : ''
-    // const predicate = this.props.triple ? this.props.triple.predicate.length > 0 ? this.props.triple.predicate[0].words[0].value : this.props.triple.predicate : ''
-    // const object = this.props.triple ? this.props.triple.object > 0 ? this.props.triple.object[0].words[0].value : this.props.triple.object : ''
     const concept = this.props.triple ? this.props.triple.concept : false 
 
     return (
@@ -129,4 +115,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExtractedTripleItem); 
+export default connect(mapStateToProps, mapDispatchToProps)(ExtractedTripleItem) 
