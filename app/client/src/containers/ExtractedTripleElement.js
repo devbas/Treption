@@ -17,7 +17,7 @@ const squareTarget = {
     if(props.attribute === 'subject') {
       props.actions.boundUpdateTripleSubject(item.scope)
     }
-    
+
     if(props.attribute === 'predicate') {
       props.actions.boundUpdateTriplePredicate(item.scope) 
     }
@@ -44,6 +44,8 @@ class ExtractedTripleElement extends Component {
     super(props) 
 
     this.renderTripleItemToken = this.renderTripleItemToken.bind(this)
+
+    console.log('rerender extractedTriplEelement')
   }
 
   renderTripleItemToken(tokens, attribute, concept) {

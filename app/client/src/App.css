@@ -267,6 +267,7 @@ body {
   background-color: rgba(255, 250, 246, 1); 
   border-radius: 5px; 
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
+  position: relative;
 }
 
 .extract .editor-box .inner-box .game-object-box {
@@ -276,9 +277,38 @@ body {
   color: #FDE1CC; 
   background-color: #0C1A24; 
   border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
   position: relative;
 }
 
+.extract .editor-box .inner-box .game-object-box .player-box {
+  width: calc(50% - 1px); 
+  float: left; 
+  border-right: 1px solid; 
+}
+
+.extract .editor-box .inner-box .game-object-box .competitor-box {
+  width: 50%; 
+  float: left; 
+}
+
+.extract .editor-box .inner-box .time-remaining {
+  width: 100px; 
+  margin: auto; 
+  background-color: rgba(12, 26, 36, 0.8);
+  position: absolute; 
+  top: 43px; 
+  left: 0; 
+  right: 0; 
+  padding: 5px 10px; 
+  text-align: center; 
+  color: #fff; 
+  border-bottom-left-radius: 10px; 
+  border-bottom-right-radius: 10px;
+  font-size: 20px; 
+}
+
+/* 
 .extract .editor-box .inner-box .game-object-box .progress {
   border-right: 1px solid rgba(255, 250, 246, 1); 
   width: 33%; 
@@ -296,14 +326,40 @@ body {
   font-size: 24px;
   font-weight: 700;
   height: 29px;
+} */
+
+.extract .editor-box .inner-box .game-object-box .player-name {
+  font-size: 20px;
+  float: right; 
+  padding: 9px 10px; 
 }
 
-.extract .editor-box .inner-box .game-object-box .points {
-  width: 33%; 
+.extract .editor-box .inner-box .game-object-box .competitor-name {
+  font-size: 20px;
+  float: left; 
+  padding: 9px 10px; 
+}
+
+.extract .editor-box .inner-box .game-object-box .point-icon {
   text-align: center;
-  padding: 10px 0;
+  margin: 14px 0 10px 0;
+  background-image: url('./assets/img/coin.svg'); 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  width: 18px; 
+  height: 18px; 
+}
+
+.extract .editor-box .inner-box .game-object-box .player-box .points {
   font-size: 24px;
-  font-weight: 700;
+  margin: 7px 15px 7px 5px;
+  font-weight: 700; 
+}
+
+.extract .editor-box .inner-box .game-object-box .competitor-box .points {
+  font-size: 24px;
+  margin: 7px 5px 7px 15px;
+  font-weight: 700; 
 }
 
 .extract .editor-box .inner-box .game-object-box .competitor-tooltip-box {

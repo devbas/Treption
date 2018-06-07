@@ -46,25 +46,36 @@ const Extract = ({
         <div className="editor-box">
           <div className="inner-box">
             <div className="game-object-box">
-              {isValidating() &&
+              {/* {isValidating() &&
                 <div className="progress left">{currentTripleOffset} of {totalTriples}</div>
               }
               
               {isExtracting() &&
                 <div className="progress left">0 extracted</div>
-              }
+              } */}
 
-              {isValidating() &&
-                <div className="time-remaining left">00:{remainingTime}</div>
-              }
-
-              {isExtracting() &&
+              {/* {isExtracting() &&
                 <div className="time-remaining left"></div>
-              }
+              } */}
+
+              <div className="player-box">
+                <div className="points right pulse animated">{playerType === 'competitor' ? tournament.competitor_points ? tournament.competitor_points : 0 : tournament.challenger_points ? tournament.challenger_points : 0 }</div>
+                <div className="point-icon right"></div>
+                <div className="player-name">{playerType === 'competitor' ? tournament.competitor_name : tournament.challenger_name }</div>
+              </div>
+
+              <div className="competitor-box">
+                <div className="points left pulse animated">{playerType === 'competitor' ? tournament.challenger_points ? tournament.challenger_points : 0 : tournament.competitor_points ? tournament.competitor_points : 0 }</div>
+                <div className="point-icon left"></div>
+                <div className="competitor-name">{playerType === 'competitor' ? tournament.challenger_name : tournament.competitor_name }</div>
+              </div>
       
-              <div className="points left pulse animated">{playerType === 'competitor' ? tournament.competitor_points ? tournament.competitor_points : 0 : tournament.challenger_points ? tournament.challenger_points : 0 } points</div>
-              <div className="competitor-tooltip-box"></div>
+              
+              {/* <div className="competitor-tooltip-box"></div> */}
             </div>
+            {isValidating() &&
+              <div className="time-remaining">00:{remainingTime}</div>
+            }
             
             <div className="sentence-box extract-word-box" style={{backgroundColor: backgroundColorMedium}}>
               <div className="content">

@@ -20,58 +20,49 @@ class ExtractedTripleItem extends Component {
       object: []
     }
 
+    // console.log('extractedTripleItem constructed', this.props.triple)
+    // if(this.props.triple) {
+    //   if(Array.isArray(this.props.triple.subject) && this.props.triple.subject.length > 0) {
+    //     this.state.subject = this.props.triple.subject 
+    //   }
+
+    //   if(Array.isArray(this.props.triple.predicate) && this.props.triple.predicate.length > 0) {
+    //     this.state.predicate = this.props.triple.predicate
+    //   }
+
+    //   if(Array.isArray(this.props.triple.object) && this.props.triple.object.length > 0) {
+    //     this.state.object = this.props.triple.object 
+    //   }      
+    // }
+
   }
 
   componentDidUpdate(prevProps, prevState) {
 
     if(prevProps !== this.props) {
+      
       if(this.props.triple) {
-
         if(Array.isArray(this.props.triple.subject) && this.props.triple.subject.length > 0) {
           this.setState({
             subject: this.props.triple.subject
           })
         }
-
         if(Array.isArray(this.props.triple.predicate) && this.props.triple.predicate.length > 0) {
           this.setState({
             predicate: this.props.triple.predicate
           })
         }
-
+        console.log('this state: ', this.state)
         if(Array.isArray(this.props.triple.object) && this.props.triple.object.length > 0) {
           this.setState({
             object: this.props.triple.object
           })
         }
-
-        /*if(Array.isArray(this.props.triple.subject) && this.props.triple.subject.length > 0) {
-          const words = _.flatten(_.map(this.props.triple.subject, 'words'))
-          this.setState({ subject: _.map(words, 'value').join(' ') })
-        } else if(!Array.isArray(this.props.triple.subject)) {
-          this.setState({ subject: this.props.triple.subject })
-        }
-  
-        if(Array.isArray(this.props.triple.predicate) && this.props.triple.predicate.length > 0) {
-          const words = _.flatten(_.map(this.props.triple.predicate, 'words'))
-          this.setState({ predicate: _.map(words, 'value').join(' ') })
-        } else if(!Array.isArray(this.props.triple.predicate)) {
-          this.setState({ predicate: this.props.triple.predicate })
-        }
-  
-        if(Array.isArray(this.props.triple.object) && this.props.triple.object.length > 0) {
-          const words = _.flatten(_.map(this.props.triple.object, 'words'))
-          this.setState({ object: _.map(words, 'value').join(' ') })
-        } else if(!Array.isArray(this.props.triple.object)) {
-          this.setState({ object: this.props.triple.object })
-        }*/
       }
     }
-
   }
 
   onTripleAttributeSelect(attribute) {
-    console.log('active: ', attribute)
     this.props.actions.boundTripleAttributeSelected(attribute)
   }
 
@@ -86,16 +77,15 @@ class ExtractedTripleItem extends Component {
 
   render() {
     const concept = this.props.triple ? this.props.triple.concept : false 
-
+    console.log('rerender')
     return (
       <ExtractedTripleItemComponent {...this.props} 
         onTripleAttributeSelect={this.onTripleAttributeSelect}
         onTripleSubmit={this.onTripleSubmit}
         concept={concept}
-        subject={this.state.subject}
+        subject={this.props.triple ? this.props.triple.subject : []}
         predicate={this.state.predicate}
         object={this.state.object}
-        renderTripleItemToken={this.renderTripleItemToken}
       />
     )
   }

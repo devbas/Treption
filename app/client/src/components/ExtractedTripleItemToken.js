@@ -1,9 +1,24 @@
 import React from 'react'
 
-const ExtractedTripleItemToken = ({ tokens, isConcept, onTokenRemoveClick }) => (
-  <div className="token-box">
-    {tokens}
-  </div>
-)
+const ExtractedTripleItemToken = ({ 
+  tokens, 
+  isConcept, 
+  onTokenRemoveClick, 
+  connectDragSource
+}) => {
+  if(isConcept) {
+    return connectDragSource(
+      <div className="token-box">
+        {tokens}
+      </div>
+    )
+  } else {
+    return (
+      <div className="token-box">
+        {tokens}
+      </div>
+    )
+  }
+}
 
 export default ExtractedTripleItemToken

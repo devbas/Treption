@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>dollar</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="dollar" fill-rule="nonzero">
+            <path d="M257,0 C116.302,0 0,114.3 0,255 C0,395.7 116.302,512 257,512 C397.698,512 512,395.7 512,255 C512,114.3 397.698,0 257,0 Z" id="Shape" fill="#FEDB41"></path>
+            <path d="M512,255 C512,395.7 397.698,512 257,512 L257,0 C397.698,0 512,114.3 512,255 Z" id="Shape" fill="#FFCC33"></path>
+            <path d="M257,60 C149.598,60 60,147.599 60,255 C60,362.401 149.598,452 257,452 C364.402,452 452,362.401 452,255 C452,147.599 364.402,60 257,60 Z" id="Shape" fill="#FEA832"></path>
+            <path d="M452,255 C452,362.401 364.402,452 257,452 L257,60 C364.402,60 452,147.599 452,255 Z" id="Shape" fill="#FE9923"></path>
+        </g>
+    </g>
+</svg>
