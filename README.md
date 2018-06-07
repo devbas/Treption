@@ -14,7 +14,7 @@ With Treption (a-lack-of-inspiration-temporarily-working-name) we propose a syst
 ![SystemDesign](./SystemDesign.png)
 
 ## Background (In progress)
-Manual relation extraction (RE) can boost performance of semantic models. However, manual RE can become a laborious and tedious task. Furthermore, Burghardt [6] argues that usability has signicant impact on the process of extraction. Based on these challenges, this project tends to come up with an attractive and assisting way to extract relations manually.
+Manual relation extraction (RE) can boost performance of semantic models. However, manual RE can become a laborious and tedious task. Furthermore, Burghardt [6] argues that usability has significant impact on the process of extraction. Based on these challenges, this project tends to come up with an attractive and assisting way to extract relations manually.
 
 ## Troubleshooting (In progress)
 1. Check whether the Docker containers are running by entering `Docker ps` in your terminal
