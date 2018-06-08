@@ -67,25 +67,40 @@ class ExtractedTripleItem extends Component {
   }
 
   onTripleSubmit() {
-    this.props.actions.boundAddTriple({
-      subject: this.state.subject, 
-      predicate: this.state.predicate, 
-      object: this.state.object, 
-      sentenceId: this.props.sentence.sentenceId
-    })
+    //console.log('this state: ', this.state); 
+    // debugger;
+    
+    if(this.state.subject && this.state.predicate && this.state.object) {
+
+      const predicateWords = _.flatten(_.map(this.state.predicate, 'words'))
+      const predicate = _.map(predicateWords, 'value').join(' ')
+
+      const subjectWords = _.flatten(_.map(this.state.subject, 'words'))
+      const subject = _.map(subjectWords, 'value').join(' ')
+
+      const objectWords = _.flatten(_.map(this.state.object, 'words'))
+      const object = _.map(objectWords, 'value').join(' ')
+
+      this.props.actions.boundAddTriple({
+        subject: subject, 
+        predicate: predicate, 
+        object: object, 
+        sentenceId: this.props.sentence.sentenceId
+      })
+    }
   }
 
   render() {
     const concept = this.props.triple ? this.props.triple.concept : false 
-    console.log('rerender')
+
     return (
       <ExtractedTripleItemComponent {...this.props} 
         onTripleAttributeSelect={this.onTripleAttributeSelect}
         onTripleSubmit={this.onTripleSubmit}
         concept={concept}
         subject={this.props.triple ? this.props.triple.subject : []}
-        predicate={this.state.predicate}
-        object={this.state.object}
+        predicate={this.props.triple ? this.props.triple.predicate: []}
+        object={this.props.triple ? this.props.triple.object : []}
       />
     )
   }

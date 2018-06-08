@@ -55,23 +55,33 @@ class ExtractedTripleElement extends Component {
   }
 
   render() {
-    return this.props.connectDropTarget(
-      <div style={{width: '100%', height: '100%'}}>
-        {this.props.data.map((tokens) => this.renderTripleItemToken(tokens, this.props.attribute, this.props.concept))}
-        {this.props.isOver &&
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100%',
-            zIndex: 1,
-            opacity: 0.5,
-            backgroundColor: 'yellow',
-          }} />
-        }
-      </div>
-    )
+    if(this.props.concept) {
+      console.log(this.props)
+      return this.props.connectDropTarget(
+        <div style={{width: '100%', height: '100%'}}>
+          {this.props.data.map((tokens) => this.renderTripleItemToken(tokens, this.props.attribute, this.props.concept))}
+          {this.props.isOver &&
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              height: '100%',
+              width: '100%',
+              zIndex: 1,
+              opacity: 0.5,
+              backgroundColor: 'white',
+            }} />
+          }
+        </div>
+      )
+    } else {
+      console.log(this.props)
+      return (
+        <div style={{width: '100%', height: '100%'}}>
+          {this.renderTripleItemToken(this.props.data, this.props.attribute, this.props.concept)}
+        </div>
+      )
+    }
   }
 
 }
