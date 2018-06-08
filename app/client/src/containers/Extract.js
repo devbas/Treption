@@ -225,7 +225,6 @@ class Extract extends Component {
       <ExtractWordItem
         scope={word}
         isExtracting={isExtracting}
-        //stage={this.props.stage}
       />
     )
   }
@@ -281,7 +280,7 @@ class Extract extends Component {
         hoverBoxStyle={this.state.hoverBoxStyle}
         hasStartedExtracting={this.state.hasStartedExtracting}
         onExtractingStartClick={this.onExtractingStartClick}
-        extractionContainsConcept={extractionContainsConcept}
+        extractionContainsConcept={extractionContainsConcept ? true : false}
         onCorrectValidationAnswer={this.onCorrectValidationAnswer}
         gameOver={this.state.gameOver}
         onNewGameStartClick={this.onNewGameStartClick}

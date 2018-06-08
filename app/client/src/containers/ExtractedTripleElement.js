@@ -44,8 +44,6 @@ class ExtractedTripleElement extends Component {
     super(props) 
 
     this.renderTripleItemToken = this.renderTripleItemToken.bind(this)
-
-    console.log('rerender extractedTriplEelement')
   }
 
   renderTripleItemToken(tokens, attribute, concept) {
@@ -56,7 +54,6 @@ class ExtractedTripleElement extends Component {
 
   render() {
     if(this.props.concept) {
-      console.log(this.props)
       return this.props.connectDropTarget(
         <div style={{width: '100%', height: '100%'}}>
           {this.props.data.map((tokens) => this.renderTripleItemToken(tokens, this.props.attribute, this.props.concept))}
@@ -75,7 +72,6 @@ class ExtractedTripleElement extends Component {
         </div>
       )
     } else {
-      console.log(this.props)
       return (
         <div style={{width: '100%', height: '100%'}}>
           {this.renderTripleItemToken(this.props.data, this.props.attribute, this.props.concept)}
@@ -88,6 +84,7 @@ class ExtractedTripleElement extends Component {
 
 function mapStateToProps(state) {
   return {
+    extractedTriples: state.extractedTriples
   }
 }
 

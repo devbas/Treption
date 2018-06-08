@@ -28,10 +28,10 @@ class ExtractedTripleItemToken extends Component {
   constructor(props) {
     super(props) 
 
-    console.log('this props tokens: ', this.props.tokens)
     if(this.props.tokens && this.props.tokens.words) {
+      const words = this.props.tokens.words
       this.state = {
-        words: _.map(this.props.tokens.words, 'value').join(' ')
+        words: _.map(words, 'value').join(' ')
       }
     } else {
       this.state = {
@@ -44,7 +44,6 @@ class ExtractedTripleItemToken extends Component {
 
   onTokenRemoveClick(event) {
     event.preventDefault()
-    console.log('remove it')
   }
 
   render() {

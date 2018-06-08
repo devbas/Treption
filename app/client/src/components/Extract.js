@@ -120,7 +120,7 @@ const Extract = ({
                   {extractedTriples.length > 0 && (extractedTriples[0].subject || extractedTriples[0].predicate || extractedTriples[0].object) &&
                     <span>
                       {extractedTriples.map((triple) => {
-                        return <ExtractedTripleItem triple={triple}/>
+                        return <ExtractedTripleItem triple={triple} concept={triple.concept}/>
                       })}
                     </span>
                   }

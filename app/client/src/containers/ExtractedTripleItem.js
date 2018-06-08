@@ -20,20 +20,19 @@ class ExtractedTripleItem extends Component {
       object: []
     }
 
-    // console.log('extractedTripleItem constructed', this.props.triple)
-    // if(this.props.triple) {
-    //   if(Array.isArray(this.props.triple.subject) && this.props.triple.subject.length > 0) {
-    //     this.state.subject = this.props.triple.subject 
-    //   }
+    if(this.props.triple) {
+      if(Array.isArray(this.props.triple.subject) && this.props.triple.subject.length > 0) {
+        this.state.subject = this.props.triple.subject 
+      }
 
-    //   if(Array.isArray(this.props.triple.predicate) && this.props.triple.predicate.length > 0) {
-    //     this.state.predicate = this.props.triple.predicate
-    //   }
+      if(Array.isArray(this.props.triple.predicate) && this.props.triple.predicate.length > 0) {
+        this.state.predicate = this.props.triple.predicate
+      }
 
-    //   if(Array.isArray(this.props.triple.object) && this.props.triple.object.length > 0) {
-    //     this.state.object = this.props.triple.object 
-    //   }      
-    // }
+      if(Array.isArray(this.props.triple.object) && this.props.triple.object.length > 0) {
+        this.state.object = this.props.triple.object 
+      }      
+    }
 
   }
 
@@ -52,7 +51,6 @@ class ExtractedTripleItem extends Component {
             predicate: this.props.triple.predicate
           })
         }
-        console.log('this state: ', this.state)
         if(Array.isArray(this.props.triple.object) && this.props.triple.object.length > 0) {
           this.setState({
             object: this.props.triple.object
@@ -67,11 +65,8 @@ class ExtractedTripleItem extends Component {
   }
 
   onTripleSubmit() {
-    //console.log('this state: ', this.state); 
-    // debugger;
     
     if(this.state.subject && this.state.predicate && this.state.object) {
-
       const predicateWords = _.flatten(_.map(this.state.predicate, 'words'))
       const predicate = _.map(predicateWords, 'value').join(' ')
 
@@ -91,13 +86,11 @@ class ExtractedTripleItem extends Component {
   }
 
   render() {
-    const concept = this.props.triple ? this.props.triple.concept : false 
-
     return (
-      <ExtractedTripleItemComponent {...this.props} 
+      <ExtractedTripleItemComponent
         onTripleAttributeSelect={this.onTripleAttributeSelect}
         onTripleSubmit={this.onTripleSubmit}
-        concept={concept}
+        concept={this.props.concept}
         subject={this.props.triple ? this.props.triple.subject : []}
         predicate={this.props.triple ? this.props.triple.predicate: []}
         object={this.props.triple ? this.props.triple.object : []}
