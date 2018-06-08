@@ -11,6 +11,9 @@ export const extractedTriples = (state = [], action) => {
   let newState = [...state]
   let existingConceptIndex = newState.findIndex(triple => triple.concept === true)
 
+  console.log('action: ', action); 
+  // debugger;
+
   if(existingConceptIndex === -1) {
     // Create new concept 
     newState.push({ subject: [], predicate: [], object: [], concept: true })
@@ -20,15 +23,27 @@ export const extractedTriples = (state = [], action) => {
   switch(action.type) {
 
     case 'SET_TRIPLE_SUBJECT': 
-      newState[existingConceptIndex].subject.push(action.subject)
+      if(action.subject.isRandomize) {
+        newState[existingConceptIndex].subject = [action.subject]
+      } else {
+        newState[existingConceptIndex].subject.push(action.subject)
+      }
       return newState
 
     case 'SET_TRIPLE_PREDICATE': 
-      newState[existingConceptIndex].predicate.push(action.predicate)
+      if(action.predicate.isRandomize) {
+        newState[existingConceptIndex].predicate = [action.predicate]
+      } else {
+        newState[existingConceptIndex].predicate.push(action.predicate)
+      }
       return newState
     
     case 'SET_TRIPLE_OBJECT': 
-      newState[existingConceptIndex].object.push(action.object)
+      if(action.object.isRandomize) {
+        newState[existingConceptIndex].object = [action.object]
+      } else {
+        newState[existingConceptIndex].object.push(action.object)
+      }
       return newState
     
     case 'SET_SAVED_TRIPLE': 

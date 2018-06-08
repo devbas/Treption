@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { DragSource } from 'react-dnd';
+import { DragSource } from 'react-dnd'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import ExtractedTripleItemTokenComponent from '../components/ExtractedTripleItemToken'
 
@@ -42,6 +44,22 @@ class ExtractedTripleItemToken extends Component {
     this.onTokenRemoveClick = this.onTokenRemoveClick.bind(this)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps !== this.props) {
+      if(this.props.tokens && this.props.tokens.words) {
+        const words = this.props.tokens.words
+        this.setState({
+          words: _.map(words, 'value').join(' ')
+        })
+      } else {
+        this.setState({
+          words: this.props.tokens
+        })
+      }
+  
+    }
+  }
+
   onTokenRemoveClick(event) {
     event.preventDefault()
   }
@@ -60,4 +78,19 @@ class ExtractedTripleItemToken extends Component {
 
 }
 
-export default DragSource(ItemTypes.TOKEN, cardSource, collect)(ExtractedTripleItemToken)
+function mapStateToProps(state) {
+  return {
+    extractedTriples: state.extractedTriples
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+	  actions: bindActionCreators(Object.assign({}), dispatch)
+  }
+}
+
+ExtractedTripleItemToken = DragSource(ItemTypes.TOKEN, cardSource, collect)(ExtractedTripleItemToken)
+ExtractedTripleItemToken = connect(mapStateToProps, mapDispatchToProps)(ExtractedTripleItemToken)
+
+export default ExtractedTripleItemToken

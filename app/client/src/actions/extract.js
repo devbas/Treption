@@ -51,21 +51,21 @@ export const setExtractingStage = (stage) => {
   }
 }
 
-export const boundUpdateTriplePredicate = (predicate) => {
+export const boundUpdateTriplePredicate = (predicate, isRandomize) => {
   return (dispatch, getState) => {
-    dispatch(triplePredicate(predicate))
+    dispatch(triplePredicate({...predicate, isRandomize: isRandomize }))
   }
 }
 
-export const boundUpdateTripleSubject = (subject) => {
+export const boundUpdateTripleSubject = (subject, isRandomize) => {
   return (dispatch, getState) => {
-    dispatch(tripleSubject(subject))
+    dispatch(tripleSubject({...subject, isRandomize: isRandomize }))
   }
 }
 
-export const boundUpdateTripleObject = (object) => {
+export const boundUpdateTripleObject = (object, isRandomize) => {
   return (dispatch, getState) => {
-    dispatch(tripleObject(object))
+    dispatch(tripleObject({...object, isRandomize: isRandomize }))
   } 
 }
 

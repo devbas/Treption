@@ -111,6 +111,7 @@ body {
   color: #0C1A24; 
   padding: 3px 9px 3px 5px; 
   font-style: italic;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.30);
 }
 
 .extract .sentence-box {

@@ -166,15 +166,15 @@ class Extract extends Component {
     }
 
     const randomSubjectNumber = Math.floor(Math.random() * randomizeBucket.length)
-    this.props.actions.boundUpdateTripleSubject(randomizeBucket[randomSubjectNumber])
+    this.props.actions.boundUpdateTripleSubject(randomizeBucket[randomSubjectNumber], true)
     randomizeBucket.splice(randomSubjectNumber, 1)
 
     const randomPredicateNumber = Math.floor(Math.random() * randomizeBucket.length)
-    this.props.actions.boundUpdateTriplePredicate(randomizeBucket[randomPredicateNumber])
+    this.props.actions.boundUpdateTriplePredicate(randomizeBucket[randomPredicateNumber], true)
     randomizeBucket.splice(randomPredicateNumber, 1)
 
     const randomObjectNumber = Math.floor(Math.random() * randomizeBucket.length)
-    this.props.actions.boundUpdateTripleObject(randomizeBucket[randomObjectNumber])
+    this.props.actions.boundUpdateTripleObject(randomizeBucket[randomObjectNumber], true)
     randomizeBucket.splice(randomObjectNumber, 1)
 
     // Get all words from sentence
@@ -201,12 +201,14 @@ class Extract extends Component {
 
   isValidating() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
-    return unprocessedTriples ? true : false 
+    // return unprocessedTriples ? true : false 
+    return false 
   }
 
   isExtracting() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
-    return unprocessedTriples ? false : true 
+    // return unprocessedTriples ? false : true 
+    return true 
   }
 
   renderPredicate(predicate) {
