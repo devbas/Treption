@@ -2,7 +2,7 @@ import React from 'react';
 
 const ExtractWordItem = ({ 
   word, 
-  inactive, 
+  active, 
   keystroke, 
   onWordClick, 
   wordState, 
@@ -11,8 +11,13 @@ const ExtractWordItem = ({
   isDragging
 }) => {
   return connectDragSource(
-    <div className={`extract-word-item-box ${inactive ? 'inactive' : 'active' } ${isExtracting ? 'is-extracting' : 'is-validating'}`} onClick={onWordClick}>
+    <div className={`extract-word-item-box ${active ? 'active' : 'inactive' } ${isExtracting ? 'is-extracting' : 'is-validating'}`} onClick={onWordClick}>
       <span>
+        {active &&
+          <div className="radio-button">
+            <div className="hover-fill"></div>
+          </div>
+        }
         <div className="character">
           {word}
         </div>

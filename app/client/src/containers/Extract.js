@@ -286,6 +286,7 @@ class Extract extends Component {
         onCorrectValidationAnswer={this.onCorrectValidationAnswer}
         gameOver={this.state.gameOver}
         onNewGameStartClick={this.onNewGameStartClick}
+        selectedAttribute={this.props.selectedAttribute} 
       />
     )
   }
@@ -300,7 +301,8 @@ function mapStateToProps(state) {
     tournament: state.fetchedTournament,
     tournamentCreated: state.createdTournament, 
     isSentenceLoading: state.isSentenceLoading, 
-    extractedTriples: state.extractedTriples
+    extractedTriples: state.extractedTriples, 
+    selectedAttribute: state.selectedTripleAttribute 
   }
 }
 

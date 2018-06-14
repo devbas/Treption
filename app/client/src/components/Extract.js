@@ -33,7 +33,8 @@ const Extract = ({
   extractionContainsConcept, 
   onCorrectValidationAnswer, 
   gameOver, 
-  onNewGameStartClick
+  onNewGameStartClick, 
+  selectedAttribute 
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 
     {(tournamentCreated || !tournament) &&
@@ -77,8 +78,20 @@ const Extract = ({
               <div className="time-remaining">00:{remainingTime}</div>
             }
             
-            <div className="sentence-box extract-word-box" style={{backgroundColor: backgroundColorMedium}}>
+            <div className="sentence-box extract-word-box" style={{ backgroundColor: color }}>
               <div className="content">
+                {selectedAttribute === 'subject' &&
+                  <div className="help-title">Select an object to start</div>
+                }
+
+                {selectedAttribute === 'predicate' &&
+                  <div className="help-title">Select a subject the object relates with</div>
+                }
+
+                {selectedAttribute === 'object' &&
+                  <div className="help-title">Select the relation</div>
+                }
+
                 {sentence.aggregatedWords &&
                   <div className="word-box">
                     {sentence.aggregatedWords.map(renderWord)}
@@ -87,7 +100,7 @@ const Extract = ({
               </div>
             </div>
 
-            <div className="content" style={{ backgroundColor: color }}>
+            <div className="content" style={{backgroundColor: backgroundColorMedium}}>
               {isValidating() &&
                 <div className="validation-box">
                   <div className="divider"></div>
@@ -113,7 +126,7 @@ const Extract = ({
               }
               
               {isExtracting() &&
-                <div className="extract-box">
+                <div className="extract-box" style={{height: 'auto'}}>
                   <div className="feeling-lucky-box">
                     <div className="feeling-lucky-button" onClick={onRandomizeClick}>Randomize</div>
                   </div>

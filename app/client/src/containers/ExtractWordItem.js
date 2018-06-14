@@ -5,6 +5,7 @@ import * as ExtractActions from '../actions/extract'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { DragSource } from 'react-dnd';
+import { supportedPosTokens } from '../utils'
 
 const ItemTypes = {
   WORD: 'word'
@@ -31,7 +32,8 @@ class ExtractWordItem extends Component {
     super(props)
 
     this.state = {
-      inactive: this.props.scope.inactive, 
+      // inactive: this.props.scope.inactive, 
+      active: false,
       wordState: 'send' // either send or receive
     }
 
@@ -39,24 +41,83 @@ class ExtractWordItem extends Component {
   }
 
   componentDidMount() {
-    if(!this.state.inactive) {
-      
-      if(this.props.selectedTripleAttribute === 'subject') {
-
+    // if(!this.state.inactive) {
+      if(this.props.selectedAttribute === 'subject' || this.props.selectedAttribute === 'object') {
         const nounWord = _.find(this.props.scope.words, (word) => {
           if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
+            console.log('word: ', word)
             return word
+          } else {
+            console.log('exclude this: ', word)
           }
         })
 
-        if(nounWord && this.props.selectedTripleAttribute === 'subject') {
+        if(nounWord) {
           this.setState({
-            inactive: false 
+            active: true 
           })
         }
 
       }
 
+      if(this.props.selectedAttribute === 'predicate') {
+        const nounWord = _.find(this.props.scope.words, (word) => {
+          if(word.pos !== 'NN' && word.pos !== 'NNS' && word.pos !== 'NNP' && word.pos !== 'NNPS') {
+            return word
+          } 
+        })
+
+        if(nounWord) {
+          this.setState({
+            active: true 
+          })
+        }
+      }
+
+    // }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps !== this.props) {
+      if(this.props.selectedAttribute === 'subject' || this.props.selectedAttribute === 'object') {
+        const nounWord = _.find(this.props.scope.words, (word) => {
+          if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
+            console.log('word: ', word)
+            return word
+          } else {
+            console.log('exclude this: ', word)
+          }
+        })
+
+        if(nounWord) {
+          this.setState({
+            active: true 
+          })
+        } else {
+          this.setState({
+            active: false 
+          })
+        }
+
+      }
+
+      if(this.props.selectedAttribute === 'predicate') {
+        const nounWord = _.find(this.props.scope.words, (word) => {
+          if(word.pos !== 'NN' && word.pos !== 'NNS' && word.pos !== 'NNP' && word.pos !== 'NNPS' && supportedPosTokens().includes(word.pos)) {
+            return word
+          } 
+        })
+
+        if(nounWord) {
+          this.setState({
+            active: true 
+          })
+        } else {
+          this.setState({
+            active: false 
+          })
+        }
+      }
     }
   }
 
@@ -81,7 +142,7 @@ class ExtractWordItem extends Component {
     return(
       <ExtractWordItemComponent
         word={this.props.scope.words.map(w => w.value).join('')}
-        inactive={this.state.inactive}
+        active={this.state.active}
         keystroke={this.props.scope.keystroke}
         onWordClick={this.onWordClick}
         wordState={this.state.wordState}

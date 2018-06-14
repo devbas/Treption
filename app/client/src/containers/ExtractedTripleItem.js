@@ -94,6 +94,7 @@ class ExtractedTripleItem extends Component {
         subject={this.props.triple ? this.props.triple.subject : []}
         predicate={this.props.triple ? this.props.triple.predicate: []}
         object={this.props.triple ? this.props.triple.object : []}
+        selectedAttribute={this.props.selectedAttribute}
       />
     )
   }

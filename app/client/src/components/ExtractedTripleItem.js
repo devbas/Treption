@@ -25,10 +25,28 @@ const ExtractedTripleItem = ({
     </div>
 
     {concept &&
-      <div className="submit-box">
+      <div className="submit-box" style={{display: 'none'}}>
         <div className="done" onClick={onTripleSubmit}></div>
       </div>
     }
+
+    {/* {concept &&
+      <span className="active-label-box">
+
+        {selectedAttribute === 'subject' &&
+          <div className="active-label subject"></div>  
+        }
+
+        {selectedAttribute === 'predicate' &&
+          <div className="active-label predicate"></div>  
+        }
+
+        {selectedAttribute === 'object' &&
+          <div className="active-label object"></div> 
+        }
+
+      </span>
+    } */}
   </div>
 )
 
