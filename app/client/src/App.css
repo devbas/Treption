@@ -80,7 +80,7 @@ body {
 
 .extract-word-item-box.active {
   animation-name: spaceboots;
-  animation-duration: 0.6s;
+  animation-duration: 1s;
   transform-origin:50% 50%;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out; 
@@ -99,6 +99,11 @@ body {
 .extract-word-item-box.is-validating {
   opacity: 0.7; 
   cursor: default;
+  animation-name: unset;
+}
+
+.extract-word-item-box.is-validating span {
+  background-color: rgba(255, 239, 229, 0.8) !important;
 }
 
 .extract-word-item-box span {
@@ -134,7 +139,7 @@ body {
 }
 
 .extract-word-item-box.is-extracting.active span:hover .radio-button {
-  background-color: rgba(12, 26, 36, 1);
+  background-color: rgba(12, 26, 36, 0.5);
   transition: background-color 0.15s ease-in-out
 }
 
@@ -149,6 +154,18 @@ body {
   border: 0.5px solid rgba(12, 26, 36, 0.6);
   position: relative;
   transition: background-color 0.15s ease-in-out
+}
+
+.extract-word-item-box .radio-button.inactive {
+  opacity: 0.5; 
+}
+
+.extract-word-item-box .radio-button.selected {
+  background-color: #0C1A24;
+  background-image: url('./assets/img/selected.svg');
+  background-size: 75%; 
+  background-position: center; 
+  background-repeat: no-repeat;
 }
 
 .active-label-box .active-label {
@@ -215,11 +232,9 @@ body {
   margin-top: 1px;
   margin-left: 20px; 
   cursor: pointer;
-  border: 2px solid #FDE0CC;  
+  background-color: #0C1A24; 
   padding: 10px;
-}
 
-.extract .extract-box .done:hover {
 }
 
 .extract .sentence-control-box .prev {
@@ -445,11 +460,9 @@ body {
 
 .editor-box .triple-box .submit-box {
   position: absolute;
-  bottom: -43px; 
-  right: 9px; 
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border: 2px solid rgb(253, 225, 204);
+  right: 10px; 
+  top: 8px; 
+  z-index: 99999;
 }
 
 .editor-box .triple-box .token-box {
@@ -518,6 +531,25 @@ body {
   margin-left: -2px; 
 }
 
+.editor-box .extract-box .extracted-triples-saved-box {
+  float: left; 
+  width: 700px; 
+  margin-bottom: 30px;
+}
+
+.editor-box .extract-box .extracted-triples-saved-box .triple-box {
+  width: auto; 
+  margin-left: auto;
+  margin-right: auto; 
+  display: table; 
+  float: none; 
+}
+
+.editor-box .extract-box .extracted-triples-saved-box .triple-box .subject, .editor-box .extract-box .extracted-triples-saved-box .triple-box .predicate, .editor-box .extract-box .extracted-triples-saved-box .triple-box .object {
+  border: 0; 
+  width: auto;
+}
+
 .editor-box .extract-box .description {
   font-size: 16px; 
   color: rgba(255, 250, 246, 1); 
@@ -526,6 +558,12 @@ body {
 .editor-box .extract-box {
   padding: 0;
   height: 200px;
+}
+
+.editor-box .extract-box .finished-triple-box {
+  height: 200px; 
+  float: left; 
+  overflow-y: scroll; 
 }
 
 .editor-box .extract-box .feeling-lucky-box {

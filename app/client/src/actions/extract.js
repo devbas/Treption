@@ -45,6 +45,13 @@ const selectedTripleAttribute = (attribute) => {
   }
 }
 
+const removeFromTriple = (attribute) => {
+  return {
+    type: types.REMOVE_FROM_TRIPLE, 
+    attribute: attribute
+  }
+}
+
 export const setExtractingStage = (stage) => {
   return (dispatch, getState) => {
     dispatch(extractingStage(stage))
@@ -67,6 +74,12 @@ export const boundUpdateTripleObject = (object, isRandomize) => {
   return (dispatch, getState) => {
     dispatch(tripleObject({...object, isRandomize: isRandomize }))
   } 
+}
+
+export const boundRemoveFromTriple = (attribute) => {
+  return (dispatch, getState) => {
+    dispatch(removeFromTriple(attribute))
+  }
 }
 
 export const boundTripleVote = (tripleId, choice) => {

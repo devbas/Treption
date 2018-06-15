@@ -1,5 +1,6 @@
 import createReducer from '../lib/createReducer'
 import * as types from '../actions/types'
+import _ from 'lodash'
 
 export const extractingStage = createReducer('subject', {
   [types.SET_EXTRACTING_STAGE](state, action) {
@@ -58,6 +59,36 @@ export const extractedTriples = (state = [], action) => {
 
       return newState
       // Remove the concept 
+
+    case 'REMOVE_FROM_TRIPLE': 
+      console.log('REMOVE FROM TRIPLE: ', newState, action.attribute)
+      const wordId = _.get(action, 'attribute.words.0.id')
+      const conceptTriple = newState[existingConceptIndex]
+
+      if(conceptTriple) {
+        newState[existingConceptIndex].subject = _.filter(conceptTriple.subject, function(attribute){
+          let word = _.filter(attribute.words, function(word){
+            return word.id !== wordId
+          })
+          return word.length > 0 ? true : false 
+        })
+
+        newState[existingConceptIndex].predicate = _.filter(conceptTriple.predicate, function(attribute){
+          let word = _.filter(attribute.words, function(word){
+            return word.id !== wordId
+          })
+          return word.length > 0 ? true : false 
+        })
+
+        newState[existingConceptIndex].object = _.filter(conceptTriple.object, function(attribute){
+          let word = _.filter(attribute.words, function(word){
+            return word.id !== wordId
+          })
+          return word.length > 0 ? true : false 
+        })
+      }
+
+      return newState
     
     default: 
       return state 

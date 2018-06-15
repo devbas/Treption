@@ -33,7 +33,9 @@ services:
       - MYSQL_DATABASES=treption
       - MYSQL_ROOT_PASSWORD=root
   postagger: 
-    image: motiz88/corenlp
+    build:
+      context: .
+      dockerfile: Dockerfile.corenlp
     ports: 
       - 9000:9000
   fuseki: 

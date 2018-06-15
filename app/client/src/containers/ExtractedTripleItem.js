@@ -61,7 +61,9 @@ class ExtractedTripleItem extends Component {
   }
 
   onTripleAttributeSelect(attribute) {
-    this.props.actions.boundTripleAttributeSelected(attribute)
+    if(this.props.concept) {
+      this.props.actions.boundTripleAttributeSelected(attribute)
+    }
   }
 
   onTripleSubmit() {

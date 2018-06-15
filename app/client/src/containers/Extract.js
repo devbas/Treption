@@ -275,7 +275,7 @@ class Extract extends Component {
         totalTriples={totalTriples}
         playerType={playerType}
         onRandomizeClick={this.onRandomizeClick}
-        extractedTriples={this.props.extractedTriples}
+        extractedTriples={this.props.extractedTriples.reverse()}
         remainingTime={this.state.remainingTime}
         onValidatingStartClick={this.onValidatingStartClick}
         hasStartedValidating={this.state.hasStartedValidating}
@@ -293,6 +293,12 @@ class Extract extends Component {
 }
 
 function mapStateToProps(state) {
+
+  let extractedTriples = _.filter(state.extractedTriples, (triple) => { 
+    return Number(triple.sentenceId) === Number(state.fetchedSentence.sentenceId) || triple.concept === true
+  })
+  extractedTriples = extractedTriples ? extractedTriples : []
+
   return {
     sentence: state.fetchedSentence, 
     document: state.fetchedDocument,
@@ -301,7 +307,7 @@ function mapStateToProps(state) {
     tournament: state.fetchedTournament,
     tournamentCreated: state.createdTournament, 
     isSentenceLoading: state.isSentenceLoading, 
-    extractedTriples: state.extractedTriples, 
+    extractedTriples: extractedTriples,
     selectedAttribute: state.selectedTripleAttribute 
   }
 }

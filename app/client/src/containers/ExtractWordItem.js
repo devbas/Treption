@@ -34,6 +34,7 @@ class ExtractWordItem extends Component {
     this.state = {
       // inactive: this.props.scope.inactive, 
       active: false,
+      isSelected: false, 
       wordState: 'send' // either send or receive
     }
 
@@ -41,88 +42,83 @@ class ExtractWordItem extends Component {
   }
 
   componentDidMount() {
-    // if(!this.state.inactive) {
-      if(this.props.selectedAttribute === 'subject' || this.props.selectedAttribute === 'object') {
-        const nounWord = _.find(this.props.scope.words, (word) => {
-          if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
-            console.log('word: ', word)
-            return word
-          } else {
-            console.log('exclude this: ', word)
-          }
-        })
-
-        if(nounWord) {
-          this.setState({
-            active: true 
-          })
-        }
-
-      }
-
-      if(this.props.selectedAttribute === 'predicate') {
-        const nounWord = _.find(this.props.scope.words, (word) => {
-          if(word.pos !== 'NN' && word.pos !== 'NNS' && word.pos !== 'NNP' && word.pos !== 'NNPS') {
-            return word
-          } 
-        })
-
-        if(nounWord) {
-          this.setState({
-            active: true 
-          })
-        }
-      }
-
-    // }
+    this.setWordActive()
+    this.isWordSelected()
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('ExtractWordItem did update!')
     if(prevProps !== this.props) {
-      if(this.props.selectedAttribute === 'subject' || this.props.selectedAttribute === 'object') {
-        const nounWord = _.find(this.props.scope.words, (word) => {
-          if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
-            console.log('word: ', word)
-            return word
-          } else {
-            console.log('exclude this: ', word)
-          }
-        })
+      this.setWordActive()
+      this.isWordSelected()
+    }
+  }
 
-        if(nounWord) {
-          this.setState({
-            active: true 
-          })
+  setWordActive() {
+    if(this.props.selectedAttribute === 'subject' || this.props.selectedAttribute === 'object') {
+      const nounWord = _.find(this.props.scope.words, (word) => {
+        if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
+          console.log('word: ', word)
+          return word
         } else {
-          this.setState({
-            active: false 
-          })
+          console.log('exclude this: ', word)
         }
+      })
 
+      if(nounWord) {
+        this.setState({
+          active: true 
+        })
+      } else {
+        this.setState({
+          active: false 
+        })
       }
 
-      if(this.props.selectedAttribute === 'predicate') {
-        const nounWord = _.find(this.props.scope.words, (word) => {
-          if(word.pos !== 'NN' && word.pos !== 'NNS' && word.pos !== 'NNP' && word.pos !== 'NNPS' && supportedPosTokens().includes(word.pos)) {
-            return word
-          } 
-        })
+    }
 
-        if(nounWord) {
-          this.setState({
-            active: true 
-          })
-        } else {
-          this.setState({
-            active: false 
-          })
-        }
+    if(this.props.selectedAttribute === 'predicate') {
+      const nounWord = _.find(this.props.scope.words, (word) => {
+        if(word.pos !== 'NN' && word.pos !== 'NNS' && word.pos !== 'NNP' && word.pos !== 'NNPS' && supportedPosTokens().includes(word.pos)) {
+          return word
+        } 
+      })
+
+      if(nounWord) {
+        this.setState({
+          active: true 
+        })
+      } else {
+        this.setState({
+          active: false 
+        })
       }
     }
   }
 
+  isWordSelected() {
+    const wordId = _.get(this.props.scope, 'words.0.id')
+    const tripleConcept = _.find(this.props.triples, { 'concept': true })
+
+    if(tripleConcept) {
+      let words = _.flatten(_.map(tripleConcept.subject, 'words'))
+      words = _.unionBy(_.flatten(_.map(tripleConcept.predicate, 'words')), words, 'id')
+      words = _.unionBy(_.flatten(_.map(tripleConcept.object, 'words')), words, 'id')
+      
+      console.log('word found? ', _.find(words, { 'id': wordId }))
+
+      this.setState({
+        isSelected: _.find(words, { 'id': wordId }) ? true : false 
+      })
+    } else {
+      this.setState({
+        isSelected: false
+      })
+    }
+  }
+
   onWordClick() {
-    if(!this.state.inactive && this.props.isExtracting && this.props.selectedAttribute) {
+    if(!this.state.inactive && this.props.isExtracting && this.props.selectedAttribute && !this.state.isSelected) {
 
       if(this.props.selectedAttribute === 'subject') {
         this.props.actions.boundUpdateTripleSubject(this.props.scope)
@@ -136,9 +132,14 @@ class ExtractWordItem extends Component {
         this.props.actions.boundUpdateTripleObject(this.props.scope)
       }
     }
+
+    if(this.state.isSelected) {
+      this.props.actions.boundRemoveFromTriple(this.props.scope)
+    }
   }
   
   render() {
+
     return(
       <ExtractWordItemComponent
         word={this.props.scope.words.map(w => w.value).join('')}
@@ -149,10 +150,10 @@ class ExtractWordItem extends Component {
         isExtracting={this.props.isExtracting}
         connectDragSource={this.props.connectDragSource}
         isDragging={this.props.isDragging}
+        isSelected={this.state.isSelected}
       />
     ) 
   }
-
 }
 
 function mapStateToProps(state) {

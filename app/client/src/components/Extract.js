@@ -81,15 +81,15 @@ const Extract = ({
             <div className="sentence-box extract-word-box" style={{ backgroundColor: color }}>
               <div className="content">
                 {selectedAttribute === 'subject' &&
-                  <div className="help-title">Select an object to start</div>
+                  <div className="help-title">Select an subject to start</div>
                 }
 
                 {selectedAttribute === 'predicate' &&
-                  <div className="help-title">Select a subject the object relates with</div>
+                  <div className="help-title">Select the relation</div>
                 }
 
                 {selectedAttribute === 'object' &&
-                  <div className="help-title">Select the relation</div>
+                  <div className="help-title">Select a subject the object relates with</div>
                 }
 
                 {sentence.aggregatedWords &&
@@ -130,26 +130,27 @@ const Extract = ({
                   <div className="feeling-lucky-box">
                     <div className="feeling-lucky-button" onClick={onRandomizeClick}>Randomize</div>
                   </div>
+
+                  {!extractionContainsConcept &&
+                    <ExtractedTripleItem concept={true}/>  
+                  }     
+
                   {extractedTriples.length > 0 && (extractedTriples[0].subject || extractedTriples[0].predicate || extractedTriples[0].object) &&
-                    <span>
+                    <span className="finished-triple-box">
                       {extractedTriples.map((triple) => {
                         return <ExtractedTripleItem triple={triple} concept={triple.concept}/>
                       })}
                     </span>
-                  }
+                  }             
 
-                  {!extractionContainsConcept &&
-                    <ExtractedTripleItem concept={true}/>  
-                  }                  
-
-                  {!hasStartedExtracting &&
+                  {/* {!hasStartedExtracting &&
                     <div className={hoverBoxStyle}>
                       <div className="explanation-box" style={{backgroundColor: color}}>
                         <div className="description">Now create your own relations. Need inspiration? Try the random button!</div>
                       </div>
                       <div className="primary-action" onClick={onExtractingStartClick}>Start</div>
                     </div>
-                  }
+                  } */}
                 </div>
               }
             </div>
