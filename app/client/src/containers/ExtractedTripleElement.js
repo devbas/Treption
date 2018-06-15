@@ -46,6 +46,18 @@ class ExtractedTripleElement extends Component {
     this.renderTripleItemToken = this.renderTripleItemToken.bind(this)
   }
 
+  componentDidMount() {
+    console.log('ExtractedTripleElement was mounted')
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    console.log('ExtractedTripleElement did update')
+  }
+
+  applyExtractionGuidelines() {
+    //if(this.props.selectedAttribute === 'subject' && )
+  }
+
   renderTripleItemToken(tokens, attribute, concept) {
     return (
       <ExtractedTripleItemToken tokens={tokens} attribute={attribute} isConcept={concept}/>
@@ -84,7 +96,8 @@ class ExtractedTripleElement extends Component {
 
 function mapStateToProps(state) {
   return {
-    extractedTriples: state.extractedTriples
+    extractedTriples: state.extractedTriples, 
+    selectedAttribute: state.selectedTripleAttribute
   }
 }
 

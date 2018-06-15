@@ -52,6 +52,20 @@ const removeFromTriple = (attribute) => {
   }
 }
 
+const setAutoSubjectMovement = (state) => {
+  return {
+    type: types.AUTO_SUBJECT_MOVEMENT,
+    state: state 
+  }
+}
+
+const setAutoObjectMovement = (state) => {
+  return {
+    type: types.AUTO_OBJECT_MOVEMENT, 
+    state: state 
+  }
+}
+
 export const setExtractingStage = (stage) => {
   return (dispatch, getState) => {
     dispatch(extractingStage(stage))
@@ -112,5 +126,17 @@ export const boundAddTriple = ({ subject, predicate, object, sentenceId }) => {
       dispatch(addTriple(JSON.parse(response.data.Triple)))
       dispatch(userActions.fetchTournament({ tournament: response.data.Tournament }))
     })
+  }
+}
+
+export const boundsetAutoSubjectMovement = (state) => {
+  return (dispatch, getState) => {
+    dispatch(setAutoSubjectMovement(state))
+  }
+}
+
+export const boundsetAutoObjectMovement = (state) => {
+  return (dispatch, getState) => {
+    dispatch(setAutoObjectMovement(state))
   }
 }

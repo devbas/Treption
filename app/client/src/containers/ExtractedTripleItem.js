@@ -39,6 +39,15 @@ class ExtractedTripleItem extends Component {
   componentDidUpdate(prevProps, prevState) {
 
     if(prevProps !== this.props) {
+      console.log('component updated!')
+      /* 
+      // We need to know if a word is clicked
+
+      if(this.props.activeAttribute === 'subject' && !this.state.autoSubjectMovement) {
+
+      }
+
+      */
       
       if(this.props.triple) {
         if(Array.isArray(this.props.triple.subject) && this.props.triple.subject.length > 0) {
@@ -84,6 +93,10 @@ class ExtractedTripleItem extends Component {
         object: object, 
         sentenceId: this.props.sentence.sentenceId
       })
+
+      this.props.actions.boundsetAutoSubjectMovement(false)
+      this.props.actions.boundsetAutoObjectMovement(false)
+      this.props.actions.boundTripleAttributeSelected('subject')
     }
   }
 

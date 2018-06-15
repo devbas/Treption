@@ -102,6 +102,18 @@ export const selectedTripleAttribute = createReducer('subject', {
   }
 })
 
+export const autoSubjectMovement = createReducer(false, {
+  [types.AUTO_SUBJECT_MOVEMENT](state, action) {
+    return action.state
+  }
+})
+
+export const autoObjectMovement = createReducer(false, {
+  [types.AUTO_OBJECT_MOVEMENT](state, action) {
+    return action.state
+  }
+})
+
 
 // UPDATE_EXTRACTED_TRIPLES
 
