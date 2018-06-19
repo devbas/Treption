@@ -321,7 +321,7 @@ body {
 .extract .editor-box {
   float: left; 
   width: 100%; 
-  margin-top: 60px;
+  margin-top: 100px;
 }
 
 .extract .editor-box .inner-box {
@@ -360,36 +360,16 @@ body {
   margin: auto; 
   background-color: rgba(12, 26, 36, 0.8);
   position: absolute; 
-  top: 43px; 
+  top: -34px; 
   left: 0; 
   right: 0; 
   padding: 5px 10px; 
   text-align: center; 
   color: #fff; 
-  border-bottom-left-radius: 10px; 
-  border-bottom-right-radius: 10px;
+  border-top-left-radius: 10px; 
+  border-top-right-radius: 10px;
   font-size: 20px; 
 }
-
-/* 
-.extract .editor-box .inner-box .game-object-box .progress {
-  border-right: 1px solid rgba(255, 250, 246, 1); 
-  width: 33%; 
-  text-align: center;
-  padding: 10px 0;
-  font-size: 24px;
-  font-weight: 700; 
-}
-
-.extract .editor-box .inner-box .game-object-box .time-remaining {
-  border-right: 1px solid rgba(255, 250, 246, 1); 
-  width: 33%; 
-  text-align: center;
-  padding: 10px 0;
-  font-size: 24px;
-  font-weight: 700;
-  height: 29px;
-} */
 
 .extract .editor-box .inner-box .game-object-box .player-name {
   font-size: 20px;
@@ -440,6 +420,8 @@ body {
   width: 100%; 
   float: left; 
   padding-bottom: 0;
+  border-top-left-radius: 5px; 
+  border-top-right-radius: 5px;
 }
 
 .extract .editor-box .inner-box .content {
@@ -455,7 +437,6 @@ body {
   /* margin-top: 10px;
   margin-bottom: 15px; */
   float: left; 
-  position: relative;
 }
 
 .editor-box .triple-box .submit-box {
@@ -503,7 +484,6 @@ body {
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
-  position: relative;
   width: 220.33px;
 }
 
@@ -629,94 +609,6 @@ body {
   background-position: 20px center;
 }
 
-.extract .create-tournament-box {
-  float: left; 
-  width: 100%; 
-}
-
-.extract .create-tournament-box .inner-box {
-  width: 400px; 
-  margin: auto; 
-  background-color: rgba(255, 250, 246, 1); 
-  border-radius: 2px; 
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
-}
-
-.extract .create-tournament-box .inner-box .content {
-  padding: 50px 20px;
-  margin-top: 100px; 
-}
-
-.extract .create-tournament-box .inner-box .content .title {
-  font-size: 20px; 
-  color: rgba(255, 250, 246, 1);
-  font-weight: 600;
-}
-
-.extract .create-tournament-box .inner-box .content .divider {
-  margin-top: 16px;
-  height: 2px; 
-  width: 100px; 
-  background-color: rgba(255, 250, 246, 1);
-}
-
-.extract .create-tournament-box .inner-box .content .description {
-  font-size: 16px; 
-  color: rgba(255, 250, 246, 1);
-  margin-top: 12px; 
-}
-
-.extract .create-tournament-box .inner-box .content .button-box {
-  margin-top: 28px; 
-  margin-bottom: 0px;
-  display: flex;
-}
-
-.extract .create-tournament-box .inner-box .content .tournament-created-box input {
-  padding: 8px 5px 8px 28px; 
-  font-size: 14px;
-  border: 0; 
-  background-color:#fdede1; 
-  border-radius: 2px;
-  margin-top: 8px;
-  width: 300px;
-  background-image: url('./assets/img/copy.svg'); 
-  background-repeat: no-repeat;
-  background-size: 16px; 
-  background-position: 5px center;
-}
-
-.extract .create-tournament-box .inner-box .content .tournament-created-box .button-box {
-  margin-top: 14px;
-}
-
-.extract .create-tournament-box .inner-box .content .primary-action {
-  height: 20px; 
-  background-color: #FDE0CC; 
-  float: left; 
-  font-size: 16px; 
-  color: #0C1A24; 
-  border-radius: 20px; 
-  cursor: pointer;
-  font-weight: 500; 
-  border: 2px solid transparent;
-  padding: 7px 15px; 
-}
-
-.extract .create-tournament-box .inner-box .content .secondary-action {
-  height: 20px; 
-  background-color: transparent; 
-  float: left; 
-  font-size: 16px; 
-  color: #0C1A24; 
-  border-radius: 20px; 
-  cursor: pointer;
-  font-weight: 500; 
-  border: 2px solid #FDE0CC; 
-  padding: 7px 15px; 
-  margin-left: 20px;
-}
-
 .landing-box {
   margin: auto; 
 }
@@ -821,11 +713,14 @@ body {
   margin-right: auto;
 }
 
-.sentence-box .help-title {
-  margin-bottom: 20px; 
-  font-size: 20px; 
-  color: #FDE1CC; 
-  font-weight: 600; 
+.triple-box .help-title {
+  position: absolute;
+  font-size: 16px; 
+  border-left: 2px solid #0C1A24; 
+  top: -30px; 
+  z-index: 999; 
+  display: block;
+  padding-left: 5px; 
 }
 
 .login-box {
@@ -1220,164 +1115,124 @@ body {
   transition: background-color 0.15s ease-in-out;
 }
 
-.tournament-header-box {
-  border-right: 0.5px solid rgba(12, 26, 36, 0.3);
-  border-left: 0.5px solid rgba(12, 26, 36, 0.3);
-  border-bottom: 0.5px solid rgba(12, 26, 36, 0.3);
-  width: 100%; 
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
-  cursor: pointer;
-}
-
-.tournament-header-box .inner-box {
-  padding: 15px; 
-}
-
-.tournament-box {
-  position: fixed; 
-  top: 0; 
-  right: calc(50% - 250px); 
-  width: 500px;
-}
-
-.tournament-box .popup-box {
-  background-color: #fefaf7; 
-  width: 100%; 
-  position: relative;
-  z-index: 9999; 
-  border-radius: 3px; 
-  margin-top: 10px;
-}
-
-.tournament-box .popup-box:before {
-  content: ""; 
-  position: absolute;
-  border-bottom: 10px solid #fefaf7; 
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  top: -5px; 
-  left: 15px; 
-}
-
-.accept-invite-box {
-  background-color: #fefaf7; 
-  width: 100vw; 
-  height: 100vh; 
-  position: fixed;
-}
-
-.accept-invite-box .card-box {
-  background-color: #459999; 
-  border-radius: 2px; 
-  width: 350px; 
+.leaderboard-box {
+  background-color: #0C1A24; 
+  border-bottom-right-radius: 5px; 
+  border-bottom-left-radius: 5px; 
+  width: 600px; 
+  height: 65px;
   margin-left: auto; 
   margin-right: auto; 
-  -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30);
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.30); 
-  margin-top: 100px;
-  padding: 50px 20px;
-  display: flex;
 }
 
-.accept-invite-box .card-box .inner-box .content .title {
-  font-size: 20px; 
-  color: rgba(255, 250, 246, 1);
-  font-weight: 600;
-}
-
-.accept-invite-box .card-box .inner-box .content .divider {
-  margin-top: 16px;
-  height: 2px; 
-  width: 100px; 
-  background-color: rgba(255, 250, 246, 1);
-}
-
-.accept-invite-box .card-box .inner-box .content .description {
-  font-size: 16px; 
-  color: rgba(255, 250, 246, 1);
-  /*color: #FDE0CC;*/
-  margin-top: 12px; 
-}
-
-.accept-invite-box .card-box .inner-box .content .button-box {
-  margin-top: 14px;
-}
-
-.accept-invite-box .card-box .inner-box .content .primary-action {
-  height: 20px; 
-  background-color: rgba(255, 250, 246, 1);
+.leaderboard-box .username-box {
+  background-color: rgba(255, 255, 255, 0.1); 
   float: left; 
-  font-size: 16px; 
-  color: #0C1A24; 
-  border-radius: 20px; 
-  cursor: pointer;
-  font-weight: 500; 
-  border: 2px solid transparent;
+  height: 65px; 
+}
+
+.leaderboard-box .username-box .username {
+  padding: 20px 15px; 
+  color: #fff; 
+  font-size: 20px; 
+  font-weight: 500;
+}
+
+.leaderboard-box .accuracy-box {
+  width: auto; 
+  height: 65px; 
+  float: left; 
+}
+
+.leaderboard-box .accuracy-box .inner-box, .leaderboard-box .points-box .inner-box, .leaderboard-box .position-box .inner-box {
   padding: 7px 15px; 
 }
 
-.accept-invite-box .card-box .inner-box .content input {
-  padding: 6px 10px 6px 3px;
-  width: 100%; 
-  border: 0; 
-  border-radius: 2px; 
-  background-color: rgba(255, 250, 246, 1);
+.leaderboard-box .accuracy-box .inner-box .label, .leaderboard-box .points-box .inner-box .label, .leaderboard-box .position-box .inner-box .label {
+  color: #fff; 
   font-size: 16px; 
-  margin-top: 4px; 
-  margin-bottom: 5px;
 }
 
-
-
-/*.extract-word-item-box.send, .extract-word-item-box.receive {
-  position: relative;
-}*/
-/*
-.extract-word-item-box.send::before {
-  content: "";
-  position: absolute;
-  width: 6px; 
-  height: 12px; 
-  border-top-right-radius: 10px; 
-  border-bottom-right-radius: 10px; 
-  background-color: #7194ab; 
-  top: calc(50% - 6px)
+.leaderboard-box .position-box {
+  width: auto; 
+  height: 65px; 
+  float: left; 
 }
 
-.extract-word-item-box.send::after {
-  content: "";
-  position: absolute;
-  width: 6px; 
-  height: 12px; 
-  border-top-left-radius: 10px; 
-  border-bottom-left-radius: 10px; 
-  background-color: #7194ab; 
-  top: calc(50% - 6px); 
-  right: 0;
+.leaderboard-box .points-box {
+  width: auto; 
+  height: 65px; 
+  float: left; 
 }
 
-.extract-word-item-box.receive::after {
-  content: "";
-  position: absolute;
-  width: 6px; 
-  height: 12px; 
-  border-top-right-radius: 10px; 
-  border-bottom-right-radius: 10px; 
-  background-color: #ffefe5; 
-  top: calc(50% - 6px); 
-  right: -6px;
+.leaderboard-box .accuracy-box .bar {
+  width: 92px; 
+  height: 8px; 
+  border-radius: 5px; 
+  background-color: #D8D8D8; 
+  margin-top: 13px; 
+  position: relative; 
+  float: left; 
 }
 
-.extract-word-item-box.receive::before {
-  content: "";
-  position: absolute;
-  width: 6px; 
-  height: 12px; 
-  border-top-left-radius: 10px; 
-  border-bottom-left-radius: 10px; 
-  background-color: #ffefe5; 
-  top: calc(50% - 6px); 
-  left: -6px;
+.leaderboard-box .accuracy-box .bar .inner-fill {
+  height: 8px; 
+  border-top-left-radius: 5px; 
+  border-bottom-left-radius: 5px;  
+  position: absolute; 
+  top: 0; 
+  left: 0; 
 }
-*/
+
+.leaderboard-box .accuracy-box .progress-box .description {
+  color: #fff; 
+  font-size: 24px; 
+  font-weight: 600; 
+  float: left; 
+  margin-left: 5.5px;
+}
+
+.leaderboard-box .position-box .ranking {
+  font-weight: 600; 
+  font-size: 24px; 
+  color: #fff; 
+  float: left; 
+}
+
+.leaderboard-box .position-box .ranking-icon {
+  background-image: url('./assets/img/leaderboard.svg');
+  background-size: contain; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  width: 13.5px; 
+  height: 18px; 
+  float: left; 
+  margin-top: 7px; 
+  margin-left: 5px;
+}
+
+.leaderboard-box .position-box .relative-ranking {
+  color: #fff; 
+  font-size: 16px; 
+  font-weight: 400; 
+  padding-top: 8px;
+  float: left; 
+}
+
+.leaderboard-box .points-box .points {
+  color: #fff; 
+  font-size: 24px; 
+  font-weight: 600; 
+  float: left; 
+}
+
+.leaderboard-box .points-box .points-icon {
+  background-image: url('./assets/img/coin.svg'); 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  width: 18px; 
+  height: 18px; 
+  float: left; 
+  margin-top: 7px; 
+  margin-left: 5px; 
+}

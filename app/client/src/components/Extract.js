@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../containers/Header'
-import CreateTournament from '../containers/CreateTournament'
 import ValidationItem from '../containers/ValidationItem'
 import ExtractedTripleItem from '../containers/ExtractedTripleItem'
 import { bounce } from 'react-animations'
@@ -12,15 +11,9 @@ const Extract = ({
   renderTriple, 
   color, 
   documentId, 
-  tournament, 
-  tournamentCreated, 
   isValidating, 
   isExtracting, 
   isSentenceLoading, 
-  totalTriples,
-  currentTripleOffset, 
-  playerType, 
-  onRandomizeClick, 
   extractedTriples, 
   remainingTime, 
   backgroundColorLight, 
@@ -34,64 +27,55 @@ const Extract = ({
   onCorrectValidationAnswer, 
   gameOver, 
   onNewGameStartClick, 
-  selectedAttribute 
+  selectedAttribute, 
+  player
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 
-    {(tournamentCreated || !tournament) &&
-      <CreateTournament color={color}/>
-    }
 
-    {tournament && !tournamentCreated && !isSentenceLoading &&
+    {!isSentenceLoading &&
       <div className="extract-box">
-    
+        <div className="leaderboard-box">
+          <div className="username-box">
+            <div className="username">{player.email}</div>
+          </div>
+          <div className="accuracy-box">
+            <div className="inner-box">
+              <div className="label">Accuracy</div>
+              <div className="progress-box">
+                <div class="bar">
+                  <div className="inner-fill" style={{width: `${parseInt(player.accuracy)}%`, 'background-color': color }}></div>
+                </div>
+                <div className="description">{player.accuracy}%</div>
+              </div>
+            </div>
+          </div>
+          <div className="position-box">
+            <div className="inner-box">
+              <div className="label">Position</div>
+              <div className="ranking-box">
+                <span className="ranking">{player.ranking}</span><span className="relative-ranking"> / {player.total_players}</span>
+                <div className="ranking-icon"></div>
+              </div>
+            </div>
+          </div>
+          <div className="points-box">
+            <div className="inner-box">
+              <div className="label">Points</div>
+              <div className="content-box">
+                <div className="points">{player.points}</div>
+                <div className="points-icon"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="editor-box">
           <div className="inner-box">
-            <div className="game-object-box">
-              {/* {isValidating() &&
-                <div className="progress left">{currentTripleOffset} of {totalTriples}</div>
-              }
-              
-              {isExtracting() &&
-                <div className="progress left">0 extracted</div>
-              } */}
-
-              {/* {isExtracting() &&
-                <div className="time-remaining left"></div>
-              } */}
-
-              <div className="player-box">
-                <div className="points right pulse animated">{playerType === 'competitor' ? tournament.competitor_points ? tournament.competitor_points : 0 : tournament.challenger_points ? tournament.challenger_points : 0 }</div>
-                <div className="point-icon right"></div>
-                <div className="player-name">{playerType === 'competitor' ? tournament.competitor_name : tournament.challenger_name }</div>
-              </div>
-
-              <div className="competitor-box">
-                <div className="points left pulse animated">{playerType === 'competitor' ? tournament.challenger_points ? tournament.challenger_points : 0 : tournament.competitor_points ? tournament.competitor_points : 0 }</div>
-                <div className="point-icon left"></div>
-                <div className="competitor-name">{playerType === 'competitor' ? tournament.challenger_name : tournament.competitor_name }</div>
-              </div>
-      
-              
-              {/* <div className="competitor-tooltip-box"></div> */}
-            </div>
             {isValidating() &&
               <div className="time-remaining">00:{remainingTime}</div>
             }
             
             <div className="sentence-box extract-word-box" style={{ backgroundColor: color }}>
               <div className="content">
-                {selectedAttribute === 'subject' &&
-                  <div className="help-title">Select an subject to start</div>
-                }
-
-                {selectedAttribute === 'predicate' &&
-                  <div className="help-title">Select the relation</div>
-                }
-
-                {selectedAttribute === 'object' &&
-                  <div className="help-title">Select a subject the object relates with</div>
-                }
-
                 {sentence.aggregatedWords &&
                   <div className="word-box">
                     {sentence.aggregatedWords.map(renderWord)}
@@ -127,9 +111,6 @@ const Extract = ({
               
               {isExtracting() &&
                 <div className="extract-box" style={{height: 'auto'}}>
-                  <div className="feeling-lucky-box">
-                    <div className="feeling-lucky-button" onClick={onRandomizeClick}>Randomize</div>
-                  </div>
 
                   {!extractionContainsConcept &&
                     <ExtractedTripleItem concept={true}/>  
@@ -142,15 +123,6 @@ const Extract = ({
                       })}
                     </span>
                   }             
-
-                  {/* {!hasStartedExtracting &&
-                    <div className={hoverBoxStyle}>
-                      <div className="explanation-box" style={{backgroundColor: color}}>
-                        <div className="description">Now create your own relations. Need inspiration? Try the random button!</div>
-                      </div>
-                      <div className="primary-action" onClick={onExtractingStartClick}>Start</div>
-                    </div>
-                  } */}
                 </div>
               }
             </div>
@@ -171,23 +143,5 @@ const Extract = ({
     }
   </div>
 )
-
-//{triples.map(renderTriple)}
-/**/
-
-
-//<TripleLanding/>
-
-/* <div className="predicate-box">
-        <div className="inner-box">
-          {predicates &&
-            <div>
-              {predicates.map(renderPredicate)}
-            </div>
-          }
-          <input type="text" name="predicate" value={predicateInput} onChange={onPredicateInputChange}/>
-          <input type="submit" name="submit" value="Add predicate" onClick={onPredicateAdd}/>
-        </div>
-      </div>*/
 
 export default Extract;

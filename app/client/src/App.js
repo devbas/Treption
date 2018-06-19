@@ -14,12 +14,11 @@ import DocumentOverview from './containers/DocumentOverview'
 import SentenceOverview from './containers/SentenceOverview'
 import Login from './containers/Login'
 import Extract from './containers/Extract'
-import AcceptInvite from './containers/AcceptInvite'
 
 class App extends Component {
 
   componentDidMount() {
-    this.props.actions.boundFetchTournament()
+    this.props.actions.boundFetchPlayer()
   }
 
   render() {
@@ -39,7 +38,6 @@ class App extends Component {
             <Route exact path="/" component={DocumentOverview}/>
             <Route exact path="/document/:documentId" component={SentenceOverview}/>
             <Route exact path="/extract/:documentId/:sentenceId" component={Extract}/>
-            <Route exact path="/invite/:tournamentHash" component={AcceptInvite}/>
           </div>
         </Router>
       );

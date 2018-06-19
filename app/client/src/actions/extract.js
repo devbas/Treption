@@ -104,7 +104,7 @@ export const boundTripleVote = (tripleId, choice) => {
       data: `tripleId=${tripleId}&choice=${choice}`, 
       config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': getCookie('accessToken') }}
     }).then((response) => {
-      dispatch(userActions.fetchTournament({ tournament: response.data.Tournament }))
+      dispatch(userActions.fetchPlayer({ player: response.data.Player }))
     })
   }
 }
@@ -124,7 +124,7 @@ export const boundAddTriple = ({ subject, predicate, object, sentenceId }) => {
       config: { headers: {'Content-Type': 'multipart/form-data'}}
     }).then((response) => {
       dispatch(addTriple(JSON.parse(response.data.Triple)))
-      dispatch(userActions.fetchTournament({ tournament: response.data.Tournament }))
+      dispatch(userActions.fetchPlayer({ player: response.data.Player }))
     })
   }
 }

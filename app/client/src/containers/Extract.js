@@ -23,7 +23,6 @@ class Extract extends Component {
     this.state = {
       predicateInput: '', 
       totalTriples: !this.props.isSentenceLoading ? this.props.triples.length : 0, 
-      currentTripleOffset: 0, 
       remainingTime: '00:15', 
       isExtracting: false , 
       hasStartedValidating: false, 
@@ -38,7 +37,6 @@ class Extract extends Component {
     this.onPredicateInputChange = this.onPredicateInputChange.bind(this)
     this.isValidating = this.isValidating.bind(this)
     this.isExtracting = this.isExtracting.bind(this)
-    this.onRandomizeClick = this.onRandomizeClick.bind(this)
     this.timer = this.timer.bind(this)
     this.onValidatingStartClick = this.onValidatingStartClick.bind(this)
     this.onExtractingStartClick = this.onExtractingStartClick.bind(this)
@@ -53,8 +51,7 @@ class Extract extends Component {
   componentDidMount() {
     const documentId = this.props.match.params.documentId
     const sentenceId = this.props.match.params.sentenceId
-    
-    this.props.actions.boundFetchTournament()
+  
     this.props.actions.boundFetchSentence(documentId, sentenceId)
 
     //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
@@ -158,39 +155,8 @@ class Extract extends Component {
     })
   }
 
-  onRandomizeClick() {
-    // We have this.props.sentence 
-    const randomizeBucket = []
-    for(let i = 0; i < this.props.sentence.aggregatedWords.length; i++) {
-      randomizeBucket[i] = this.props.sentence.aggregatedWords[i]
-    }
-
-    const randomSubjectNumber = Math.floor(Math.random() * randomizeBucket.length)
-    this.props.actions.boundUpdateTripleSubject(randomizeBucket[randomSubjectNumber], true)
-    randomizeBucket.splice(randomSubjectNumber, 1)
-
-    const randomPredicateNumber = Math.floor(Math.random() * randomizeBucket.length)
-    this.props.actions.boundUpdateTriplePredicate(randomizeBucket[randomPredicateNumber], true)
-    randomizeBucket.splice(randomPredicateNumber, 1)
-
-    const randomObjectNumber = Math.floor(Math.random() * randomizeBucket.length)
-    this.props.actions.boundUpdateTripleObject(randomizeBucket[randomObjectNumber], true)
-    randomizeBucket.splice(randomObjectNumber, 1)
-
-    // Get all words from sentence
-
-    // Create sentenceWord bucket
-
-    // Select random word from sentence, dispatch as subject, remove from sentenceWord bucket 
-
-    // Select another random word, dispatch as predicate, remove from sentenceWord bucket
-
-    // Select another random word, dispatch as object, remove from sentenceWord bucket
-  }
-
   onNewGameStartClick() {
     // Redirect to next sentence
-
     if(this.props.sentence.nextSentence) {
       const documentId = this.props.match.params.documentId
       window.location.replace(`/extract/${documentId}/${this.props.sentence.nextSentence}`)
@@ -201,14 +167,14 @@ class Extract extends Component {
 
   isValidating() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
-    // return unprocessedTriples ? true : false 
-    return false 
+    return unprocessedTriples ? true : false 
+    // return false 
   }
 
   isExtracting() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
-    // return unprocessedTriples ? false : true 
-    return true 
+    return unprocessedTriples ? false : true 
+    // return true 
   }
 
   renderPredicate(predicate) {
@@ -247,15 +213,6 @@ class Extract extends Component {
     backgroundColorMedium[3] = 0.4
     const backgroundColorMediumRgba = `rgba(${backgroundColorMedium.join()})`
 
-    const playerType = this.props.tournament.challenger_id === this.props.tournament.user_id ? 'challenger' : 'competitor'
-
-    let totalTriples = 0
-    let currentTripleOffset = 0
-    if(!this.props.isSentenceLoading) {
-      totalTriples = this.props.triples.length
-      currentTripleOffset = _.sumBy(this.props.triples, triple => (triple.processed ? 1 : 0))
-    }
-
     const extractionContainsConcept = _.find(this.props.extractedTriples, { concept: true })
 
     return(
@@ -266,15 +223,9 @@ class Extract extends Component {
         backgroundColorLight={backgroundColorLightRgba}
         backgroundColorMedium={backgroundColorMediumRgba}
         documentId={this.props.document.documentId}
-        tournament={this.props.tournament}
-        tournamentCreated={this.props.tournamentCreated}
         isValidating={this.isValidating}
         isExtracting={this.isExtracting}
         isSentenceLoading={this.props.isSentenceLoading}
-        currentTripleOffset={currentTripleOffset}
-        totalTriples={totalTriples}
-        playerType={playerType}
-        onRandomizeClick={this.onRandomizeClick}
         extractedTriples={this.props.extractedTriples.reverse()}
         remainingTime={this.state.remainingTime}
         onValidatingStartClick={this.onValidatingStartClick}
@@ -286,7 +237,8 @@ class Extract extends Component {
         onCorrectValidationAnswer={this.onCorrectValidationAnswer}
         gameOver={this.state.gameOver}
         onNewGameStartClick={this.onNewGameStartClick}
-        selectedAttribute={this.props.selectedAttribute} 
+        selectedAttribute={this.props.selectedAttribute}
+        player={this.props.player}
       />
     )
   }
@@ -304,11 +256,10 @@ function mapStateToProps(state) {
     document: state.fetchedDocument,
     predicates: state.predicates, 
     triples: state.fetchedTriples, 
-    tournament: state.fetchedTournament,
-    tournamentCreated: state.createdTournament, 
     isSentenceLoading: state.isSentenceLoading, 
     extractedTriples: extractedTriples,
-    selectedAttribute: state.selectedTripleAttribute 
+    selectedAttribute: state.selectedTripleAttribute, 
+    player: state.fetchedPlayer
   }
 }
 

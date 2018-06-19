@@ -17,32 +17,10 @@ export const loggedInUser = createReducer([], {
   }
 })
 
-export const fetchedTournament = createReducer([], {
-  [types.SET_TOURNAMENT](state, action) {
-    console.log('fetchedTOurnament: ', action)
-    const newState = action.tournament
-
+export const fetchedPlayer = createReducer([], {
+  [types.SET_PLAYER](state, action) {
+    const newState = JSON.parse(action.player)
     return newState
-  }
-})
-
-export const createdTournament = createReducer(false, {
-  [types.CREATED_TOURNAMENT](state, action) {
-    console.log('action: ', action)
-    const newState = { createdTournament: action.createdTournament, joinedTournament: action.joinedTournament } 
-    return newState
-  }
-})
-
-export const inviteTournamentStatus = createReducer(false, {
-  [types.SET_TOURNAMENT_STATUS](state, action) {
-    return action.status
-  }
-})
-
-export const tournamentJoinStatus = createReducer(false, {
-  [types.SET_TOURNAMENT_JOIN_STATUS](state, action) {
-    return action.status
   }
 })
 

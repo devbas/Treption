@@ -11,33 +11,10 @@ const setUser = ({ email, accessToken, refreshToken }) => {
   }
 }
 
-export const fetchTournament = ({ tournament }) => {
+export const fetchPlayer = ({ player }) => {
   return {
-    type: types.SET_TOURNAMENT, 
-    tournament
-  }
-}
-
-const createTournament = ({ tournament, createdTournament, joinedTournament }) => {
-  return {
-    type: types.CREATED_TOURNAMENT, 
-    tournament, 
-    createdTournament, 
-    joinedTournament
-  }
-}
-
-const fetchTournamentStatus = ({ status }) => {
-  return {
-    type: types.SET_TOURNAMENT_STATUS, 
-    status
-  }
-}
-
-const updateTournamentJoinStatus = ({ status}) => {
-  return {
-    type: types.SET_TOURNAMENT_JOIN_STATUS, 
-    status 
+    type: types.SET_PLAYER, 
+    player
   }
 }
 
@@ -50,10 +27,6 @@ const setLoginError = ({ error }) => {
 
 export const boundSetUser = (email, password) => {
   return (dispatch, getState) => {
-
-    // let bodyFormData = new FormData() 
-    // bodyFormData.set('email', email)
-    // bodyFormData.set('password', password) 
 
     axios({
       method: 'post', 
@@ -82,65 +55,12 @@ export const boundSetUserAction = (actionKey, value) => {
   }
 }
 
-export const boundFetchTournament = () => {
+export const boundFetchPlayer = () => {
   return (dispatch, getState) => {
-    axios.get(`/api/current-tournament`).then((response) => {
-      dispatch(fetchTournament({ tournament: response.data.Tournament }))
+    axios.get(`/api/player`).then((response) => {
+      dispatch(fetchPlayer({ player: response.data.Player }))
     }).catch((ex) => {
       console.log('ex: ', ex)
-    })
-  }
-}
-
-export const boundCreateTournament = () => {
-  return (dispatch, getState) => {
-    axios.get(`/api/create-tournament`).then((response) => {
-      dispatch(createTournament({ tournament: response.data.Tournament, createdTournament: true })) 
-      dispatch(fetchTournament({ tournament: response.data.Tournament }))
-    }).catch((ex) => {
-      console.log('ex: ', ex)
-    })
-  }
-}
-
-export const boundStartTournament = () => {
-  return (dispatch, getState) => {
-    dispatch(createTournament({ createdTournament: false }))
-  }
-}
-
-export const boundJoinTournament = () => {
-  return (dispatch, getState) => {
-    axios.get(`/api/join-tournament`).then((response) => {
-      if(response.data.Tournament !== 'not found') {
-        dispatch(createTournament({ tournament: response.data.Tournament, joinedTournament: true }))
-      } else {
-        dispatch(createTournament({ joinedTournament: 'not found' }))
-      }
-    })
-  }
-}
-
-export const boundFetchTournamentStatus = (hash) => {
-  return (dispatch, getState) => {
-    axios.get(`/api/status-tournament/${hash}`).then((response) => {
-      dispatch(fetchTournamentStatus({ status: response.data.TournamentStatus }))
-    })
-  }
-}
-
-export const boundUpdateTourmanentJoinStatus = (hash) => {
-  return (dispatch, getState) => {
-
-    axios({
-      method: 'post', 
-      url: `/api/update-tournament/${hash}`, 
-      config: { headers: {'Content-Type': 'multipart/form-data', 'Cookie': `accessToken=${getCookie('accessToken')}` }}
-      //config: { headers: {'Content-Type': 'multipart/form-data' }}
-    }).then((response) => {
-      response = JSON.parse(response.data)
-      dispatch(updateTournamentJoinStatus({ status: response.Status }))
-      dispatch(createTournament({ tournament: response.Tournament, joinedTournament: true  }))
     })
   }
 }

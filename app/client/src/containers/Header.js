@@ -16,7 +16,6 @@ class Header extends Component {
         scope={this.props.scope ? this.props.scope : ''}
         documentId={this.props.documentId ? this.props.documentId : 0}
         userIdentifier={getCookie('identifier')}
-        tournament={this.props.tournament}
       />
     )
   }
@@ -25,7 +24,6 @@ class Header extends Component {
 function mapStateToProps(state) {
   return {
     userIdentifier: state.loggedInUser, 
-    tournament: state.fetchedTournament
   }
 }
 
