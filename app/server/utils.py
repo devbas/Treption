@@ -527,7 +527,7 @@ def getLastEditedDocument(userId):
   finally: 
     connection.close()
 
-def createTripleVote(userId, tripleId, choice, tournamentId, playerType): 
+def createTripleVote(userId, tripleId, choice): 
   connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
   
   try: 
@@ -537,8 +537,8 @@ def createTripleVote(userId, tripleId, choice, tournamentId, playerType):
       voteBoolean = False
     
     with connection.cursor() as cursor: 
-      sql = "INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`, `tournament_id`) VALUES (%s, %s, NOW(), %s, 1, %s)"
-      cursor.execute(sql, (voteBoolean, userId, tripleId, tournamentId) )
+      sql = "INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`, `action_key`) VALUES (%s, %s, NOW(), %s, 1, 'verification')"
+      cursor.execute(sql, (voteBoolean, userId, tripleId) )
 
     connection.commit() 
 
@@ -578,26 +578,14 @@ def createTripleVote(userId, tripleId, choice, tournamentId, playerType):
       sparql = 'PREFIX trp: <http://www.treption.com/' + triple['graph_id'] + '#> DELETE DATA { trp:' + triple['subject'].replace(' ', '-') + ' trp:' + triple['predicate'].replace(' ', '-') + ' trp:' + triple['object'].replace(' ', '-') + ' }'
 
     with connection.cursor() as cursor: 
-      if playerType == 'competitor': 
-        cursor.execute('''UPDATE tournament T 
-                          INNER JOIN (
-                            SELECT SUM(points) AS total_points, tournament_id 
-                            FROM vote 
-                            WHERE tournament_id = %s
-                            AND user_id = %s) V1 
-                          ON V1.tournament_id = T.tournament_id 
-                          SET `competitor_points` = V1.total_points''', (tournamentId, userId))
-
-      if playerType == 'challenger': 
-        cursor.execute('''UPDATE tournament T 
-                          INNER JOIN (
-                            SELECT SUM(points) AS total_points, tournament_id 
-                            FROM vote 
-                            WHERE tournament_id = %s
-                            AND user_id = %s) V1 
-                          ON V1.tournament_id = T.tournament_id 
-                          SET `challenger_points` = V1.total_points''', (tournamentId, userId))
-
+      cursor.execute('''UPDATE user U 
+                        INNER JOIN (
+                          SELECT SUM(points) as total_points, user_id
+                          FROM vote 
+                          WHERE user_id = %s
+                        ) V1
+                        ON V1.user_id = U.user_id 
+                        SET U.points = V1.total_points''', (userId))
 
     response = requests.post('http://fuseki:3030/treption/update', data={'update': sparql})
     print('Fuseki response: ' + str(response) + ' ' + sparql, file=sys.stderr)
@@ -613,133 +601,7 @@ def createTripleVote(userId, tripleId, choice, tournamentId, playerType):
     connection.close() 
     return 'done' 
 
-#def exportTriples(documentId):
-
-  # First we need the graphId from MySQL
-
-def getCurrentTournament(userId): 
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
-
-  try: 
-    with connection.cursor() as cursor:
-      sql = '''SELECT T.*, 
-                U1.email AS challenger_name, 
-                U2.email AS competitor_name, 
-                U1.user_id AS challenger_id, 
-                U2.user_id AS competitor_id
-              FROM tournament T 
-              JOIN user U1 
-              ON T.challenger_id = U1.user_id
-              LEFT JOIN user U2 
-              ON T.competitor_id = U2.user_id 
-              WHERE (challenger_id = %s
-              OR competitor_id = %s)
-              AND start_time > NOW() - INTERVAL 48 HOUR'''
-      cursor.execute(sql, (userId, userId))
-      tournament = cursor.fetchone()
-
-    if tournament: 
-      tournament['user_id'] = userId
-      return tournament
-    else: 
-      return 0
-  
-  finally: 
-    connection.close()
-
-def createTournament(userId): 
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
-
-  tournamentHash = random.getrandbits(128)
-
-  try: 
-    with connection.cursor() as cursor: 
-      sql = 'INSERT INTO tournament (`challenger_id`, `start_time`, `duration`, `hash`) VALUES (%s, NOW(), 48, %s)'
-      cursor.execute(sql, (userId, tournamentHash))
-      tournamentId = cursor.lastrowid
-
-    connection.commit() 
-    
-    with connection.cursor() as cursor: 
-      cursor.execute('SELECT * FROM tournament WHERE tournament_id = %s', (tournamentId))
-      tournament = cursor.fetchone()
-    
-    if tournament: 
-      return tournament 
-    else: 
-      return 0 
-  
-  finally: 
-    connection.close()
-
-def searchOpenTournament(userId): 
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
-
-  try: 
-    with connection.cursor() as cursor: 
-      cursor.execute('SELECT * FROM tournament WHERE competitor_id = NULL AND start_time > NOW() - INTERVAL 48 HOUR LIMIT 1')
-      tournament = cursor.fetchone() 
-  
-    if tournament: 
-      return tournament 
-    else: 
-      return 'not found'
-
-  finally: 
-    connection.close()  
-
-def fetchTournamentStatus(tournamentHash): 
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
-
-  try: 
-    with connection.cursor() as cursor: 
-      cursor.execute('SELECT 1 AS status FROM tournament WHERE hash = %s AND competitor_id IS NULL AND start_time > NOW() - INTERVAL 48 HOUR', tournamentHash)
-      tournamentStatus = cursor.fetchone() 
-
-    if tournamentStatus: 
-      return tournamentStatus['status']
-    else: 
-      return False
-
-  finally: 
-    connection.close()
-
-def setTournamentCompetitor(tournamentHash, userId): 
-  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
-
-  tournamentStatus = fetchTournamentStatus(tournamentHash)
-
-  if tournamentStatus: 
-    try: 
-      with connection.cursor() as cursor: 
-        cursor.execute('UPDATE tournament SET `competitor_id` = %s WHERE `hash` = %s', (userId, tournamentHash))
-      
-      connection.commit() 
-
-      with connection.cursor() as cursor: 
-        cursor.execute('SELECT * FROM tournament WHERE hash = %s', (tournamentHash))
-        tournament = cursor.fetchone()
-      
-      tournament['start_time'] = str(tournament['start_time'])
-
-      result = {
-        'Status': 'registered', 
-        'Tournament': tournament
-      }
-
-      return json.dumps(result)
-
-    finally: 
-      connection.close() 
-  else: 
-    result = {
-      'Status': 'unavailable', 
-      'Tournament': []
-    }
-
-    return json.dumps(result) 
-
-def createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userId, tournamentId, playerType): 
+def createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userId): 
   connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
 
   try: 
@@ -762,31 +624,20 @@ def createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userI
 
     # Recalculate points
     with connection.cursor() as cursor: 
-      cursor.execute('INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`, `tournament_id`) VALUES (1, %s, NOW(), %s, 5, %s)', (userId, tripleId, tournamentId))
+      cursor.execute('INSERT INTO `vote` (`agree`, `user_id`, `timestamp`, `triple_id`, `points`, `action_key`) VALUES (1, %s, NOW(), %s, 5, "extraction")', (userId, tripleId))
     
     connection.commit()
 
-    # Update tournament points
+    # Update player points
     with connection.cursor() as cursor: 
-      if playerType == 'competitor': 
-        cursor.execute('''UPDATE tournament T 
-                          INNER JOIN (
-                            SELECT SUM(points) AS total_points, tournament_id 
-                            FROM vote 
-                            WHERE tournament_id = %s
-                            AND user_id = %s) V1 
-                          ON V1.tournament_id = T.tournament_id 
-                          SET `competitor_points` = V1.total_points''', (tournamentId, userId))
-
-      if playerType == 'challenger': 
-        cursor.execute('''UPDATE tournament T 
-                          INNER JOIN (
-                            SELECT SUM(points) AS total_points, tournament_id 
-                            FROM vote 
-                            WHERE tournament_id = %s
-                            AND user_id = %s) V1 
-                          ON V1.tournament_id = T.tournament_id 
-                          SET `challenger_points` = V1.total_points''', (tournamentId, userId))
+      cursor.execute('''UPDATE user U 
+                      INNER JOIN (
+                        SELECT SUM(points) as total_points, user_id 
+                        FROM vote 
+                        WHERE user_id = %s 
+                      ) V1
+                      ON V1.user_id = U.user_id
+                      SET U.points = V1.total_points''', (userId))
 
     connection.commit() 
 
@@ -816,5 +667,70 @@ def createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userI
 
     return json.dumps(triple)
   
+  finally: 
+    connection.close() 
+
+def getCurrentPlayer(userId): 
+  connection = pymysql.connect(host='db', user='root', password='root', db='treption', cursorclass=pymysql.cursors.DictCursor)
+
+  try: 
+    with connection.cursor() as cursor: 
+      cursor.execute('''
+        SELECT email, points, 
+          (SELECT COUNT(*) FROM user WHERE Points>=U.points) AS ranking, 
+          (SELECT COUNT(*) FROM user) as total_players, 
+          CAST(FLOOR((
+            (
+              (
+                (SELECT COUNT(*)
+                 FROM vote V1 
+                 WHERE V1.user_id = U.user_id 
+                 AND action_key = 'verification'
+                 AND points = 1 
+                ) / 
+                (SELECT COUNT(*)
+                 FROM vote V2 
+                 WHERE V2.user_id = U.user_id 
+                 AND action_key = 'verification'
+                )
+              ) * 
+              (SELECT COUNT(*)
+               FROM vote V3 
+               WHERE action_key = 'verification'
+               AND V3.user_id = U.user_id
+              ) + 
+              (
+                (SELECT COUNT(*) 
+                 FROM vote V4 
+                 WHERE V4.user_id = U.user_id 
+                 AND action_key = 'extraction'
+                 AND points = 5
+                ) / 
+                (SELECT COUNT(*) 
+                 FROM vote V5 
+                 WHERE V5.user_id = U.user_id 
+                 AND action_key = 'extraction'
+                )
+              ) * 
+              (SELECT COUNT(*) 
+               FROM vote V6 
+               WHERE action_key = 'extraction'
+               AND V6.user_id = U.user_id
+              )
+            ) / 
+            (SELECT COUNT(*) 
+             FROM vote V7 
+             WHERE V7.user_id = U.user_id
+            )
+          ) * 100) AS char) as accuracy
+        FROM user U 
+        WHERE user_id = %s 
+      ''', (userId))
+    player = cursor.fetchone()
+
+    print('player', str(player), file=sys.stderr)
+
+    return json.dumps(player)
+
   finally: 
     connection.close() 

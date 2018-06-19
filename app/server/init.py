@@ -12,11 +12,7 @@ from utils import (
   getLastEditedDocument, 
   createTripleVote, 
   getTriples, 
-  getCurrentTournament, 
-  createTournament, 
-  searchOpenTournament, 
-  fetchTournamentStatus, 
-  setTournamentCompetitor, 
+  getCurrentPlayer, 
   createTriple
 )
 #from rdf import createTriple
@@ -133,16 +129,6 @@ def fetchPredicates():
   predicates = getPredicates()
   return jsonify(Predicates=predicates)
 
-#@app.route("/api/triple", methods=['POST'])
-#def saveTriple(): 
-  # Saves triple, action, (predicate)
-#  subject = request.form['subject']
-#  predicate = request.form['predicate']
-#  objectValue = request.form['object']
-
-#  triple = createTriple(subject, predicate, objectValue)
-#  return 'done' 
-
 @app.route("/api/user", methods=['POST'])
 def fetchUser(): 
   # Saves user
@@ -189,20 +175,10 @@ def saveTripleVote():
   if not tripleId or not choice: 
     return jsonify({ 'msg': 'Missing parameters' }), 400
 
-  currentTournament = getCurrentTournament(userId)
+  createTripleVote(userId, tripleId, choice)
 
-  if currentTournament['challenger_id'] == userId: 
-    playerType = 'challenger'
-  
-  if currentTournament['competitor_id'] == userId: 
-    playerType = 'competitor'
-
-
-  print(' Current tournament: ' + str(currentTournament), file=sys.stderr)
-  createTripleVote(userId, tripleId, choice, currentTournament['tournament_id'], playerType)
-
-  updatedTournament = getCurrentTournament(userId)
-  return jsonify({ 'Tournament': updatedTournament }), 200
+  player = getCurrentPlayer(userId)
+  return jsonify({ 'Player': player }), 200
 
 
 @app.route("/api/refresh", methods=['POST'])
@@ -220,54 +196,6 @@ def exportDocument():
   triples = getTriples(documentId)
   return 1
 
-@app.route("/api/current-tournament", methods=['GET'])
-@jwt_required 
-def fetchTournament(): 
-  user = get_jwt_identity() 
-  userId = user['id']
-
-  tournament = getCurrentTournament(userId)
-
-  return jsonify(Tournament=tournament), 200
-
-@app.route("/api/create-tournament", methods=['GET'])
-@jwt_required
-def addTournament():  
-  user = get_jwt_identity() 
-  userId = user['id']
-
-  tournament = createTournament(userId)
-
-  return jsonify(Tournament=tournament), 200
-
-@app.route("/api/join-tournament", methods=['GET'])
-@jwt_required
-def joinTournament(): 
-  user = get_jwt_identity() 
-  userId = user['id']
-
-  tournament = searchOpenTournament(userId) 
-
-  return jsonify(Tournament=tournament), 200
-
-@app.route("/api/status-tournament/<tournamentHash>", methods=['GET'])
-def setTournamentStatus(tournamentHash): 
-
-  tournamentStatus = fetchTournamentStatus(tournamentHash)
-
-  return jsonify(TournamentStatus=tournamentStatus), 200
-
-@app.route("/api/update-tournament/<tournamentHash>", methods=['POST'])
-@jwt_required 
-def updateTournamentCompetitor(tournamentHash): 
-  user = get_jwt_identity() 
-  userId = user['id']
-
-  tournament = setTournamentCompetitor(tournamentHash, userId)
-
-  print('tournament: ' + tournament, file=sys.stderr)
-  return jsonify(tournament), 200
-
 @app.route("/api/triple/add", methods=['POST'])
 @jwt_required 
 def addTriple(): 
@@ -278,26 +206,31 @@ def addTriple():
   triplePredicate = request.form['predicate']
   tripleObject = request.form['object']
   sentenceId = request.form['sentenceId']
-  currentTournament = getCurrentTournament(userId)
-
-  if currentTournament['challenger_id'] == userId: 
-    playerType = 'challenger'
-  
-  if currentTournament['competitor_id'] == userId: 
-    playerType = 'competitor'
 
   if tripleSubject and triplePredicate and tripleObject and sentenceId:
-    triple = createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userId, currentTournament['tournament_id'], playerType)
+    triple = createTriple(tripleSubject, triplePredicate, tripleObject, sentenceId, userId)
     
-    currentTournament = getCurrentTournament(userId)
+    player = getCurrentPlayer(userId)
     if triple: 
-      return jsonify({ 'Triple': triple, 'Tournament': currentTournament }), 200
+      return jsonify({ 'Triple': triple, 'Player': player }), 200
     else: 
       return jsonify({ 'msg': 'Relation already exists' }), 400
 
   else: 
     return jsonify({ 'msg': 'Missing parameters' }), 400
 
+@app.route("/api/player", methods=['GET'])
+@jwt_required
+def fetchPlayer(): 
+  user = get_jwt_identity() 
+  userId = user['id']
+
+  player = getCurrentPlayer(userId) 
+
+  if player: 
+    return jsonify({ 'Player': player }), 200 
+  else: 
+    return jsonify({ 'msg': 'something went wrong'}), 400
   
 
 if __name__ == '__main__': 
