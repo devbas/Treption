@@ -32,21 +32,21 @@ const ExtractedTripleItem = ({
 
     {concept &&
       <div className="triple-box">
-        <div className={`subject ${selectedAttribute === 'subject' && concept ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('subject')}>
-          {selectedAttribute === 'subject' &&
-            <div className="help-title">Select a subject to start</div>
+        <div className={`subject ${selectedAttribute === 'subject' && concept ? 'active' : ''} ${subject.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('subject')}>
+          {selectedAttribute === 'subject' && subject.length === 0 &&
+            <div className="help-title">Choose a subject</div>
           }  
           <ExtractedTripleElement data={subject} attribute='subject' concept={concept}/>
         </div>
-        <div className={`predicate ${selectedAttribute === 'predicate' && concept ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('predicate')}>
-          {selectedAttribute === 'predicate' &&
-            <div className="help-title">Select the relation</div>
+        <div className={`predicate ${selectedAttribute === 'predicate' && concept ? 'active' : ''} ${predicate.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('predicate')}>
+          {selectedAttribute === 'predicate' && predicate.length === 0 &&
+            <div className="help-title">Choose the relation</div>
           }
           <ExtractedTripleElement data={predicate} attribute='predicate' concept={concept}/>
         </div>
-        <div className={`object ${selectedAttribute === 'object' && concept ? 'active' : ''}`} onClick={() => onTripleAttributeSelect('object')}>
-          {selectedAttribute === 'object' &&
-            <div className="help-title">Select the subject</div>
+        <div className={`object ${selectedAttribute === 'object' && concept ? 'active' : ''} ${object.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('object')}>
+          {selectedAttribute === 'object' && object.length === 0 &&
+            <div className="help-title">Choose an object</div>
           }
           <ExtractedTripleElement data={object} attribute='object' concept={concept}/>
         </div>

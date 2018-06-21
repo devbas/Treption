@@ -173,6 +173,15 @@ class Extract extends Component {
 
   isExtracting() {
     const unprocessedTriples = _.find(this.props.triples, { processed: false })
+
+    // Clear time interval once we shift from validation to extraction
+    if(this.state.intervalId) {
+      this.setState({
+        intervalId: 0
+      })
+      clearInterval(this.state.intervalId);
+    }
+
     return unprocessedTriples ? false : true 
     // return true 
   }
@@ -210,7 +219,7 @@ class Extract extends Component {
     const backgroundColorLightRgba = `rgba(${backgroundColorLight.join()})`
 
     const backgroundColorMedium = backgroundColor 
-    backgroundColorMedium[3] = 0.4
+    backgroundColorMedium[3] = 0.3
     const backgroundColorMediumRgba = `rgba(${backgroundColorMedium.join()})`
 
     const extractionContainsConcept = _.find(this.props.extractedTriples, { concept: true })

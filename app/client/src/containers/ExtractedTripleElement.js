@@ -67,7 +67,7 @@ class ExtractedTripleElement extends Component {
   render() {
     if(this.props.concept) {
       return this.props.connectDropTarget(
-        <div style={{width: '100%', height: '100%'}}>
+        <div style={{width: '100%', height: '100%'}} className="token-outer-box">
           {this.props.data.map((tokens) => this.renderTripleItemToken(tokens, this.props.attribute, this.props.concept))}
           {this.props.isOver &&
             <div style={{
