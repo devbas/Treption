@@ -42,7 +42,6 @@ export const boundFetchDocuments = () => {
   return (dispatch, getState) => {
     dispatch(setDocumentLoadingState(true))
     axios.get(`/api/documents`).then((resp) => {
-      console.log('boundFetchDocuments success ', resp)
       dispatch(fetchDocuments({ documents: JSON.parse(resp.data.Documents) }))
       dispatch(fetchLastEditedDocument({ lastEditedDocumentId: JSON.parse(resp.data.LastEditedDocumentId.action_value)}))
       dispatch(setDocumentLoadingState(false))
@@ -65,7 +64,6 @@ export const boundFetchDocument = (documentId) => {
 export const boundExportTriples = (documentId) => {
   return (dispatch, getState) => {
     axios.get(`/api/export/${documentId}`).then((resp) => {
-      console.log('response: ', resp)
       //dispatch(exportTriples())
     })
   }

@@ -34,7 +34,6 @@ export const boundSetUser = (email, password) => {
       data: `email=${email}&password=${password}`,
       config: { headers: {'Content-Type': 'application/x-www-form-urlencoded' }}
     }).then((response) => {
-      console.log('response: ', response)
       dispatch(setUser({ email: email, accessToken: response.data.accessToken, refreshToken: response.data.refreshToken }))
     }).catch((error) => {
       dispatch(setLoginError({ error: error }))

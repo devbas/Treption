@@ -6,8 +6,6 @@ class SentenceItem extends Component {
 
   render() {
 
-    console.log('this item props: ', this.props.sentence)
-
     let documentTitleTrimmed = ''
     if(this.props.sentence.sentenceValue) {
       
@@ -15,7 +13,6 @@ class SentenceItem extends Component {
 
       documentTitleTrimmed = this.props.sentence.sentenceValue.substr(0, maxLength)
       documentTitleTrimmed = documentTitleTrimmed.substr(0, Math.min(documentTitleTrimmed.length, documentTitleTrimmed.lastIndexOf(" ")))
-      // debugger;
     } 
 
     return (

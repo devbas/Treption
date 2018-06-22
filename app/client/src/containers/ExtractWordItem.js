@@ -47,7 +47,6 @@ class ExtractWordItem extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('ExtractWordItem did update!')
     if(prevProps !== this.props) {
       this.setWordActive()
       this.isWordSelected()
@@ -58,10 +57,7 @@ class ExtractWordItem extends Component {
     if(this.props.selectedAttribute === 'subject' || this.props.selectedAttribute === 'object') {
       const nounWord = _.find(this.props.scope.words, (word) => {
         if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
-          console.log('word: ', word)
           return word
-        } else {
-          console.log('exclude this: ', word)
         }
       })
 
@@ -104,8 +100,6 @@ class ExtractWordItem extends Component {
       let words = _.flatten(_.map(tripleConcept.subject, 'words'))
       words = _.unionBy(_.flatten(_.map(tripleConcept.predicate, 'words')), words, 'id')
       words = _.unionBy(_.flatten(_.map(tripleConcept.object, 'words')), words, 'id')
-      
-      console.log('word found? ', _.find(words, { 'id': wordId }))
 
       this.setState({
         isSelected: _.find(words, { 'id': wordId }) ? true : false 

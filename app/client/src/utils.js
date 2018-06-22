@@ -122,7 +122,6 @@ export const getCookie = (cname) => {
 axios.interceptors.request.use((request) => {
   const accessToken = getCookie('accessToken')
   const refreshToken = getCookie('refreshToken')
-  console.log('request: ', request)
   if(request.url === '/api/refresh') {
     request.headers.Authorization = `Bearer ${refreshToken}`
   } else {

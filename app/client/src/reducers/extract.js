@@ -12,9 +12,6 @@ export const extractedTriples = (state = [], action) => {
   let newState = [...state]
   let existingConceptIndex = newState.findIndex(triple => triple.concept === true)
 
-  console.log('action: ', action); 
-  // debugger;
-
   if(existingConceptIndex === -1) {
     // Create new concept 
     newState.push({ subject: [], predicate: [], object: [], concept: true })
@@ -61,7 +58,6 @@ export const extractedTriples = (state = [], action) => {
       // Remove the concept 
 
     case 'REMOVE_FROM_TRIPLE': 
-      console.log('REMOVE FROM TRIPLE: ', newState, action.attribute)
       const wordId = _.get(action, 'attribute.words.0.id')
       const conceptTriple = newState[existingConceptIndex]
 
@@ -113,57 +109,4 @@ export const autoObjectMovement = createReducer(false, {
     return action.state
   }
 })
-
-
-// UPDATE_EXTRACTED_TRIPLES
-
-
-
-/*export const extractedTriples = createReducer([], {
-
-  [types.SET_TRIPLE_SUBJECT](state, action) {
-    const newState = state 
-
-    if(newState.length > 0 && !('subject' in newState[newState.length-1])) {
-      newState[newState.length-1].subject = action.subject
-    } else {
-      newState.push({
-        subject: action.subject
-      })
-    }
-    console.log('newState: ', newState)
-    return newState
-  },
-
-
-  [types.SET_TRIPLE_PREDICATE](state, action) {
-    const newState = state 
-
-    if(newState.length > 0 && !('predicate' in newState[newState.length-1])) {
-      newState[newState.length-1].predicate = action.predicate
-    } else {
-      newState.push({
-        predicate: action.predicate
-      })
-    }
-
-    return newState
-  },
-
-
-  [types.SET_TRIPLE_OBJECT](state, action) {
-    const newState = state 
-
-    if(newState.length > 0 && !('object' in newState[newState.length-1])) {
-      newState[newState.length-1].object = action.object
-    } else {
-      newState.push({
-        subject: action.object
-      })
-    }
-    console.log('newState: ', newState)
-    return newState
-  }
-}) */
-
 

@@ -13,7 +13,6 @@ const ItemTypes = {
 const squareTarget = {
   drop(props, monitor) {
     const item = monitor.getItem();
-    console.log('logged!', props, item)
     if(props.attribute === 'subject') {
       props.actions.boundUpdateTripleSubject(item.scope)
     }
@@ -25,8 +24,6 @@ const squareTarget = {
     if(props.attribute === 'object') {
       props.actions.boundUpdateTripleObject(item.scope)
     }
-
-    // moveKnight(props.x, props.y);
   }
 };
 
@@ -44,14 +41,6 @@ class ExtractedTripleElement extends Component {
     super(props) 
 
     this.renderTripleItemToken = this.renderTripleItemToken.bind(this)
-  }
-
-  componentDidMount() {
-    console.log('ExtractedTripleElement was mounted')
-  }
-  
-  componentDidUpdate(prevProps, prevState) {
-    console.log('ExtractedTripleElement did update')
   }
 
   applyExtractionGuidelines() {
