@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Tournament from '../containers/Tournament'
 
 const Header = ({ 
   scope, 
   documentId, 
-  userIdentifier, 
-  tournament 
+  userIdentifier
 }) => (
   <div className="header-box">
     
@@ -17,9 +15,6 @@ const Header = ({
             <div className="close-game-box">
             </div>
           </Link>
-
-          <div className="tournament-overview-box">
-          </div>
         </div>
       }
       <div className="profile-box">

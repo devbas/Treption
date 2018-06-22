@@ -24,80 +24,10 @@ class ValidationItem extends Component {
       triple: !this.props.isSentenceLoading ? _.find(this.props.triples, { processed: false }) : [], 
       isPointBoxActive: false, 
       isFeedbackBoxActive: false 
-      //answer: 
     }
 
     this.onCorrectValidationAnswer = this.props.onCorrectValidationAnswer.bind(this)
     this.onChoiceClick = this.onChoiceClick.bind(this)
-  }
-
-  componentDidMount() {
-    
-    //this.setState({
-      // triple: _.find(this.props.triples, { processed: false })
-    // })
-
-    // Fetch first triple that is not processed
-    /*if(this.props.triples.length > 0) {
-      const triple = _.find(this.props.triples, { processed: false })
-      debugger;
-      this.setState({
-        triple: triple, 
-        answer: triple.agree > triple.disagree ? 'agree' : 'disagree'
-      }) 
-    }*/
-
-    /*const supportedTokens = supportedPosTokens()
-    console.log('recall')
-    if(this.props.triple.predicate) {
-      console.log('predicate found')
-      this.setState({
-        predicate: this.props.triple.predicate.value
-      })
-    }
-
-    if(this.props.triple.subject) {
-        console.log('subject found')
-      const subject = this.props.triple.subject 
-
-      if(subject.combined) {
-        if(_.includes(supportedTokens, subject.words[0].pos)) {
-          this.setState({
-            subject: subject.words[0].value
-          })
-        } else if(_.includes(supportedTokens, subject.words[1].pos)) {
-          this.setState({
-            subject: subject.words[1].value
-          })
-        }
-      } else {
-        this.setState({
-          subject: subject.words[0].value
-        })
-      }
-    }
-
-    if(this.props.triple.object) {
-    console.log('object found')
-      const object = this.props.triple.object 
-
-      if(object.combined) {
-        if(_.includes(supportedPosTokens, object.words[0].pos)) {
-          this.setState({
-            object: object.words[0].value
-          })
-        } else if(_.includes(supportedPosTokens, object.words[1].pos)) {
-          this.setState({
-            object: object.words[1].value 
-          })
-        }
-      } else {
-        this.setState({
-          object: object.words[0].value
-        })
-      }
-    }*/
-
   }
 
   componentDidUpdate() {
@@ -109,16 +39,12 @@ class ValidationItem extends Component {
         hasClicked: false
       })
     }
-    //debugger;
   }
 
   onChoiceClick(choice) {
-    console.log('agree: ', this.state.triple.agree, '   versus disagree: ', this.state.triple.disagree)
     if( (this.state.triple.agree + 1 > this.state.triple.disagree && choice === 'agree') || (this.state.triple.disagree + 1 > this.state.triple.agree && choice === 'disagree') ) {
-      console.log('correct!')
 
       this.onCorrectValidationAnswer()
-      // debugger
 
       this.setState({
         isPointBoxActive: true, 
@@ -142,7 +68,6 @@ class ValidationItem extends Component {
         this.props.actions.boundSetTripleAsProcessed({...this.state.triple, processed: true })
       }, 1500)
     } else {
-      console.log('incorrect')
       this.setState({
         isPointBoxActive: true,
         isFeedbackBoxActive: true, 
@@ -175,13 +100,9 @@ class ValidationItem extends Component {
     if(!this.props.isSentenceLoading) {
       answer = this.state.triple.agree > this.state.triple.disagree ? 'agree' : 'disagree'
     }
-    // console.log('answer: ', answer, '   clickedChoice: ', this.state.clickedChoice)
-    //debugger;
+
     return (
       <ValidationItemComponent 
-        //subject={this.state.triple.subject} 
-        //predicate={this.state.triple.predicate} 
-        //object={this.state.triple.object}
         isSentenceLoading={this.props.isSentenceLoading}
         onChoiceClick={this.onChoiceClick}
         hasClicked={this.state.hasClicked}
