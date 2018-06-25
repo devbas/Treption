@@ -11,8 +11,6 @@ services:
     depends_on: 
       - api
     restart: always
-    environment: 
-      NODE_ENV: production
   api: 
     build: 
       context: ./app/server/
@@ -24,7 +22,7 @@ services:
       - db
       - postagger
     volumes: 
-      - ../treption:/opt/code
+      - ./app/server/:/opt/code
     restart: always
   db:  
     command: --disable-partition-engine-check  # Check more info about this command at: https://github.com/docker-library/mysql/issues/361
