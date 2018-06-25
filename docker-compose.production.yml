@@ -3,7 +3,7 @@ services:
   web: 
     build: 
       context: ./app/client/ 
-      dockerfile: Dockerfile.web
+      dockerfile: Dockerfile.production.web
     ports: 
       - "3000:3000"
     volumes: 
