@@ -73,8 +73,14 @@ const Extract = ({
             {isValidating() &&
               <div className="time-remaining">00:{remainingTime}</div>
             }
+
+            {isExtracting() &&
+              <div className="question-box" style={{backgroundColor: backgroundColorMedium}}>
+                <p>Do you see any new statements?<br/>Click a word to start creating:</p>
+              </div>
+            }
             
-            <div className="sentence-box extract-word-box" style={{ backgroundColor: color }}>
+            <div className={`sentence-box extract-word-box ${isValidating() ? 'is-validating' : ''} `} style={{ backgroundColor: color }}>
               <div className={`content ${isValidating() ? 'is-validating' : 'is-extracting'}`}>
                 {sentence.aggregatedWords &&
                   <div className="word-box">

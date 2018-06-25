@@ -11,6 +11,8 @@ services:
     depends_on: 
       - api
     restart: always
+    environment: 
+      NODE_ENV: production
   api: 
     build: 
       context: ./app/server/

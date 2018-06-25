@@ -143,7 +143,7 @@ body {
 }
 
 .extract-word-item-box .character {
-  font-weight: 600; 
+  font-weight: 500; 
   font-size: 24px; 
   color: #0C1A24; 
   padding: 3px 9px 3px 5px; 
@@ -266,7 +266,7 @@ body {
 
 .extract .sentence-control-box .next {
   float: right;
-  font-weight: 700; 
+  font-weight: 500; 
   color: rgba(12, 26, 36, 1);
   margin-top: 12px;
 }
@@ -357,6 +357,22 @@ body {
   position: relative;
 }
 
+.extract .editor-box .question-box {
+  float: left; 
+  width: 100%; 
+  border-top-right-radius: 5px; 
+  border-top-left-radius: 5px;
+}
+
+.extract .editor-box .question-box p {
+  text-align: center; 
+  font-size: 24px; 
+  color: #0C1A24; 
+  font-weight: 600; 
+  margin: 30px 10px 10px 10px; 
+  line-height: 32px;
+}
+
 .extract .editor-box .inner-box .game-object-box {
   border-bottom: 1px solid rgba(255, 250, 246, 1); 
   float: left; 
@@ -444,8 +460,11 @@ body {
   width: 100%; 
   float: left; 
   padding-bottom: 0;
-  border-top-left-radius: 5px; 
-  border-top-right-radius: 5px;
+}
+
+.extract .editor-box .extract-word-box.is-validating {
+  border-top-right-radius: 5px; 
+  border-top-left-radius: 5px;
 }
 
 .extract .editor-box .inner-box .content {
@@ -483,7 +502,7 @@ body {
 }
 
 .extract .editor-box .extract-word-box .content {
-  padding: 20px 20px 50px 20px;
+  padding: 15px 20px 0px 20px;
   width: 660px;
   margin-top: 0;
   display: inline-block;
@@ -762,6 +781,7 @@ body {
   padding-left: 60px; 
   top: 20px; 
   color: #0C1A24;
+  font-weight: 400; 
 }
 
 .login-box {
@@ -1034,7 +1054,7 @@ body {
   text-align: center; 
   font-size: 24px; 
   color: #0C1A24; 
-  font-weight: 600; 
+  font-weight: 500; 
   margin: 10px;
 }
 

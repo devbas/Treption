@@ -73,6 +73,12 @@ const setExtractionFeedbackBox = (status) => {
   }
 }
 
+const removeTripleConcept = () => {
+  return {
+    type: types.REMOVE_CONCEPT
+  }
+}
+
 export const setExtractingStage = (stage) => {
   return (dispatch, getState) => {
     dispatch(extractingStage(stage))
@@ -154,5 +160,11 @@ export const boundsetAutoObjectMovement = (state) => {
 export const boundSetExtractionFeedbackBox = (status) => {
   return (dispatch, getState) => {
     dispatch(setExtractionFeedbackBox({ status: status }))
+  }
+}
+
+export const boundRemoveTripleConcept = () => {
+  return (dispatch, getState) => {
+    dispatch(removeTripleConcept())
   }
 }

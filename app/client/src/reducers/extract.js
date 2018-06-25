@@ -11,7 +11,6 @@ export const extractingStage = createReducer('subject', {
 export const extractedTriples = (state = [], action) => {
   let newState = [...state]
   let existingConceptIndex = newState.findIndex(triple => triple.concept === true)
-
   if(existingConceptIndex === -1) {
     // Create new concept 
     newState.push({ subject: [], predicate: [], object: [], concept: true })
@@ -83,6 +82,13 @@ export const extractedTriples = (state = [], action) => {
           return word.length > 0 ? true : false 
         })
       }
+
+      return newState
+    
+    case 'REMOVE_CONCEPT': 
+      newState = _.filter(newState, (triple) => {
+        return !triple.concept
+      })
 
       return newState
     

@@ -59,7 +59,6 @@ class Extract extends Component {
     const endTime = moment().add(15, 'seconds').unix()
     const intervalId = setInterval(this.timer, 1000)
     const remainingTime = moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss')
-    debugger;
     this.setState({
       // hoverBoxStyle: 'hover-layer animated fadeOut',
       currentTime: currentTime,
@@ -101,6 +100,7 @@ class Extract extends Component {
     if(oldSentenceId !== sentenceId) {
       const documentId = this.props.match.params.documentId
       this.props.actions.boundFetchSentence(documentId, sentenceId)
+      this.props.actions.boundRemoveTripleConcept() 
       this.props.actions.boundSetUserAction('sentenceExtracted', oldSentenceId)
     }
 
@@ -268,6 +268,7 @@ function mapStateToProps(state) {
 
   let extractedTriples = _.filter(state.extractedTriples, (triple) => { 
     return Number(triple.sentenceId) === Number(state.fetchedSentence.sentenceId) || triple.concept === true
+    // return Number(triple.sentenceId) === Number(state.fetchedSentence.sentenceId)
   })
   extractedTriples = extractedTriples ? extractedTriples : []
 
