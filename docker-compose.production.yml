@@ -22,7 +22,7 @@ services:
       - db
       - postagger
     volumes: 
-      - ./app/server/:/opt/code
+      - ./:/opt/code
     restart: always
   db:  
     command: --disable-partition-engine-check  # Check more info about this command at: https://github.com/docker-library/mysql/issues/361
