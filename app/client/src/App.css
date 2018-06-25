@@ -97,13 +97,9 @@ body {
 }
 
 .extract-word-item-box.is-validating {
-  opacity: 0.7; 
+  opacity: 0.9; 
   cursor: default;
   animation-name: unset;
-}
-
-.extract-word-item-box.is-validating span {
-  background-color: rgba(255, 239, 229, 0.8) !important;
 }
 
 .extract-word-item-box span {
@@ -114,11 +110,28 @@ body {
   border-radius: 2px; 
 }
 
+.extract-word-item-box.is-validating span {
+  background-color: transparent;
+  box-shadow: none;
+  float: left;
+}
+
+.extract-word-item-box.is-validating.inactive {
+  background-color: transparent;
+}
+
+.extract-word-item-box.is-validating.inactive span {
+  background-color: transparent;
+}
+
+.extract-word-item-box.is-validating .radio-button {
+  display: none;
+}
+
 .extract-word-item-box.is-extracting.active span:hover {
   background-color: #fff;
   transition: background-color 0.15s ease-in-out;
 }
-
 
 .extract-word-item-box.inactive {
   background-color: rgba(255, 255, 255, 0.2);
@@ -136,6 +149,15 @@ body {
   padding: 3px 9px 3px 5px; 
   font-style: italic;
   float: left; 
+}
+
+.extract-word-item-box.is-validating .character {
+  font-style: normal;
+  color: #FDE1CC;
+}
+
+.extract-word-item-box.is-validating .character {
+  padding: 0;
 }
 
 .extract-word-item-box.is-extracting.active span:hover .radio-button {
@@ -225,7 +247,7 @@ body {
   height: 20px; 
   border-radius: 40px; 
   float: right; 
-  background-image: url('./assets/img/validation-correct.svg');
+  background-image: url('./assets/img/extraction-correct.svg');
   background-size: 60%; 
   background-position: center; 
   background-repeat: no-repeat;
@@ -289,6 +311,8 @@ body {
   width: 100%; 
   height: 100%; 
   top: 0; 
+  border-bottom-right-radius: 5px; 
+  border-bottom-left-radius: 5px;
 }
 
 .extract .validation-conclusion-box .label {
@@ -466,6 +490,10 @@ body {
   text-align: center;
 }
 
+.extract .editor-box .extract-word-box .content.is-validating {
+  padding: 20px; 
+}
+
 .editor-box .triple-box .subject, .editor-box .triple-box .predicate, .editor-box .triple-box .object {
   float: left; 
   width: 31%; 
@@ -548,7 +576,9 @@ body {
 
 .editor-box .extract-box {
   padding: 0;
-  height: 200px;
+  height: 263px;
+  border-bottom-right-radius: 5px; 
+  border-bottom-left-radius: 5px;
 }
 
 .editor-box .extract-box .finished-triple-box {
@@ -1000,6 +1030,14 @@ body {
   padding-bottom: 25px;
 }
 
+.triple-item-box p {
+  text-align: center; 
+  font-size: 24px; 
+  color: #0C1A24; 
+  font-weight: 600; 
+  margin: 10px;
+}
+
 .triple-item-box .points-to-earn-box {
   margin-right: -60px; 
   width: 30px; 
@@ -1038,16 +1076,20 @@ body {
 }
 
 .triple-item-box .triple-item-content-box {
-  margin-left: auto; 
-  margin-right: auto; 
   display: table; 
+  font-style: italic; 
+  margin: 15px auto; 
+}
+
+.triple-item-box .triple-item-content-box div {
+  font-size: 20px; 
 }
 
 .triple-item-box .button-box {
   margin-left: auto;
   margin-right: auto; 
   display: table;
-  margin-top: 36px;
+  margin-top: 20px;
 }
 
 .triple-item-box .button-box .secondary-action {
@@ -1059,7 +1101,7 @@ body {
   border-radius: 40px; 
   cursor: pointer;
   font-weight: 500; 
-  border: 2px solid #FDE0CC; 
+  border: 2px solid #0C1A24; 
   padding: 15px 15px; 
   background-color: rgba(255, 255, 255, 0.2); 
   transition: background-color 0.15s ease-in-out;

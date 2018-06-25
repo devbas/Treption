@@ -1,8 +1,4 @@
 import React from 'react';
-import {
-  CSSTransition,
-  TransitionGroup,
-} from 'react-transition-group';
 
 const ValidationItem = ({ 
   isSentenceLoading,
@@ -26,12 +22,13 @@ const ValidationItem = ({
                 {/* +1  */}
               {/* </div> */}
             
-
+            <p>Do you think</p>
             <div className="triple-item-content-box">
               <div className="left subject">{triple.subject}</div>
               <div className="left predicate">{triple.predicate} </div>
               <div className="left object">{triple.object}</div>
             </div>
+            <p>is a correct statement for the above sentence?</p>
             
             <div className="button-box">
               <div onClick={() => onChoiceClick('agree')} className="secondary-action agree"></div> 
@@ -43,7 +40,7 @@ const ValidationItem = ({
       </div>
       {isFeedbackBoxActive &&
         <div className="validation-conclusion-box">
-          <div className={`label ${isPointBoxActive ? 'animated bounceIn' : 'animated bounceOut' } ${answer === clickedChoice ? 'correct' : 'incorrect' }`}>{answer === clickedChoice ? '+1' : '0'}</div>
+          <div className={`label ${isPointBoxActive ? 'animated bounceIn' : 'animated bounceOut'} ${answer === clickedChoice ? 'correct' : 'incorrect' }`}>{answer === clickedChoice ? '+1' : '0'}</div>
         </div>
       } 
     </span>

@@ -1,9 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Header from '../containers/Header'
 import ValidationItem from '../containers/ValidationItem'
 import ExtractedTripleItem from '../containers/ExtractedTripleItem'
-import { bounce } from 'react-animations'
 
 const Extract = ({ 
   sentence, 
@@ -18,7 +16,6 @@ const Extract = ({
   remainingTime, 
   backgroundColorLight, 
   backgroundColorMedium, 
-  hasStartedValidating, 
   onValidatingStartClick, 
   hoverBoxStyle, 
   hasStartedExtracting, 
@@ -28,7 +25,10 @@ const Extract = ({
   gameOver, 
   onNewGameStartClick, 
   selectedAttribute, 
-  player
+  player, 
+  extractionFeedbackBoxStatus, 
+  isPointBoxActive, 
+  isFeedbackBoxActive
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 
 
@@ -42,8 +42,8 @@ const Extract = ({
             <div className="inner-box">
               <div className="label">Accuracy</div>
               <div className="progress-box">
-                <div class="bar">
-                  <div className="inner-fill" style={{width: `${parseInt(player.accuracy)}%`, 'background-color': color }}></div>
+                <div className="bar">
+                  <div className="inner-fill" style={{width: `${parseInt(player.accuracy)}%`, 'backgroundColor': color }}></div>
                 </div>
                 <div className="description">{player.accuracy}%</div>
               </div>
@@ -75,7 +75,7 @@ const Extract = ({
             }
             
             <div className="sentence-box extract-word-box" style={{ backgroundColor: color }}>
-              <div className="content">
+              <div className={`content ${isValidating() ? 'is-validating' : 'is-extracting'}`}>
                 {sentence.aggregatedWords &&
                   <div className="word-box">
                     {sentence.aggregatedWords.map(renderWord)}
@@ -89,14 +89,6 @@ const Extract = ({
                 <div className="validation-box">
                   <div className="divider"></div>
                   <ValidationItem onCorrectValidationAnswer={onCorrectValidationAnswer}/>
-                  {!hasStartedValidating &&
-                    <div className={hoverBoxStyle}>
-                      <div className="explanation-box" style={{backgroundColor: color}}>
-                        <div className="description">Agree or disagree on the presented relation relative to the sentence above.</div>
-                      </div>
-                      <div className="primary-action" onClick={onValidatingStartClick}>Start</div>
-                    </div>
-                  }
 
                   {gameOver &&
                     <div className={hoverBoxStyle}>
@@ -110,19 +102,24 @@ const Extract = ({
               }
               
               {isExtracting() &&
-                <div className="extract-box" style={{height: 'auto'}}>
+                <div className="extract-box">
 
                   {!extractionContainsConcept &&
                     <ExtractedTripleItem concept={true}/>  
                   }     
 
-                  {extractedTriples.length > 0 && (extractedTriples[0].subject || extractedTriples[0].predicate || extractedTriples[0].object) &&
-                    <span className="finished-triple-box">
-                      {extractedTriples.map((triple) => {
-                        return <ExtractedTripleItem triple={triple} concept={triple.concept}/>
-                      })}
-                    </span>
-                  }             
+                
+                  <span className="finished-triple-box">
+                    {extractedTriples.map((triple) => {
+                      return <ExtractedTripleItem triple={triple} concept={triple.concept}/>
+                    })}
+                  </span>
+
+                  {extractionFeedbackBoxStatus !== 0 &&
+                    <div className="validation-conclusion-box">
+                      <div className={`label ${isPointBoxActive ? 'animated bounceIn' : 'animated bounceOut' } ${extractionFeedbackBoxStatus === 200 ? 'correct' : 'incorrect' }`}>{extractionFeedbackBoxStatus === 200 ? '+5' : '0'}</div>
+                    </div>
+                  }
                 </div>
               }
             </div>

@@ -66,6 +66,13 @@ const setAutoObjectMovement = (state) => {
   }
 }
 
+const setExtractionFeedbackBox = (status) => {
+  return {
+    type: types.EXTRACTION_FEEDBACK_BOX, 
+    status
+  }
+}
+
 export const setExtractingStage = (stage) => {
   return (dispatch, getState) => {
     dispatch(extractingStage(stage))
@@ -125,6 +132,9 @@ export const boundAddTriple = ({ subject, predicate, object, sentenceId }) => {
     }).then((response) => {
       dispatch(addTriple(JSON.parse(response.data.Triple)))
       dispatch(userActions.fetchPlayer({ player: response.data.Player }))
+      dispatch(setExtractionFeedbackBox({ 'status': 200 }))
+    }).catch((err) => {
+      console.log('err:', err)
     })
   }
 }
@@ -138,5 +148,11 @@ export const boundsetAutoSubjectMovement = (state) => {
 export const boundsetAutoObjectMovement = (state) => {
   return (dispatch, getState) => {
     dispatch(setAutoObjectMovement(state))
+  }
+}
+
+export const boundSetExtractionFeedbackBox = (status) => {
+  return (dispatch, getState) => {
+    dispatch(setExtractionFeedbackBox({ status: status }))
   }
 }

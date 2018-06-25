@@ -92,6 +92,12 @@ export const extractedTriples = (state = [], action) => {
 
 }
 
+export const extractionFeedbackBoxStatus = createReducer(0, {
+  [types.EXTRACTION_FEEDBACK_BOX](state, action) {
+    return action.status.status
+  }
+})
+
 export const selectedTripleAttribute = createReducer('subject', {
   [types.SELECTED_TRIPLE_ATTRIBUTE](state, action) {
     return action.attribute

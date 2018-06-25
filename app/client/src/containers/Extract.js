@@ -28,7 +28,10 @@ class Extract extends Component {
       hasStartedValidating: false, 
       hoverBoxStyle: 'hover-layer', 
       hasStartedExtracting: false, 
-      gameOver: false 
+      gameOver: false, 
+      isFeedbackBoxActive: false, 
+      isPointBoxActive: false, 
+      intervalId: 0
     }
 
     this.renderWord = this.renderWord.bind(this)
@@ -38,14 +41,9 @@ class Extract extends Component {
     this.isValidating = this.isValidating.bind(this)
     this.isExtracting = this.isExtracting.bind(this)
     this.timer = this.timer.bind(this)
-    this.onValidatingStartClick = this.onValidatingStartClick.bind(this)
     this.onExtractingStartClick = this.onExtractingStartClick.bind(this)
     this.onCorrectValidationAnswer = this.onCorrectValidationAnswer.bind(this)
     this.onNewGameStartClick = this.onNewGameStartClick.bind(this)
-  }
-
-  componentWillMount() {
-    document.addEventListener("keydown", this._handleKeyDown.bind(this));
   }
 
   componentDidMount() {
@@ -56,14 +54,28 @@ class Extract extends Component {
 
     //this.props.actions.boundSetUserAction('sentenceExtractClick', sentenceId)
     //this.props.actions.boundFetchPredicates()
+
+    const currentTime = moment().unix()
+    const endTime = moment().add(15, 'seconds').unix()
+    const intervalId = setInterval(this.timer, 1000)
+    const remainingTime = moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss')
+    debugger;
+    this.setState({
+      // hoverBoxStyle: 'hover-layer animated fadeOut',
+      currentTime: currentTime,
+      endTime: endTime, 
+      remainingTime: remainingTime, 
+      intervalId: intervalId
+    })
   }
 
   componentWillUnmount() {
+    console.log('component unmount')
     clearInterval(this.state.intervalId);
   }
 
   timer() {
-
+    console.log('update time!')
     const currentTime = moment().unix() 
     const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('mm:ss')
 
@@ -91,9 +103,28 @@ class Extract extends Component {
       this.props.actions.boundFetchSentence(documentId, sentenceId)
       this.props.actions.boundSetUserAction('sentenceExtracted', oldSentenceId)
     }
-  }
 
-  _handleKeyDown(event) {
+    if(prevProps.extractionFeedbackBoxStatus === 0 && this.props.extractionFeedbackBoxStatus !== 0) {
+      // Set interval to close feedbackBox
+      this.setState({
+        isFeedbackBoxActive: true, 
+        isPointBoxActive: true 
+      })
+
+      setTimeout(() => {
+        this.setState({
+          isPointBoxActive: false 
+        })
+      }, 1200)
+
+      setTimeout(() => {
+        this.setState({ 
+          isFeedbackBoxActive: false, 
+        })
+
+        this.props.actions.boundSetExtractionFeedbackBox(0)
+      }, 1500)
+    }
   }
 
   onPredicateAdd() {
@@ -102,27 +133,6 @@ class Extract extends Component {
 
   onPredicateInputChange(event) {
     this.setState({ predicateInput: event.target.value });
-  }
-
-  onValidatingStartClick() {
-    const currentTime = moment().unix()
-    const endTime = moment().add(15, 'seconds').unix()
-    const intervalId = setInterval(this.timer, 1000)
-
-    this.setState({
-      hoverBoxStyle: 'hover-layer animated fadeOut',
-      currentTime: currentTime,
-      endTime: endTime, 
-      remainingTime: moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss'), 
-      intervalId: intervalId
-    })
-
-    setTimeout(() => {
-      this.setState({
-        hasStartedValidating: true,
-        hoverBoxStyle: 'hover-layer'
-      })
-    }, 500)
   }
 
   onExtractingStartClick() {
@@ -237,8 +247,6 @@ class Extract extends Component {
         isSentenceLoading={this.props.isSentenceLoading}
         extractedTriples={this.props.extractedTriples.reverse()}
         remainingTime={this.state.remainingTime}
-        onValidatingStartClick={this.onValidatingStartClick}
-        hasStartedValidating={this.state.hasStartedValidating}
         hoverBoxStyle={this.state.hoverBoxStyle}
         hasStartedExtracting={this.state.hasStartedExtracting}
         onExtractingStartClick={this.onExtractingStartClick}
@@ -248,6 +256,9 @@ class Extract extends Component {
         onNewGameStartClick={this.onNewGameStartClick}
         selectedAttribute={this.props.selectedAttribute}
         player={this.props.player}
+        extractionFeedbackBoxStatus={this.props.extractionFeedbackBoxStatus}
+        isPointBoxActive={this.state.isPointBoxActive}
+        isFeedbackBoxActive={this.state.isFeedbackBoxActive}
       />
     )
   }
@@ -268,7 +279,8 @@ function mapStateToProps(state) {
     isSentenceLoading: state.isSentenceLoading, 
     extractedTriples: extractedTriples,
     selectedAttribute: state.selectedTripleAttribute, 
-    player: state.fetchedPlayer
+    player: state.fetchedPlayer, 
+    extractionFeedbackBoxStatus: state.extractionFeedbackBoxStatus
   }
 }
 

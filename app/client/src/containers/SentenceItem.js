@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import SentenceItemComponent from '../components/SentenceItem'
-import _ from 'lodash'
 
 class SentenceItem extends Component {
 
