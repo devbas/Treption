@@ -7,7 +7,7 @@ services:
     ports: 
       - "3000:3000"
     volumes: 
-      - ./app/client:/var/www/treption
+      - ./:/var/www/treption
     depends_on: 
       - api
     restart: always
