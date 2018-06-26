@@ -18,10 +18,6 @@ const ValidationItem = ({
 
         {!isSentenceLoading &&
           <span>
-              {/* <div className={`points-to-earn-box ${isPointBoxActive ? 'active' : ''}`}> */}
-                {/* +1  */}
-              {/* </div> */}
-            
             <p>Do you think</p>
             <div className="triple-item-content-box">
               <div className="left subject">{triple.subject}</div>

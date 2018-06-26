@@ -80,7 +80,7 @@ const Extract = ({
               </div>
             }
             
-            <div className={`sentence-box extract-word-box ${isValidating() ? 'is-validating' : ''} `} style={{ backgroundColor: color }}>
+            <div className={`sentence-box extract-word-box ${isValidating() ? 'is-validating' : ''} `} style={{ backgroundColor: backgroundColorMedium }}>
               <div className={`content ${isValidating() ? 'is-validating' : 'is-extracting'}`}>
                 {sentence.aggregatedWords &&
                   <div className="word-box">

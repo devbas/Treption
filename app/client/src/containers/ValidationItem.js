@@ -41,8 +41,9 @@ class ValidationItem extends Component {
   }
 
   onChoiceClick(choice) {
-    if( (this.state.triple.agree + 1 > this.state.triple.disagree && choice === 'agree') || (this.state.triple.disagree + 1 > this.state.triple.agree && choice === 'disagree') ) {
-
+    console.log('choice: ', choice, this.state.triple)
+    if( (this.state.triple.agree + 1 >= this.state.triple.disagree && choice === 'agree') || (this.state.triple.disagree + 1 >= this.state.triple.agree && choice === 'disagree') ) {
+      console.log('noticed!')
       this.onCorrectValidationAnswer()
 
       this.setState({
@@ -97,7 +98,7 @@ class ValidationItem extends Component {
 
     let answer = ''
     if(!this.props.isSentenceLoading) {
-      answer = this.state.triple.agree > this.state.triple.disagree ? 'agree' : 'disagree'
+      answer = this.state.triple.agree >= this.state.triple.disagree ? 'agree' : 'disagree'
     }
 
     return (

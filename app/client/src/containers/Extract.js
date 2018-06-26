@@ -20,6 +20,9 @@ class Extract extends Component {
   constructor(props) {
     super(props)
 
+    this.timer = this.timer.bind(this)
+    const intervalId = setInterval(this.timer, 1000)
+
     this.state = {
       predicateInput: '', 
       totalTriples: !this.props.isSentenceLoading ? this.props.triples.length : 0, 
@@ -31,7 +34,7 @@ class Extract extends Component {
       gameOver: false, 
       isFeedbackBoxActive: false, 
       isPointBoxActive: false, 
-      intervalId: 0
+      intervalId: intervalId
     }
 
     this.renderWord = this.renderWord.bind(this)
@@ -40,7 +43,7 @@ class Extract extends Component {
     this.onPredicateInputChange = this.onPredicateInputChange.bind(this)
     this.isValidating = this.isValidating.bind(this)
     this.isExtracting = this.isExtracting.bind(this)
-    this.timer = this.timer.bind(this)
+    
     this.onExtractingStartClick = this.onExtractingStartClick.bind(this)
     this.onCorrectValidationAnswer = this.onCorrectValidationAnswer.bind(this)
     this.onNewGameStartClick = this.onNewGameStartClick.bind(this)
@@ -59,6 +62,7 @@ class Extract extends Component {
     const endTime = moment().add(15, 'seconds').unix()
     const intervalId = setInterval(this.timer, 1000)
     const remainingTime = moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss')
+    console.log('intervalid: ', intervalId)
     this.setState({
       // hoverBoxStyle: 'hover-layer animated fadeOut',
       currentTime: currentTime,
@@ -70,14 +74,13 @@ class Extract extends Component {
 
   componentWillUnmount() {
     console.log('component unmount')
-    clearInterval(this.state.intervalId);
+    // clearInterval(this.state.intervalId);
   }
 
   timer() {
     console.log('update time!')
     const currentTime = moment().unix() 
     const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('mm:ss')
-
     if(remainingTime !== '00:00') {
       this.setState({
         currentTime: currentTime, 
@@ -229,7 +232,7 @@ class Extract extends Component {
     const backgroundColorLightRgba = `rgba(${backgroundColorLight.join()})`
 
     const backgroundColorMedium = backgroundColor 
-    backgroundColorMedium[3] = 0.3
+    backgroundColorMedium[3] = 0.4
     const backgroundColorMediumRgba = `rgba(${backgroundColorMedium.join()})`
 
     const extractionContainsConcept = _.find(this.props.extractedTriples, { concept: true })
