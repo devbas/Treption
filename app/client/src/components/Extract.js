@@ -76,7 +76,7 @@ const Extract = ({
 
             {isExtracting() &&
               <div className="question-box" style={{backgroundColor: backgroundColorMedium}}>
-                <p>Do you see any new statements?<br/>Click a word to start creating:</p>
+                <p>Click a word to create a new relation.</p>
               </div>
             }
             

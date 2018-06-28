@@ -526,6 +526,7 @@ body {
   font-size: 22px; 
   font-style: italic;
   font-weight: 600;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.30);
 }
 
 .editor-box .extract-box .triple-box .subject, .editor-box .extract-box .triple-box .predicate, .editor-box .extract-box .triple-box .object {
@@ -540,6 +541,10 @@ body {
   /* width: 220.33px; */
   width: 200px;
   position: relative; 
+}
+
+.extracted-triples-saved-box .triple-box .subject, .extracted-triples-saved-box .triple-box .predicate, .extracted-triples-saved-box .triple-box .object {
+  background-color: transparent !important;
 }
 
 .editor-box .extract-box .example-box .example {
@@ -563,6 +568,12 @@ body {
   position: relative;
 }
 
+.editor-box .extract-box .triple-box .predicate.active {
+  width: 200px;
+  margin-left: 31px; 
+  margin-right: 31px; 
+}
+
 .editor-box .extract-box .triple-box .active.empty-state {
   background-image: url('./assets/img/select-word.svg');
   background-size: 18%; 
@@ -570,28 +581,108 @@ body {
   background-repeat: no-repeat;
 }
 
-.editor-box .extract-box .triple-box .subject {
-  border-top-left-radius: 2px; 
-  border-bottom-left-radius: 2px; 
-  border-right: 2px solid transparent; 
-  margin-right: -2px;
+.editor-box .extract-box .triple-box .predicate.active.empty-state {
+  background-position: 10px 12px; 
 }
 
+.editor-box .extract-box .triple-box .subject {
+  border-radius: 4px; 
+  margin-right: -2px;
+  float: left; 
+}
+
+.editor-box .extract-box .triple-box .relation-box {
+  float: left; 
+}
+
+.editor-box .extract-box .triple-box .relation-box .arrow {
+  width: calc(100% - 10px); 
+  margin-left: 5px; 
+  margin-right: 5px; 
+  height: 5px; 
+  background-color: #fde1cc; 
+  margin-top: 10px; 
+  margin-bottom: 10px;
+  border-radius: 3px; 
+  position: relative;  
+  display: none;
+}
+
+.editor-box .extract-box .triple-box .relation-box .arrow::after {
+  content: ""; 
+  position: absolute; 
+  border-left: 12px solid #fde1cc; 
+  border-top: 12px solid transparent; 
+  border-bottom: 12px solid transparent; 
+  right: -5px; 
+  top: -9.5px; 
+}
+
+
 .editor-box .extract-box .triple-box .predicate {
-  border-radius: 0; 
+  border-radius: 4px; 
+  width: 140px; 
+  margin-left: 30px; 
+  margin-right: 30px; 
+  padding-top: 10px; 
+  padding-bottom: 10px; 
+  display: inline-table; 
+  margin-top: 5px; 
+}
+
+.editor-box .extract-box .triple-box .predicate .token-outer-box {
+  width: 140px; 
+  overflow-x: scroll; 
+}
+
+.editor-box .extract-box .triple-box .predicate.active .token-outer-box {
+  width: 200px !important; 
+  overflow-x: scroll; 
+}
+
+.editor-box .extract-box .triple-box .predicate::before {
+  content: ""; 
+  position: absolute; 
+  width: 28px; 
+  height: 4px; 
+  background-color: #fde1cc; 
+  left: -28px;
+  top: 22px; 
+}
+
+.editor-box .extract-box .triple-box .predicate::after {
+  content: ""; 
+  position: absolute; 
+  width: 32px; 
+  height: 24px; 
+  /* background-color: #fde1cc;  */
+  right: -28px;
+  top: 12px; 
+  background-image: url('./assets/img/arrow-relation-inactive.svg'); 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  background-position: right; 
+}
+
+.editor-box .extract-box .triple-box .predicate.active::before {
+  background-color: #0C1A24
+} 
+
+.editor-box .extract-box .triple-box .predicate.active::after {
+  background-image: url('./assets/img/arrow-relation-active.svg'); 
 }
 
 .editor-box .extract-box .triple-box .object {
-  border-top-right-radius: 2px; 
-  border-bottom-right-radius: 2px; 
-  border-left: 2px solid transparent; 
+  border-radius: 4px; 
   margin-left: -2px; 
+  float: right; 
 }
 
 .editor-box .extract-box .extracted-triples-saved-box {
   float: left; 
   width: 700px; 
   margin-bottom: 30px;
+  padding-top: 20px; 
 }
 
 .editor-box .extract-box .extracted-triples-saved-box .triple-box {
@@ -605,6 +696,7 @@ body {
 .editor-box .extract-box .extracted-triples-saved-box .triple-box .subject, .editor-box .extract-box .extracted-triples-saved-box .triple-box .predicate, .editor-box .extract-box .extracted-triples-saved-box .triple-box .object {
   border: 0; 
   width: auto;
+  box-shadow: none;
 }
 
 .editor-box .extract-box .description {
@@ -801,6 +893,10 @@ body {
   top: 20px; 
   color: #0C1A24;
   font-weight: 400; 
+}
+
+.triple-box .predicate .help-title {
+  top: 15px;
 }
 
 .login-box {
@@ -1099,20 +1195,75 @@ body {
   opacity: 1;
 }
 
+.triple-item-box .subject, .triple-item-box .object {
+  font-size: 24px; 
+}
+
 .triple-item-box .subject, .triple-item-box .predicate, .triple-item-box .object {
-  background-color: rgba(255, 239, 229, 1);
+  background-color: #fde1cc;
   float: left; 
   border-radius: 2px; 
   font-weight: 600; 
-  font-size: 24px; 
   color: #0C1A24; 
   padding: 3px 9px; 
 }
 
 .triple-item-box .predicate {
-  margin-left: 4px; 
-  margin-right: 4px; 
+  margin-left: 35px; 
+  margin-right: 35px; 
+  font-size: 24px; 
+  font-weight: 500; 
+  margin-top: 3px; 
+  position: relative; 
+  padding-top: 0; 
+  padding-bottom: 0; 
 }
+
+.triple-item-box .predicate::before {
+  content: ""; 
+  position: absolute; 
+  width: 32px; 
+  height: 4px;
+  background-color: #fde1cc; 
+  top: 13px; 
+  left: -32px; 
+}
+
+.triple-item-box .predicate::after {
+  content: ""; 
+  position: absolute; 
+  width: 32px; 
+  height: 24px; 
+  right: -28px;
+  top: 4px; 
+  background-image: url('./assets/img/arrow-relation-inactive.svg'); 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  background-position: right; 
+}
+
+/* .editor-box .extract-box .triple-box .predicate::before {
+  content: ""; 
+  position: absolute; 
+  width: 28px; 
+  height: 4px; 
+  background-color: #fde1cc; 
+  left: -28px;
+  top: 22px; 
+}
+
+.editor-box .extract-box .triple-box .predicate::after {
+  content: ""; 
+  position: absolute; 
+  width: 32px; 
+  height: 24px; 
+  right: -28px;
+  top: 12px; 
+  background-image: url('./assets/img/arrow-relation-inactive.svg'); 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  background-position: right; 
+} */
 
 .triple-item-box .triple-item-content-box {
   display: table; 
@@ -1120,9 +1271,9 @@ body {
   margin: 15px auto; 
 }
 
-.triple-item-box .triple-item-content-box div {
+/* .triple-item-box .triple-item-content-box div {
   font-size: 20px; 
-}
+} */
 
 .triple-item-box .button-box {
   margin-left: auto;

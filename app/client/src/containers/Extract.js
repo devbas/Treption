@@ -74,22 +74,32 @@ class Extract extends Component {
 
   componentWillUnmount() {
     console.log('component unmount')
-    // clearInterval(this.state.intervalId);
+    clearInterval(this.state.intervalId);
   }
 
   timer() {
     console.log('update time!')
     const currentTime = moment().unix() 
     const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('mm:ss')
-    if(remainingTime !== '00:00') {
+    // const isValidating = this.isValidating()
+
+    if(this.isValidating()) {
+      if(remainingTime !== '00:00') {
+        this.setState({
+          currentTime: currentTime, 
+          remainingTime: remainingTime
+        })
+      } else {
+        clearInterval(this.state.intervalId);
+        this.setState({
+          gameOver: true, 
+          remainingTime: '00:00'
+        })
+      }
+    } else if(this.state.intervalId) {
+      clearInterval(this.state.intervalId) 
       this.setState({
-        currentTime: currentTime, 
-        remainingTime: remainingTime
-      })
-    } else {
-      clearInterval(this.state.intervalId);
-      this.setState({
-        gameOver: true, 
+        intervalId: false, 
         remainingTime: '00:00'
       })
     }

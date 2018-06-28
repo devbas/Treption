@@ -50,12 +50,21 @@ const ExtractedTripleItem = ({
             }  
             <ExtractedTripleElement data={subject} attribute='subject' concept={concept}/>
           </div>
-          <div className={`predicate ${selectedAttribute === 'predicate' && concept ? 'active' : ''} ${predicate.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('predicate')}>
+          <div className={`relation-box`}>
+            <div className="arrow"></div>
+            <div className={`predicate ${selectedAttribute === 'predicate' && concept ? 'active' : ''} ${predicate.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('predicate')}>
+              {selectedAttribute === 'predicate' && predicate.length === 0 &&
+                <div className="help-title">Choose the relation</div>
+              }
+              <ExtractedTripleElement data={predicate} attribute='predicate' concept={concept}/>
+            </div>
+          </div>
+          {/* <div className={`predicate ${selectedAttribute === 'predicate' && concept ? 'active' : ''} ${predicate.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('predicate')}>
             {selectedAttribute === 'predicate' && predicate.length === 0 &&
               <div className="help-title">Choose the relation</div>
             }
             <ExtractedTripleElement data={predicate} attribute='predicate' concept={concept}/>
-          </div>
+          </div> */}
           <div className={`object ${selectedAttribute === 'object' && concept ? 'active' : ''} ${object.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('object')}>
             {selectedAttribute === 'object' && object.length === 0 &&
               <div className="help-title">Choose an object</div>

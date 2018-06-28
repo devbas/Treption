@@ -24,7 +24,7 @@ const ValidationItem = ({
               <div className="left predicate">{triple.predicate} </div>
               <div className="left object">{triple.object}</div>
             </div>
-            <p>is a correct statement for the above sentence?</p>
+            <p>is a correct relation for the above sentence?</p>
             
             <div className="button-box">
               <div onClick={() => onChoiceClick('agree')} className="secondary-action agree"></div> 
