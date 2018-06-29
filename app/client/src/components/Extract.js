@@ -96,14 +96,14 @@ const Extract = ({
                   <div className="divider"></div>
                   <ValidationItem onCorrectValidationAnswer={onCorrectValidationAnswer}/>
 
-                  {gameOver &&
+                  {/* {gameOver &&
                     <div className={hoverBoxStyle}>
                       <div className="explanation-box" style={{backgroundColor: color}}>
                         <div className="description">Time is up!</div>
                       </div>
                       <div className="primary-action" onClick={onNewGameStartClick}>Play again</div>
                     </div>
-                  }
+                  } */}
                 </div>
               }
               
@@ -132,14 +132,16 @@ const Extract = ({
             
           </div>
         </div>
-
-        <div className="sentence-control-box">
-          <div className="inner-box">
-            {sentence.nextSentence && isExtracting() &&
-              <Link to={`/extract/${documentId}/${sentence.nextSentence}`} className="next">Next sentence ></Link>
-            }
+        
+        {isExtracting() &&
+          <div className="sentence-control-box">
+            <div className="inner-box">
+              {sentence.nextSentence && isExtracting() &&
+                <Link to={`/extract/${documentId}/${sentence.nextSentence}`} className="next">Next sentence ></Link>
+              }
+            </div>
           </div>
-        </div>
+        }
 
       </div>
   
