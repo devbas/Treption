@@ -631,7 +631,7 @@ body {
 }
 
 .editor-box .extract-box .triple-box .predicate .token-outer-box {
-  width: 140px; 
+  width: 140px !important; 
   overflow-x: scroll; 
 }
 
