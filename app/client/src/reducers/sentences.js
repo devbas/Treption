@@ -31,9 +31,11 @@ export const fetchedSentence = createReducer([], {
 
         if(!_.includes(possibleTags, word.pos)) {
           aggregatedWord.inactive = true
+          aggregatedWord.supportedTag = false 
           aggregatedWord.keystroke = ''
         } else {
           aggregatedWord.inactive = false 
+          aggregatedWord.supportedTag = true 
           aggregatedWord.keystroke = keystrokes[j]
           j++
         }

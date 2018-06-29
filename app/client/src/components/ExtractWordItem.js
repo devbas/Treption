@@ -9,16 +9,19 @@ const ExtractWordItem = ({
   isExtracting, 
   connectDragSource, 
   isDragging, 
-  isSelected
+  isSelected, 
+  supportedTag
 }) => {
   return connectDragSource(
-    <div style={{'animation-delay': '-' + Math.random() + 's' }} className={`extract-word-item-box ${active ? 'active' : 'inactive' } ${isExtracting ? 'is-extracting' : 'is-validating'}`} onClick={onWordClick}>
+    <div style={{'animation-delay': '-' + Math.random() + 's' }} className={`extract-word-item-box ${active ? 'active' : 'inactive' } ${isExtracting ? 'is-extracting' : 'is-validating'}`} onClick={supportedTag ? onWordClick : ''}>
       <span>
+        {supportedTag &&
           <div className={`radio-button ${active ? 'active' : 'inactive'} ${isSelected ? 'selected' : 'unselected' }`}>
             {active &&
               <div className="hover-fill"></div>
             }
           </div>
+        }
         <div className="character">
           {word}
         </div>
