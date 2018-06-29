@@ -179,13 +179,7 @@ class Extract extends Component {
   }
 
   onNewGameStartClick() {
-    // Redirect to next sentence
-    if(this.props.sentence.nextSentence) {
-      const documentId = this.props.match.params.documentId
-      window.location.replace(`/extract/${documentId}/${this.props.sentence.nextSentence}`)
-    } else {
-      window.location.replace('/')
-    }
+    window.location.reload();
   }
 
   isValidating() {
@@ -281,7 +275,6 @@ function mapStateToProps(state) {
 
   let extractedTriples = _.filter(state.extractedTriples, (triple) => { 
     return Number(triple.sentenceId) === Number(state.fetchedSentence.sentenceId) || triple.concept === true
-    // return Number(triple.sentenceId) === Number(state.fetchedSentence.sentenceId)
   })
   extractedTriples = extractedTriples ? extractedTriples : []
 
