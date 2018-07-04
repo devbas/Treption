@@ -8,7 +8,7 @@ const ExtractedTripleItemToken = ({
 }) => {
   if(isConcept) {
     return connectDragSource(
-      <div className="token-box">
+      <div className="token-box animated bounceInDown">
         {tokens}
       </div>
     )

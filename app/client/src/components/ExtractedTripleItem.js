@@ -11,7 +11,8 @@ const ExtractedTripleItem = ({
   onTripleAttributeSelect, 
   selectedAttribute, 
   onTripleSubmit, 
-  renderTripleItemToken
+  renderTripleItemToken, 
+  submitVisible
 }) => (
   <span>
     {!concept &&
@@ -34,13 +35,13 @@ const ExtractedTripleItem = ({
       <span>
         <div className="example-box">
           <div className={`example example-subject ${selectedAttribute === 'subject' ? 'active' : ''}`}>
-            e.g. Window
+            e.g. Barack Obama
           </div>
           <div className={`example example-predicate ${selectedAttribute === 'predicate' ? 'active' : ''}`}>
-            e.g. with
+            e.g. is born on
           </div>
           <div className={`example example-object ${selectedAttribute === 'object' ? 'active' : ''}`}>
-            e.g. heat-sensitive material
+            e.g. Hawaii
           </div>
         </div>
         <div className="triple-box">
@@ -71,9 +72,11 @@ const ExtractedTripleItem = ({
             }
             <ExtractedTripleElement data={object} attribute='object' concept={concept}/>
           </div>
-          <div className="submit-box">
-            <div className="done" onClick={onTripleSubmit}></div>
-          </div>
+          {/* {submitVisible && */}
+            <div className="submit-box animated pulse">
+              <div className="done" onClick={onTripleSubmit}></div>
+            </div>
+          {/* } */}
         </div>
       </span>
     }

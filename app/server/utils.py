@@ -20,7 +20,6 @@ def CoreNLPController(text):
   nlp = StanfordCoreNLP('http://postagger:9000') 
 
   output = nlp.annotate(text, properties={"timeout": "500000","annotators":"tokenize,pos,openie,relation,parse", "outputFormat": "json","openie.triple.strict":"true","openie.max_entailments_per_clause":"1"})
-  print('output', output['sentences'], file=sys.stderr)
   return output['sentences']
 
 def idGenerator(size=10, chars=string.ascii_uppercase + string.digits):
@@ -34,24 +33,25 @@ def saveDependencies(sentence, graphId):
 
   dependencies = sentence['collapsed-ccprocessed-dependencies']
 
-  # Building the triple according to the Stanford Dependencies Manual: https://nlp.stanford.edu/software/dependencies_manual.pdf
-  for dep in dependencies: 
-    if dep['governor'] > 0: 
-      triple = []
-      triple.insert(0, dep['governorGloss'])
-      triple.insert(1, dep['dep'])
-      triple.insert(2, dep['dependentGloss'])
-      triples.append(triple)
-    
-  # Build Insert query
-  query = 'PREFIX trp: <http://www.treption.com/' + graphId + '#> INSERT DATA { '
-  for triple in triples:
-    if triple[1] != 'punct':
-      query = query + 'trp:' + triple[0] + ' trp:' + triple[1] + ' trp:' + triple[2] + ' . '
+  if dependencies: 
+    # Building the triple according to the Stanford Dependencies Manual: https://nlp.stanford.edu/software/dependencies_manual.pdf
+    for dep in dependencies: 
+      if dep['governor'] > 0 and 'governorGloss' in dep and 'dep' in dep and 'dependentGloss' in dep: 
+        triple = []
+        triple.insert(0, dep['governorGloss'])
+        triple.insert(1, dep['dep'])
+        triple.insert(2, dep['dependentGloss'])
+        triples.append(triple)
+      
+    # Build Insert query
+    query = 'PREFIX trp: <http://www.treption.com/' + graphId + '#> INSERT DATA { '
+    for triple in triples:
+      if triple[1] != 'punct':
+        query = query + 'trp:' + triple[0] + ' trp:' + triple[1] + ' trp:' + triple[2] + ' . '
 
-  query = query + '}'
+    query = query + '}'
 
-  response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
+    response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
 
 def saveAutoExtractions(sentence, graphId, sentenceId): 
 
@@ -65,8 +65,6 @@ def saveAutoExtractions(sentence, graphId, sentenceId):
       query = query + 'trp:' + triple['subject'] + ' trp:' + triple['relation'] + ' trp:' + triple['object'] + ' . '
   
     query = query + '}'
-
-    print('query' + query, file=sys.stderr)
 
     response = requests.post('http://fuseki:3030/treption/update', data={'update': query})
 
@@ -104,11 +102,8 @@ def createDocument(content):
     graphId = idGenerator()
     documentColor = rainbow()
     sentences = CoreNLPController(content)
-    print('back in the function: ', file=sys.stderr)
     # Create document
-    connection = pymysql.connect(host='db', user='root', password='root', db='treption')
-    
-    print('we have a connection: ', file=sys.stderr)
+    connection = pymysql.connect(host='db', user='root', password='root', db='treption', charset='utf8')
 
     try: 
       with connection.cursor() as cursor: 
@@ -117,9 +112,7 @@ def createDocument(content):
         documentId = cursor.lastrowid
       
       connection.commit()
-      print('Document params: ', documentId, file=sys.stderr)
       for index, sentence in enumerate(sentences): 
-        print('In this document: ', str(index), str(sentence), file=sys.stderr)
         with connection.cursor() as cursor: 
           sql = "INSERT INTO `sentence` (`document_id`, `word_count`, `document_position`) VALUES (%s, %s, %s)"
           cursor.execute(sql, (documentId, len(sentence), index))
@@ -143,6 +136,9 @@ def createDocument(content):
 
       return json.dumps(response)
     
+    except: 
+      print("Unexpected error:", sys.exc_info()[0], file=sys.stderr)
+
     finally: 
       connection.close()
 
@@ -344,8 +340,6 @@ def getSentence(documentId, sentenceId):
               AND document_id = %s'''
       cursor.execute(sql, (sentenceId, documentId, sentenceId, documentId, sentenceId, documentId))
       sentence = cursor.fetchone()
-
-    print('we are still alive', file=sys.stderr)
     
     aggregatedSentence = {
       'sentenceId': sentenceId, 

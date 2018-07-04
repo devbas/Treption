@@ -17,7 +17,8 @@ class ExtractedTripleItem extends Component {
     this.state = {
       subject: [], 
       predicate: [], 
-      object: []
+      object: [], 
+      submitVisible: false 
     }
 
     if(this.props.triple) {
@@ -56,6 +57,15 @@ class ExtractedTripleItem extends Component {
           })
         }
       }
+
+      console.log('component did update', this.state)
+
+      if(this.state.subject.length > 0 && this.state.predicate.length > 0 && this.state.object.length > 0) {
+        console.log('yes we have it')
+        this.setState({
+          submitVisible: true 
+        })
+      }
     }
   }
 
@@ -67,7 +77,7 @@ class ExtractedTripleItem extends Component {
 
   onTripleSubmit() {
     
-    if(this.state.subject && this.state.predicate && this.state.object) {
+    if(this.state.subject.length > 0 && this.state.predicate.length > 0 && this.state.object.length > 0) {
       const predicateWords = _.flatten(_.map(this.state.predicate, 'words'))
       const predicate = _.map(predicateWords, 'value').join(' ')
 
@@ -100,6 +110,7 @@ class ExtractedTripleItem extends Component {
         predicate={this.props.triple ? this.props.triple.predicate: []}
         object={this.props.triple ? this.props.triple.object : []}
         selectedAttribute={this.props.selectedAttribute}
+        submitVisible={this.state.submitVisible}
       />
     )
   }
