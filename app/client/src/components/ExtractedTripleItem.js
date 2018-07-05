@@ -12,7 +12,8 @@ const ExtractedTripleItem = ({
   selectedAttribute, 
   onTripleSubmit, 
   renderTripleItemToken, 
-  submitVisible
+  submitVisible, 
+  color
 }) => (
   <span>
     {!concept &&
@@ -32,18 +33,7 @@ const ExtractedTripleItem = ({
     }
 
     {concept &&
-      <span>
-        <div className="example-box">
-          <div className={`example example-subject ${selectedAttribute === 'subject' ? 'active' : ''}`}>
-            e.g. Barack Obama
-          </div>
-          <div className={`example example-predicate ${selectedAttribute === 'predicate' ? 'active' : ''}`}>
-            e.g. is born on
-          </div>
-          <div className={`example example-object ${selectedAttribute === 'object' ? 'active' : ''}`}>
-            e.g. Hawaii
-          </div>
-        </div>
+      <span className="concept-triple-box">
         <div className="triple-box">
           <div className={`subject ${selectedAttribute === 'subject' && concept ? 'active' : ''} ${subject.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('subject')}>
             {selectedAttribute === 'subject' && subject.length === 0 &&
@@ -77,6 +67,17 @@ const ExtractedTripleItem = ({
               <div className="done" onClick={onTripleSubmit}></div>
             </div>
           {/* } */}
+        </div>
+        <div className="example-box">
+          <div className={`example example-subject ${selectedAttribute === 'subject' ? 'active' : ''}`}>
+            e.g. Barack Obama
+          </div>
+          <div className={`example example-predicate ${selectedAttribute === 'predicate' ? 'active' : ''}`}>
+            e.g. is born on
+          </div>
+          <div className={`example example-object ${selectedAttribute === 'object' ? 'active' : ''}`}>
+            e.g. Hawaii
+          </div>
         </div>
       </span>
     }

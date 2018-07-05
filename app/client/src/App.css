@@ -542,7 +542,18 @@ body {
   border-top: 15px solid rgba(000, 000, 000, 0.2); 
   border-left: 15px solid transparent; 
   border-right: 15px solid transparent;
+}
+
+.extract .editor-box .extract-word-box .content.is-extracting.attr-subject::after {
   left: 40px; 
+}
+
+.extract .editor-box .extract-word-box .content.is-extracting.attr-predicate::after {
+  left: 250px; 
+}
+
+.extract .editor-box .extract-word-box .content.is-extracting.attr-object::after {
+  left: 430px; 
 }
 
 .extract .editor-box .extract-word-box .content.is-validating {

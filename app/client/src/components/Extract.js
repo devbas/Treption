@@ -81,8 +81,8 @@ const Extract = ({
               </div>
             }
             
-            <div className={`sentence-box extract-word-box ${isValidating() ? 'is-validating' : ''} `} style={{ backgroundColor: backgroundColorMedium }}>
-              <div className={`content ${isValidating() ? 'is-validating' : 'is-extracting'}`}>
+            <div className={`sentence-box extract-word-box ${isValidating() ? 'is-validating' : ''}`} style={{ backgroundColor: backgroundColorMedium }}>
+              <div className={`content ${isValidating() ? 'is-validating' : 'is-extracting'} attr-${selectedAttribute}`}>
                 {sentence.aggregatedWords &&
                   <div className="word-box">
                     {sentence.aggregatedWords.map(renderWord)}
@@ -112,13 +112,13 @@ const Extract = ({
                 <div className="extract-box">
 
                   {!extractionContainsConcept &&
-                    <ExtractedTripleItem concept={true}/>  
+                    <ExtractedTripleItem concept={true} color={color}/>  
                   }     
 
                 
                   <span className="finished-triple-box">
                     {extractedTriples.map((triple) => {
-                      return <ExtractedTripleItem triple={triple} concept={triple.concept}/>
+                      return <ExtractedTripleItem triple={triple} concept={triple.concept} color={color}/>
                     })}
                   </span>
 

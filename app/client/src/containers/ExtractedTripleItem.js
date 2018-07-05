@@ -111,6 +111,7 @@ class ExtractedTripleItem extends Component {
         object={this.props.triple ? this.props.triple.object : []}
         selectedAttribute={this.props.selectedAttribute}
         submitVisible={this.state.submitVisible}
+        color={this.props.color}
       />
     )
   }
