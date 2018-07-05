@@ -142,7 +142,7 @@ body {
 
 .extract-word-item-box.inactive {
   background-color: rgba(255, 255, 255, 0.2);
-  cursor: default;
+  cursor: pointer;
 }
 
 .extract-word-item-box.inactive span {
@@ -162,7 +162,7 @@ body {
   padding: 0px 3px;
 }
 
-.extract-word-item-box.is-extracting.active span:hover .radio-button {
+.extract-word-item-box.is-extracting span:hover .radio-button {
   background-color: rgba(12, 26, 36, 0.2);
   transition: all 0.05s ease-in-out; 
   background-image: url('./assets/img/selected-hover.svg'); 
@@ -171,7 +171,7 @@ body {
   background-repeat: no-repeat;
 }
 
-.extract-word-item-box.is-extracting.active span:hover .radio-button.selected {
+.extract-word-item-box.is-extracting span:hover .radio-button.selected {
   background-color: rgba(12, 26, 36, 1);
   background-image: url('./assets/img/selected.svg'); 
 }
@@ -189,16 +189,13 @@ body {
   transition: background-color 0.15s ease-in-out
 }
 
-.extract-word-item-box .radio-button.inactive {
-  opacity: 0.5; 
-}
-
 .extract-word-item-box .radio-button.selected {
   background-color: #0C1A24;
   background-image: url('./assets/img/selected.svg');
   background-size: 95%; 
   background-position: center; 
   background-repeat: no-repeat;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.30)
 }
 
 .active-label-box .active-label {
@@ -486,6 +483,10 @@ body {
   border-bottom-right-radius: 5px;
 }
 
+.extract .editor-box .inner-box .extract-word-box .content {
+  border-radius: 0
+}
+
 .editor-box .triple-box {
   width: 620px; 
   margin-left: 20px; 
@@ -530,6 +531,20 @@ body {
   text-align: center;
 }
 
+.extract .editor-box .extract-word-box .content.is-extracting {
+  background-color: rgba(000, 000, 000, 0.2);
+  position: relative
+}
+
+.extract .editor-box .extract-word-box .content.is-extracting::after {
+  content: ""; 
+  position: absolute; 
+  border-top: 15px solid rgba(000, 000, 000, 0.2); 
+  border-left: 15px solid transparent; 
+  border-right: 15px solid transparent;
+  left: 40px; 
+}
+
 .extract .editor-box .extract-word-box .content.is-validating {
   padding: 40px 20px 10px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3); 
@@ -559,6 +574,12 @@ body {
   /* width: 220.33px; */
   width: 160px;
   position: relative; 
+  transition: border 0.15s ease-in-out;
+}
+
+.editor-box .extract-box .triple-box .subject:hover, .editor-box .extract-box .triple-box .predicate:hover, .editor-box .extract-box .triple-box .object:hover {
+  border: 2px solid #0C1A24; 
+  transition: border 0.15s ease-in-out;
 }
 
 .extracted-triples-saved-box .triple-box .subject, .extracted-triples-saved-box .triple-box .predicate, .extracted-triples-saved-box .triple-box .object {
@@ -738,6 +759,12 @@ body {
   height: 263px;
   border-bottom-right-radius: 5px; 
   border-bottom-left-radius: 5px;
+}
+
+.editor-box .extract-box .concept-triple-box {
+  padding-top: 25px;
+  float: left; 
+  width: 100%; 
 }
 
 .editor-box .extract-box .finished-triple-box {
