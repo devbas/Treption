@@ -4,6 +4,7 @@ import * as SentenceActions from '../actions/sentences'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { getCookie } from '../utils'
 
 import ValidationItemComponent from '../components/ValidationItem'
 
@@ -42,6 +43,11 @@ class ValidationItem extends Component {
 
   onChoiceClick(choice) {
     console.log('choice: ', choice, this.state.triple)
+
+    if(getCookie('onBoardingStatus') !== 'done') {
+      document.cookie = 'onBoardingStatus=done'
+    }
+
     if( (this.state.triple.agree + 1 >= this.state.triple.disagree && choice === 'agree') || (this.state.triple.disagree + 1 >= this.state.triple.agree && choice === 'disagree') ) {
       console.log('noticed!')
       this.onCorrectValidationAnswer()

@@ -599,6 +599,7 @@ body {
   width: 200px;
   margin-left: 31px; 
   margin-right: 31px; 
+  border-radius: 20px !important; 
 }
 
 .editor-box .extract-box .triple-box .active.empty-state {
@@ -655,6 +656,7 @@ body {
   padding-bottom: 5px; 
   display: inline-table; 
   margin-top: 6px; 
+  border-radius: 20px; 
 }
 
 .editor-box .extract-box .triple-box .predicate .token-outer-box {

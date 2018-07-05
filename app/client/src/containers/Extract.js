@@ -6,7 +6,7 @@ import * as ExtractActions from '../actions/extract'
 import * as UserActions from '../actions/users'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { blendColors } from '../utils'
+import { blendColors, getCookie } from '../utils'
 import _ from 'lodash'
 import moment from 'moment'
 import { DragDropContext } from 'react-dnd'
@@ -60,7 +60,14 @@ class Extract extends Component {
 
     const currentTime = moment().unix()
     const endTime = moment().add(15, 'seconds').unix()
-    const intervalId = setInterval(this.timer, 1000)
+
+    let intervalId = 0
+    let timerActive = false 
+    if(getCookie('onBoardingStatus') === 'done') {
+      intervalId = setInterval(this.timer, 1000)
+      timerActive = true 
+    } 
+
     const remainingTime = moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss')
     console.log('intervalid: ', intervalId)
     this.setState({
@@ -68,7 +75,8 @@ class Extract extends Component {
       currentTime: currentTime,
       endTime: endTime, 
       remainingTime: remainingTime, 
-      intervalId: intervalId
+      intervalId: intervalId, 
+      timerActive: timerActive
     })
   }
 
@@ -78,30 +86,43 @@ class Extract extends Component {
   }
 
   timer() {
-    console.log('update time!')
-    const currentTime = moment().unix() 
-    const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('mm:ss')
-    // const isValidating = this.isValidating()
+    if(getCookie('onBoardingStatus') === 'done') {
+      console.log('update time!')
+      const currentTime = moment().unix() 
 
-    if(this.isValidating()) {
-      if(remainingTime !== '00:00') {
-        this.setState({
-          currentTime: currentTime, 
-          remainingTime: remainingTime
-        })
+      let remainingTime
+      if(!this.state.timerActive) {
+        const endTime = moment().add(15, 'seconds').unix()
+        remainingTime = moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss')
       } else {
-        clearInterval(this.state.intervalId);
+        remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('mm:ss')
+      }
+      // const remainingTime = moment.unix(moment(this.state.endTime).diff(moment(currentTime))).format('mm:ss')
+      // const isValidating = this.isValidating()
+
+      if(this.isValidating()) {
+        if(remainingTime !== '00:00') {
+          this.setState({
+            currentTime: currentTime, 
+            remainingTime: remainingTime, 
+            timerActive: true 
+          })
+        } else {
+          clearInterval(this.state.intervalId);
+          this.setState({
+            gameOver: true, 
+            remainingTime: '00:00', 
+            timerActive: false 
+          })
+        }
+      } else if(this.state.intervalId) {
+        clearInterval(this.state.intervalId) 
         this.setState({
-          gameOver: true, 
-          remainingTime: '00:00'
+          intervalId: false, 
+          remainingTime: '00:00', 
+          timerActive: false
         })
       }
-    } else if(this.state.intervalId) {
-      clearInterval(this.state.intervalId) 
-      this.setState({
-        intervalId: false, 
-        remainingTime: '00:00'
-      })
     }
   }
 
@@ -266,6 +287,7 @@ class Extract extends Component {
         extractionFeedbackBoxStatus={this.props.extractionFeedbackBoxStatus}
         isPointBoxActive={this.state.isPointBoxActive}
         isFeedbackBoxActive={this.state.isFeedbackBoxActive}
+        timerActive={this.state.timerActive}
       />
     )
   }

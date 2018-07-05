@@ -28,7 +28,8 @@ const Extract = ({
   player, 
   extractionFeedbackBoxStatus, 
   isPointBoxActive, 
-  isFeedbackBoxActive
+  isFeedbackBoxActive, 
+  timerActive
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 
 
@@ -70,8 +71,8 @@ const Extract = ({
         </div>
         <div className="editor-box">
           <div className="inner-box">
-            {isValidating() &&
-              <div className="time-remaining">00:{remainingTime}</div>
+            {isValidating() && timerActive && 
+              <div className="time-remaining animated pulseToggle">00:{remainingTime}</div>
             }
 
             {isExtracting() &&
@@ -96,14 +97,14 @@ const Extract = ({
                   <div className="divider"></div>
                   <ValidationItem onCorrectValidationAnswer={onCorrectValidationAnswer}/>
 
-                  {/* {gameOver &&
+                  {gameOver &&
                     <div className={hoverBoxStyle}>
                       <div className="explanation-box" style={{backgroundColor: color}}>
                         <div className="description">Time is up!</div>
                       </div>
                       <div className="primary-action" onClick={onNewGameStartClick}>Play again</div>
                     </div>
-                  } */}
+                  }
                 </div>
               }
               
