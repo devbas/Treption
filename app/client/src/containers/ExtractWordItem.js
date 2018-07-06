@@ -56,12 +56,12 @@ class ExtractWordItem extends Component {
   setWordActive() {
     if(this.props.selectedAttribute === 'subject' || this.props.selectedAttribute === 'object') {
       const nounWord = _.find(this.props.scope.words, (word) => {
-        if(word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS') {
+        if((word.pos === 'NN' || word.pos === 'NNS' || word.pos === 'NNP' || word.pos === 'NNPS')) {
           return word
         }
       })
 
-      if(nounWord) {
+      if(nounWord && this.props.scope.supportedTag) {
         this.setState({
           active: true 
         })
@@ -80,7 +80,7 @@ class ExtractWordItem extends Component {
         } 
       })
 
-      if(nounWord) {
+      if(nounWord && this.props.scope.supportedTag) {
         this.setState({
           active: true 
         })

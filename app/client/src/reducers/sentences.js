@@ -1,7 +1,7 @@
 import createReducer from '../lib/createReducer'
 import * as types from '../actions/types'
 import _ from 'lodash'
-import { supportedPosTokens } from '../utils'
+import { supportedPosTokens, stopWords } from '../utils'
 
 export const fetchedSentence = createReducer([], {
   [types.SET_SENTENCE](state, action) {
@@ -29,7 +29,7 @@ export const fetchedSentence = createReducer([], {
           aggregatedWord.words = [words[i]]
         }
 
-        if(!_.includes(possibleTags, word.pos)) {
+        if(!_.includes(possibleTags, word.pos) || stopWords().includes(word.value)) {
           aggregatedWord.inactive = true
           aggregatedWord.supportedTag = false 
           aggregatedWord.keystroke = ''
