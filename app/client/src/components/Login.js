@@ -4,8 +4,8 @@ const Login = ({ onEmailChange, onLoginClick, emailValue, onPasswordChange, user
   <div className="login-box">
     <div className="inner-box">
       <form>
-        <div className="login-label">Enter your email:</div>
-        <input type="email" className="login-email" value={emailValue} placeholder="bastian.geneugelijk@student.uva.nl" onChange={onEmailChange} name="email"/>
+        <div className="login-label">Enter a name:</div>
+        <input type="email" className="login-email" value={emailValue} placeholder="devbas" onChange={onEmailChange} name="email"/>
         <div className="password-label">Create or enter your password:</div>
         <input type="password" className="login-password" value={userPassword} onChange={onPasswordChange} name="password"/>
         <div className="login-next" onClick={onLoginClick}>Continue</div>
