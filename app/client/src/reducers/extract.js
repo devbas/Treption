@@ -57,29 +57,21 @@ export const extractedTriples = (state = [], action) => {
       // Remove the concept 
 
     case 'REMOVE_FROM_TRIPLE': 
-      const wordId = _.get(action, 'attribute.words.0.id')
+      const attributeId = action.attribute.identifier
       const conceptTriple = newState[existingConceptIndex]
 
       if(conceptTriple) {
+
         newState[existingConceptIndex].subject = _.filter(conceptTriple.subject, function(attribute){
-          let word = _.filter(attribute.words, function(word){
-            return word.id !== wordId
-          })
-          return word.length > 0 ? true : false 
+          return attribute.identifier !== attributeId
         })
 
         newState[existingConceptIndex].predicate = _.filter(conceptTriple.predicate, function(attribute){
-          let word = _.filter(attribute.words, function(word){
-            return word.id !== wordId
-          })
-          return word.length > 0 ? true : false 
+          return attribute.identifier !== attributeId
         })
 
         newState[existingConceptIndex].object = _.filter(conceptTriple.object, function(attribute){
-          let word = _.filter(attribute.words, function(word){
-            return word.id !== wordId
-          })
-          return word.length > 0 ? true : false 
+          return attribute.identifier !== attributeId
         })
       }
 

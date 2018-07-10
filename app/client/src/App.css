@@ -468,6 +468,7 @@ body {
   width: 100%; 
   float: left; 
   padding-bottom: 0;
+  position: relative; 
 }
 
 .extract .editor-box .extract-word-box.is-validating {
@@ -941,6 +942,22 @@ body {
   padding: 20px; 
 }
 
+.sentence-box .sentence-box-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% - 4px);
+  width: calc(100% - 4px);
+  z-index: 1;
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 2px dashed #0C1A24; 
+  background-image: url('./assets/img/garbage.svg');
+  background-repeat: no-repeat; 
+  background-position: center; 
+  background-size: 5%; 
+}
+
 .sentence-item .inner-box a, .sentence-item .inner-box a:visited {
   color: #fff; 
   text-decoration: none;
@@ -971,6 +988,7 @@ body {
   top: 15px; 
   color: #0C1A24;
   font-weight: 400; 
+  pointer-events: none;
 }
 
 .triple-box .predicate .help-title {

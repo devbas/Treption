@@ -3,6 +3,13 @@ import * as types from '../actions/types'
 import _ from 'lodash'
 import { supportedPosTokens, stopWords } from '../utils'
 
+function guidGenerator() {
+  var S4 = function() {
+     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  };
+  return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+
 export const fetchedSentence = createReducer([], {
   [types.SET_SENTENCE](state, action) {
     const words = action.sentence.sentence.words
@@ -40,7 +47,7 @@ export const fetchedSentence = createReducer([], {
           j++
         }
         
-        
+        aggregatedWord.identifier = guidGenerator()
 
         aggregatedWords.push(aggregatedWord)
       }

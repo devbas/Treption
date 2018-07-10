@@ -9,11 +9,29 @@ import { connect } from 'react-redux'
 import { blendColors, getCookie } from '../utils'
 import _ from 'lodash'
 import moment from 'moment'
-import { DragDropContext } from 'react-dnd'
+import { DragDropContext, DropTarget } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import ExtractWordItem from './ExtractWordItem'
 import ExtractPredicateItem from './ExtractPredicateItem'
+
+const ItemTypes = {
+  TOKEN: 'token'
+}
+
+const squareTarget = {
+  drop(props, monitor) {
+    const item = monitor.getItem();
+    props.actions.boundRemoveFromTriple(item.scope.tokens)
+  }
+}
+
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  }
+}
 
 class Extract extends Component {
 
@@ -69,7 +87,6 @@ class Extract extends Component {
     } 
 
     const remainingTime = moment.unix(moment(endTime).diff(moment(currentTime))).format('mm:ss')
-    console.log('intervalid: ', intervalId)
     this.setState({
       // hoverBoxStyle: 'hover-layer animated fadeOut',
       currentTime: currentTime,
@@ -81,13 +98,11 @@ class Extract extends Component {
   }
 
   componentWillUnmount() {
-    console.log('component unmount')
     clearInterval(this.state.intervalId);
   }
 
   timer() {
     if(getCookie('onBoardingStatus') === 'done') {
-      console.log('update time!')
       const currentTime = moment().unix() 
 
       let remainingTime
@@ -262,7 +277,7 @@ class Extract extends Component {
 
     const extractionContainsConcept = _.find(this.props.extractedTriples, { concept: true })
 
-    return(
+    return (
       <ExtractComponent
         sentence={this.props.sentence}
         renderWord={this.renderWord}
@@ -288,6 +303,8 @@ class Extract extends Component {
         isPointBoxActive={this.state.isPointBoxActive}
         isFeedbackBoxActive={this.state.isFeedbackBoxActive}
         timerActive={this.state.timerActive}
+        connectDropTarget={this.props.connectDropTarget}
+        isOver={this.props.isOver}
       />
     )
   }
@@ -319,4 +336,10 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(Extract)); 
+Extract = DropTarget(ItemTypes.TOKEN, squareTarget, collect)(Extract)
+Extract = DragDropContext(HTML5Backend)(Extract)
+Extract = connect(mapStateToProps, mapDispatchToProps)(Extract)
+
+export default Extract 
+
+// export default DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(Extract)); 

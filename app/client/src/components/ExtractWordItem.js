@@ -3,12 +3,9 @@ import React from 'react';
 const ExtractWordItem = ({ 
   word, 
   active, 
-  keystroke, 
   onWordClick, 
-  wordState, 
   isExtracting, 
   connectDragSource, 
-  isDragging, 
   isSelected, 
   supportedTag
 }) => {
@@ -31,9 +28,5 @@ const ExtractWordItem = ({
     </div>
   )
 }
-
-//inactive ? 'extract-word-item-box inactive' : 'extract-word-item-box'
-
-//{keystroke}
 
 export default ExtractWordItem
