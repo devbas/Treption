@@ -259,8 +259,8 @@ body {
   background-size: 60%; 
   background-position: center; 
   background-repeat: no-repeat;
-  margin-top: 25px;
-  margin-left: 20px; 
+  margin-top: 8px;
+  margin-left: 8px; 
   cursor: pointer;
   background-color: #0C1A24; 
   padding: 10px;
@@ -488,9 +488,9 @@ body {
 }
 
 .editor-box .triple-box {
-  width: 620px; 
+  width: auto; 
   margin-left: 20px; 
-  margin-right: 60px;
+  margin-right: 12px;
   /* margin-top: 10px;
   margin-bottom: 15px; */
   float: left; 
@@ -505,10 +505,7 @@ body {
 }
 
 .editor-box .triple-box .submit-box {
-  position: absolute;
-  right: 10px; 
-  top: 8px; 
-  z-index: 99999;
+  float: left; 
 }
 
 .editor-box .triple-box .token-box {
@@ -736,7 +733,7 @@ body {
 .editor-box .extract-box .triple-box .object {
   border-radius: 4px; 
   margin-left: -2px; 
-  float: right; 
+  float: left; 
 }
 
 .editor-box .extract-box .extracted-triples-saved-box {
@@ -776,6 +773,20 @@ body {
   padding-top: 25px;
   float: left; 
   width: 100%; 
+}
+
+.editor-box .extract-box .concept-triple-box .error-box {
+  padding: 10px 10px 10px 45px;
+  background-color: #FDE1CC; 
+  border-bottom: 3px solid #0C1A24;
+  margin-left: 20px; 
+  margin-right: 20px; 
+  margin-bottom: 10px;
+  border-radius: 2px; 
+  background-image: url('./assets/img/danger.svg'); 
+  background-repeat: no-repeat;
+  background-position: 10px center; 
+  background-size: 4%;
 }
 
 .editor-box .extract-box .finished-triple-box {

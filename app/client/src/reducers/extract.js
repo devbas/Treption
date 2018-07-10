@@ -122,3 +122,9 @@ export const autoObjectMovement = createReducer(false, {
   }
 })
 
+export const extractionError = createReducer(false, {
+  [types.EXTRACTION_ERROR](state, action) {
+    return action.message.msg 
+  }
+})
+

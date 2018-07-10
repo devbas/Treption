@@ -79,6 +79,13 @@ const removeTripleConcept = () => {
   }
 }
 
+const setExtractionError = (message) => {
+  return {
+    type: types.EXTRACTION_ERROR, 
+    message
+  }
+}
+
 export const setExtractingStage = (stage) => {
   return (dispatch, getState) => {
     dispatch(extractingStage(stage))
@@ -139,8 +146,11 @@ export const boundAddTriple = ({ subject, predicate, object, sentenceId }) => {
       dispatch(addTriple(JSON.parse(response.data.Triple)))
       dispatch(userActions.fetchPlayer({ player: response.data.Player }))
       dispatch(setExtractionFeedbackBox({ 'status': 200 }))
+      dispatch(setExtractionError({ msg: false }))
     }).catch((err) => {
-      console.log('err:', err)
+      if(err.response.status === 400) {
+        dispatch(setExtractionError({ msg: 'This relation already exists, try to create another.'}))
+      }
     })
   }
 }

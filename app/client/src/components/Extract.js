@@ -6,7 +6,6 @@ import ExtractedTripleItem from '../containers/ExtractedTripleItem'
 const Extract = ({ 
   sentence, 
   renderWord, 
-  renderTriple, 
   color, 
   documentId, 
   isValidating, 
@@ -16,10 +15,7 @@ const Extract = ({
   remainingTime, 
   backgroundColorLight, 
   backgroundColorMedium, 
-  onValidatingStartClick, 
   hoverBoxStyle, 
-  hasStartedExtracting, 
-  onExtractingStartClick, 
   extractionContainsConcept, 
   onCorrectValidationAnswer, 
   gameOver, 
@@ -28,7 +24,6 @@ const Extract = ({
   player, 
   extractionFeedbackBoxStatus, 
   isPointBoxActive, 
-  isFeedbackBoxActive, 
   timerActive
 }) => (
   <div className="extract" style={{ backgroundColor: backgroundColorLight }}> 

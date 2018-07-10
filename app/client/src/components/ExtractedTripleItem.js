@@ -13,7 +13,8 @@ const ExtractedTripleItem = ({
   onTripleSubmit, 
   renderTripleItemToken, 
   submitVisible, 
-  color
+  color, 
+  extractionError
 }) => (
   <span>
     {!concept &&
@@ -34,6 +35,11 @@ const ExtractedTripleItem = ({
 
     {concept &&
       <span className="concept-triple-box">
+        {extractionError &&
+          <div className="error-box">
+            {extractionError}
+          </div>
+        }
         <div className="triple-box">
           <div className={`subject ${selectedAttribute === 'subject' && concept ? 'active' : ''} ${subject.length === 0 ? 'empty-state' : ''}`} onClick={() => onTripleAttributeSelect('subject')}>
             {selectedAttribute === 'subject' && subject.length === 0 &&

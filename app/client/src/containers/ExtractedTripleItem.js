@@ -112,6 +112,7 @@ class ExtractedTripleItem extends Component {
         selectedAttribute={this.props.selectedAttribute}
         submitVisible={this.state.submitVisible}
         color={this.props.color}
+        extractionError={this.props.extractionError}
       />
     )
   }
@@ -121,7 +122,8 @@ function mapStateToProps(state) {
   return {
     sentence: state.fetchedSentence, 
     selectedAttribute: state.selectedTripleAttribute, 
-    extractedTriples: state.extractedTriples
+    extractedTriples: state.extractedTriples, 
+    extractionError: state.extractionError
   }
 }
 

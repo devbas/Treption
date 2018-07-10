@@ -117,10 +117,10 @@ class ExtractWordItem extends Component {
       if(this.props.selectedAttribute === 'subject') {
         this.props.actions.boundUpdateTripleSubject(this.props.scope)
 
-        if(!this.props.autoSubjectMovement) {
-          this.props.actions.boundTripleAttributeSelected('object')
-          this.props.actions.boundsetAutoSubjectMovement(true)
-        }
+        // if(!this.props.autoSubjectMovement) {
+        //   this.props.actions.boundTripleAttributeSelected('object')
+        //   this.props.actions.boundsetAutoSubjectMovement(true)
+        // }
       }
 
       if(this.props.selectedAttribute === 'predicate') {
@@ -130,10 +130,10 @@ class ExtractWordItem extends Component {
       if(this.props.selectedAttribute === 'object') {
         this.props.actions.boundUpdateTripleObject(this.props.scope)
 
-        if(!this.props.autoObjectMovement) {
-          this.props.actions.boundTripleAttributeSelected('predicate')
-          this.props.actions.boundsetAutoObjectMovement(true)
-        }
+        // if(!this.props.autoObjectMovement) {
+        //   this.props.actions.boundTripleAttributeSelected('predicate')
+        //   this.props.actions.boundsetAutoObjectMovement(true)
+        // }
       }
     }
 
