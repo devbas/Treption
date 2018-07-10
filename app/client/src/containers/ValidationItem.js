@@ -30,8 +30,8 @@ class ValidationItem extends Component {
     this.onChoiceClick = this.onChoiceClick.bind(this)
   }
 
-  componentDidUpdate() {
-    if(this.state.processed) {
+  componentDidUpdate(prevProps) {
+    if(this.state.processed && prevProps !== this.props) {
       this.setState({
         triple: !this.props.isSentenceLoading ? _.find(this.props.triples, { processed: false }) : [], 
         processed: false, 
@@ -42,14 +42,12 @@ class ValidationItem extends Component {
   }
 
   onChoiceClick(choice) {
-    console.log('choice: ', choice, this.state.triple)
 
     if(getCookie('onBoardingStatus') !== 'done') {
       document.cookie = 'onBoardingStatus=done'
     }
 
     if( (this.state.triple.agree + 1 >= this.state.triple.disagree && choice === 'agree') || (this.state.triple.disagree + 1 >= this.state.triple.agree && choice === 'disagree') ) {
-      console.log('noticed!')
       this.onCorrectValidationAnswer()
 
       this.setState({
