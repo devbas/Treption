@@ -32,7 +32,7 @@ services:
     environment: 
       - MYSQL_DATABASES=treption
       - MYSQL_ROOT_PASSWORD=root
-      - MAX_CONNECTIONS=1000
+      - max_connections=1000
   postagger: 
     build:
       context: .
