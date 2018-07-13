@@ -28,11 +28,11 @@ services:
       - 3306:3306
     volumes: 
       - ./app/db:/docker-entrypoint-initdb.d
+      - ./app/db:/etc/mysql/conf.d
     image: mysql:5.7
     environment: 
       - MYSQL_DATABASES=treption
       - MYSQL_ROOT_PASSWORD=root
-      - max_connections=1000
   postagger: 
     build:
       context: .
