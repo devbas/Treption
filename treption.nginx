@@ -1,5 +1,7 @@
 http {
   server {
+    listen 3000; 
+    
     server_name v1.triplestrife.com;
     location / {
       proxy_pass http://localhost:3000/; 

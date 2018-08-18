@@ -10,7 +10,7 @@ COPY package.json /usr/src/app/package.json
 RUN npm install 
 RUN npm install react-scripts@1.1.1 -g
 
-RUN ln -s /var/www/production/treption.nginx /etc/nginx/conf.d/
+RUN sudo ln -s /var/www/production/treption.nginx /etc/nginx/conf.d/
 # RUN yes | cp -fr /var/www/production/nginx.conf /etc/nginx/
 
 CMD ["npm", "start"]
